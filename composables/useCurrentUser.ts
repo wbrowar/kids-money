@@ -3,7 +3,11 @@ import { User } from '~/types'
 export const useCurrentUser = () => {
   const runtimeConfig = useRuntimeConfig()
 
-  const isGrownUp = useState('currentUserGrownUp', () => false)
+  const canViewAdmin = computed(() => {
+    log('grown', grownUp.value)
+    return grownUp.value && runtimeConfig.public.enableAdminRoute
+  })
+  const grownUp = useState('currentUserGrownUp', () => false)
   const loggedIn = useState('currentUserLoggedIn', () => false)
   const username = useState('currentUserUsername', () => '')
 
@@ -12,28 +16,25 @@ export const useCurrentUser = () => {
     const sessionData = sessionStorage.getItem('logged-in')
     if (sessionData) {
       const sessionDataParsed = JSON.parse(sessionData)
-      log('they logged')
-      isGrownUp.value = sessionDataParsed.isGrownUp
+      grownUp.value = sessionDataParsed.grownUp
       loggedIn.value = true
       username.value = sessionDataParsed.username
     }
   }
 
-  const canViewAdmin = computed(() => {
-    return isGrownUp.value && runtimeConfig.public.enableAdminRoute
-  })
-
-  const currentUser = reactive({
-    canViewAdmin: canViewAdmin.value,
-    grownUp: isGrownUp.value,
-    loggedIn: loggedIn.value,
-    username: username.value
-  })
-
-  async function logIn ({ username: usernameArg }: { username: string }) {
+  async function logIn ({
+    password: passwordArg,
+    redirect,
+    username: usernameArg
+  }: {
+    password: string;
+    redirect: string;
+    username: string;
+  }) {
     try {
       const { data } = await useFetch<User>('/api/get-user', {
         body: {
+          password: passwordArg,
           username: usernameArg
         },
         method: 'post',
@@ -41,15 +42,17 @@ export const useCurrentUser = () => {
       })
 
       if (data.value && (data.value.username ?? false)) {
-        isGrownUp.value = data.value.grownUp ?? false
+        grownUp.value = data.value.grownUp ?? false
         loggedIn.value = true
         username.value = data.value.username
         sessionStorage.setItem('logged-in', JSON.stringify({
-          isGrownUp: isGrownUp.value,
+          grownUp: grownUp.value,
           username: username.value
         }))
-        log('Logged in user:', currentUser)
-        navigateTo('/')
+        log('Logged in user:', username.value)
+        if (redirect) {
+          navigateTo(redirect)
+        }
       } else {
         showError({ statusCode: 500, statusMessage: 'Page Not Found' })
       }
@@ -60,16 +63,19 @@ export const useCurrentUser = () => {
 
   function logOut () {
     sessionStorage.removeItem('logged-in')
-    isGrownUp.value = false
-    currentUser.loggedIn = false
-    currentUser.username = ''
-    log('Logged out user:', currentUser)
+    grownUp.value = false
+    loggedIn.value = false
+    username.value = ''
+    log('Logged out user:', username.value)
     navigateTo('/login')
   }
 
   return {
-    currentUser,
+    canViewAdmin,
+    grownUp,
+    loggedIn,
     logIn,
-    logOut
+    logOut,
+    username
   }
 }

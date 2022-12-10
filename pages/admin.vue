@@ -1,19 +1,6 @@
 <script setup lang="ts">
-const { currentUser } = useCurrentUser()
+const { grownUp, username } = useCurrentUser()
 const { kidsLookup } = useKids()
-// const { dbGetAll } = await useDb()
-
-// function checkDb () {
-//   const results = dbGetAll('SELECT * from users')
-//
-//   log('Check DB results:', results)
-// }
-//
-// onMounted(() => {
-//   checkDb()
-// })
-
-log('kidsLookup', kidsLookup)
 
 definePageMeta({
   layout: false
@@ -32,9 +19,8 @@ definePageMeta({
       <h1>Page: admin</h1>
       <div>
         <h2>Current User</h2>
-        <p>Grown Up: {{ currentUser.grownUp }}</p>
-        <p>ID: {{ currentUser.id }}</p>
-        <p>Username: {{ currentUser.username }}</p>
+        <p>Grown Up: {{ grownUp }}</p>
+        <p>Username: {{ username }}</p>
       </div>
       <div>
         <h2>Kids</h2>

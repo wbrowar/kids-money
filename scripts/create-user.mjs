@@ -23,11 +23,11 @@ async function main () {
   const args = parseArgv()
 
   if (typeof args.username === 'undefined') {
-    console.error('Username argument missing. Add one using the `-u` argument:\n  node scripts/create-user.mjs -u=my-username. -p=my-password.')
+    console.error('Username argument missing. Add one using the `-u` argument:\n  node scripts/create-user.mjs -u=my-username. -p=my-password')
     exit(1)
   }
   if (typeof args.password === 'undefined') {
-    console.error('Password argument missing. Add one using the `-p` argument:\n  node scripts/create-user.mjs -u=my-username. -p=my-password.')
+    console.error('Password argument missing. Add one using the `-p` argument:\n  node scripts/create-user.mjs -u=my-username. -p=my-password')
     exit(1)
   }
 
@@ -39,9 +39,8 @@ async function main () {
       grownUp: args.grownUp || false
     },
   })
-  console.log(user)
 
-  return new Promise(() => 'hello')
+  console.log(`User created with username: ${args.username}`)
 }
 
 main()

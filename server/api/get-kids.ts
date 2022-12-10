@@ -1,10 +1,11 @@
-import { Kid } from '~/types'
+import { PrismaClient } from '@prisma/client'
 import { log } from '~/utils/console'
 
-export default defineEventHandler((): Kid[] => {
+export default defineEventHandler(() => {
   log('API: get-kids')
   const runtimeConfig = useRuntimeConfig()
 
+  // If option is set, use mock data
   if (runtimeConfig.public.useMockApiData) {
     return [
       {
@@ -30,7 +31,30 @@ export default defineEventHandler((): Kid[] => {
     ]
   }
 
-  // TODO replace with real value
+  // Get user from database
+  const prisma = new PrismaClient()
 
-  return []
+  async function runQuery () {
+    const kids = await prisma.kid.findMany()
+    if (kids.length) {
+      return kids
+    }
+    return []
+  }
+
+  const response = runQuery()
+    .then(async (response) => {
+      await prisma.$disconnect()
+      log('kdiss ahere', response)
+      return response
+    })
+    .catch(async (e) => {
+      console.error(e)
+      await prisma.$disconnect()
+      process.exit(1)
+    })
+
+  log('responsse', response)
+
+  return response
 })

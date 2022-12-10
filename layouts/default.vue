@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { currentUser } = useCurrentUser()
+const { canViewAdmin } = useCurrentUser()
 </script>
 
 <template>
@@ -8,7 +8,7 @@ const { currentUser } = useCurrentUser()
     <slot />
     <div>
       <slot name="action-buttons">
-        <NuxtLink v-if="currentUser.canViewAdmin" to="/admin">
+        <NuxtLink v-if="canViewAdmin" to="/admin">
           Admin
         </NuxtLink>
       </slot>

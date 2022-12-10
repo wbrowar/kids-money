@@ -10,7 +10,7 @@ definePageMeta({
   <div>
     <h1>Page: login</h1>
     <div>
-      <button @click="logIn({ username: 'phil' })">
+      <button @click="logIn({ password: 'my-pass', redirect: '/', username: 'phil' })">
         Log In
       </button>
     </div>
