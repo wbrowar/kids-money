@@ -13,3 +13,6 @@ dist
 
 # IDE
 .idea
+
+# Local Development
+prisma/db

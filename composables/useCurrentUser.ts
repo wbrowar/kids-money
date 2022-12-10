@@ -1,3 +1,4 @@
+import { User } from '~/types'
 
 export const useCurrentUser = () => {
   const runtimeConfig = useRuntimeConfig()
@@ -29,14 +30,20 @@ export const useCurrentUser = () => {
     username: username.value
   })
 
-  async function logIn () {
+  async function logIn ({ username: usernameArg }: { username: string }) {
     try {
-      const loginResponse = await $fetch('/api/get-user')
+      const { data } = await useFetch<User>('/api/get-user', {
+        body: {
+          username: usernameArg
+        },
+        method: 'post',
+        pick: ['grownUp', 'id', 'username']
+      })
 
-      if (typeof loginResponse.id === 'number' && (loginResponse.username ?? false)) {
-        isGrownUp.value = loginResponse.grownUp ?? false
+      if (data.value && (data.value.username ?? false)) {
+        isGrownUp.value = data.value.grownUp ?? false
         loggedIn.value = true
-        username.value = loginResponse.username
+        username.value = data.value.username
         sessionStorage.setItem('logged-in', JSON.stringify({
           isGrownUp: isGrownUp.value,
           username: username.value
