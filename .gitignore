@@ -1,0 +1,15 @@
+# Nuxt Defaults
+node_modules
+*.log*
+.nuxt
+.nitro
+.cache
+.output
+.env
+dist
+
+# OS
+.DS_Store
+
+# IDE
+.idea
