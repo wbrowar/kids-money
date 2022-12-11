@@ -1,6 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+import { Kid } from '~/types'
+
 const { grownUp, username } = useCurrentUser()
-const { kids, kidsLookup, refreshKids } = await useKids()
+
+const { data: kids, refresh: refreshKids } = await useFetch('/api/get-kids', {
+  method: 'post'
+})
 
 const kidAction = ref<'delete' | 'edit' | 'idle'>('idle')
 
@@ -58,17 +63,19 @@ async function saveKid () {
 }
 
 function startEditingKid (slug = '') {
-  const editedKid = kidsLookup.value[slug]
+  if (kids.value) {
+    const editedKid = kids.value.find((kid: Kid) => kid.slug === slug)
 
-  editedKidAllowance.value = editedKid?.allowance ?? 0
-  editedKidColor.value = editedKid?.color ?? '#0026ff'
-  editedKidId.value = editedKid?.id ?? -1
-  editedKidInterest.value = editedKid?.interest ?? 0
-  editedKidName.value = editedKid?.name ?? ''
-  editedKidPhotoUrl.value = editedKid?.photoUrl ?? ''
-  editedKidSlug.value = editedKid?.slug ?? ''
+    editedKidAllowance.value = editedKid?.allowance ?? 0
+    editedKidColor.value = editedKid?.color ?? '#0026ff'
+    editedKidId.value = editedKid?.id ?? -1
+    editedKidInterest.value = editedKid?.interest ?? 0
+    editedKidName.value = editedKid?.name ?? ''
+    editedKidPhotoUrl.value = editedKid?.photoUrl ?? ''
+    editedKidSlug.value = editedKid?.slug ?? ''
 
-  kidAction.value = 'edit'
+    kidAction.value = 'edit'
+  }
 }
 
 definePageMeta({
@@ -79,12 +86,6 @@ definePageMeta({
 <template>
   <div>
     <NuxtLayout name="default">
-      <template #action-buttons>
-        <NuxtLink to="/">
-          Home
-        </NuxtLink>
-      </template>
-
       <h1>Page: admin</h1>
       <div>
         <h2>Current User</h2>

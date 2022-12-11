@@ -1,6 +1,7 @@
 import { User } from '~/types'
 
 export const useCurrentUser = () => {
+  const loggedInCookie = useCookie<Record<string, any>>('logged-in')
   const runtimeConfig = useRuntimeConfig()
 
   const canViewAdmin = computed(() => {
@@ -11,13 +12,11 @@ export const useCurrentUser = () => {
   const username = useState('currentUserUsername', () => '')
 
   // If already logged in, restore session
-  if (process.client) {
-    const sessionData = sessionStorage.getItem('logged-in')
-    if (sessionData) {
-      const sessionDataParsed = JSON.parse(sessionData)
-      grownUp.value = sessionDataParsed.grownUp
+  if (loggedInCookie.value) {
+    if (loggedInCookie.value?.username) {
+      grownUp.value = loggedInCookie.value.grownUp
       loggedIn.value = true
-      username.value = sessionDataParsed.username
+      username.value = loggedInCookie.value.username
     }
   }
 
@@ -44,10 +43,11 @@ export const useCurrentUser = () => {
         grownUp.value = data.value.grownUp ?? false
         loggedIn.value = true
         username.value = data.value.username
-        sessionStorage.setItem('logged-in', JSON.stringify({
+        const cookieValue = {
           grownUp: grownUp.value,
           username: username.value
-        }))
+        }
+        loggedInCookie.value = cookieValue
         log('Logged in user:', username.value)
         if (redirect) {
           navigateTo(redirect)
@@ -61,11 +61,11 @@ export const useCurrentUser = () => {
   }
 
   function logOut () {
-    sessionStorage.removeItem('logged-in')
+    loggedInCookie.value = {}
+    log('Logging out user:', username.value)
     grownUp.value = false
     loggedIn.value = false
     username.value = ''
-    log('Logged out user:', username.value)
     navigateTo('/login')
   }
 

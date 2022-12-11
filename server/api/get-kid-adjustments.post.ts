@@ -1,27 +1,15 @@
 import { log } from '~/utils/console'
 import prisma from '~/utils/prisma'
-import { Kid } from '~/types'
 
-export default defineEventHandler((): Promise<Kid[]> => {
-  log('API: get-kids')
+export default defineEventHandler(async (event) => {
+  const body = await readBody(event)
+  log('API: get-kid-adjustments', body)
   const runtimeConfig = useRuntimeConfig()
 
   // If option is set, use mock data
   if (runtimeConfig.public.useMockApiData) {
-    return new Promise(() => [
-      {
-        adjustments: [],
-        allowance: 5,
-        color: '#ff0000',
-        id: 0,
-        interest: 0.01,
-        name: 'Kid 1',
-        photoUrl: 'http://placekitten.com/g/200/300',
-        savingFor: 'http://placekitten.com/g/400/600',
-        savingForType: 'image',
-        slug: 'kid-1'
-      },
-      {
+    return new Promise(() => {
+      return {
         adjustments: [],
         allowance: 0,
         color: '93,0,255',
@@ -33,20 +21,21 @@ export default defineEventHandler((): Promise<Kid[]> => {
         savingForType: 'text',
         slug: 'kid-2'
       }
-    ])
+    })
   }
 
   // Get user from database
   async function runQuery () {
-    const kids = await prisma.kid.findMany({
+    const kid = await prisma.kid.findUnique({
       include: {
-        adjustments: {
-          take: 1
-        }
+        adjustments: true
+      },
+      where: {
+        slug: body.slug
       }
     })
-    if (kids.length) {
-      return kids
+    if (kid ?? false) {
+      return kid
     }
     return []
   }

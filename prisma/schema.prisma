@@ -23,7 +23,7 @@ model Adjustment {
 model Kid {
   id            Int          @id @default(autoincrement())
   name          String
-  slug          String
+  slug          String       @unique
   photoUrl      String       @default("")
   color         String       @default("#0026ff")
   savingFor     String       @default("")

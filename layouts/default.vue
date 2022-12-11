@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const { canViewAdmin } = useCurrentUser()
 </script>
 
@@ -7,6 +7,9 @@ const { canViewAdmin } = useCurrentUser()
     <h1>Layout: default</h1>
     <slot />
     <div>
+      <NuxtLink v-if="$route.path !== '/'" to="/">
+        Home
+      </NuxtLink>
       <slot name="action-buttons">
         <NuxtLink v-if="canViewAdmin" to="/admin">
           Admin
