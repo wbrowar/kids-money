@@ -11,24 +11,26 @@ datasource db {
 }
 
 model Adjustment {
-  id                Int    @id @default(autoincrement())
-  createdDate       DateTime
-  dollarAdjustment  Float
-  percentAdjustment Float
+  id                Int      @id @default(autoincrement())
+  createdDate       DateTime @default(now())
+  dollarAdjustment  Float    @default(0)
+  percentAdjustment Float    @default(0)
   totalToDate       Float
+  kid               Kid      @relation(fields: [kidId], references: [id])
   kidId             Int
 }
 
 model Kid {
-  id            Int    @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   name          String
   slug          String
-  photoUrl      String
-  color         String
-  savingFor     String
-  savingForType String
-  allowance     Float
-  interest      Float
+  photoUrl      String       @default("")
+  color         String       @default("#0026ff")
+  savingFor     String       @default("")
+  savingForType String       @default("text")
+  allowance     Float        @default(0)
+  interest      Float        @default(0)
+  adjustments   Adjustment[]
 }
 
 model User {

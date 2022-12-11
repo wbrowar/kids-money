@@ -1,7 +1,7 @@
 import { Kid } from '~/types'
 
-export const useKids = () => {
-  const kids = useState<Kid[]>('kids', () => [])
+export const useKids = async () => {
+  const kids = ref<Kid[]>([])
   const kidsLookup = computed(() => {
     const lookup: Record<string, Kid> = {}
 
@@ -12,18 +12,19 @@ export const useKids = () => {
     return lookup
   })
 
-  if (!kids.value.length) {
-    getKids()
-  }
+  const { data, refresh } = await useFetch('/api/get-kids', {
+    method: 'post'
+  })
+  kids.value = data.value ?? []
 
-  async function getKids () {
-    const { data } = await useFetch('/api/get-kids')
-    log('data', data.value)
+  function refreshKids () {
+    refresh()
     kids.value = data.value ?? []
   }
 
   return {
     kids,
-    kidsLookup
+    kidsLookup,
+    refreshKids
   }
 }

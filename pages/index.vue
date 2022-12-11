@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { canViewAdmin } = useCurrentUser()
-const { kids, kidsLookup } = useKids()
+const { kids } = await useKids()
 
 </script>
 
@@ -16,7 +16,7 @@ const { kids, kidsLookup } = useKids()
           Admin
         </NuxtLink>
       </div>
-      <div v-for="kid in kidsLookup" v-else :key="kid.slug">
+      <div v-for="kid in kids" v-else :key="kid.slug">
         <p>Grown Up: {{ kid.name }}</p>
         <p>Slug: {{ kid.slug }}</p>
       </div>

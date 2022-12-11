@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client'
 import { log } from '~/utils/console'
+import prisma from '~/utils/prisma'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -16,8 +16,6 @@ export default defineEventHandler(async (event) => {
   }
 
   // Get user from database
-  const prisma = new PrismaClient()
-
   async function runQuery () {
     if (body.username) {
       const user = await prisma.user.findUnique({

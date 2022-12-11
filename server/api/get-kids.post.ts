@@ -1,14 +1,16 @@
-import { PrismaClient } from '@prisma/client'
 import { log } from '~/utils/console'
+import prisma from '~/utils/prisma'
+import { Kid } from '~/types'
 
-export default defineEventHandler(() => {
+export default defineEventHandler((): Promise<Kid[]> => {
   log('API: get-kids')
   const runtimeConfig = useRuntimeConfig()
 
   // If option is set, use mock data
   if (runtimeConfig.public.useMockApiData) {
-    return [
+    return new Promise(() => [
       {
+        adjustments: [],
         allowance: 5,
         color: '#ff0000',
         id: 0,
@@ -16,9 +18,11 @@ export default defineEventHandler(() => {
         name: 'Kid 1',
         photoUrl: 'http://placekitten.com/g/200/300',
         savingFor: 'http://placekitten.com/g/400/600',
+        savingForType: 'image',
         slug: 'kid-1'
       },
       {
+        adjustments: [],
         allowance: 0,
         color: '93,0,255',
         id: 1,
@@ -26,14 +30,13 @@ export default defineEventHandler(() => {
         name: 'This Is Kid 2',
         photoUrl: undefined,
         savingFor: undefined,
+        savingForType: 'text',
         slug: 'kid-2'
       }
-    ]
+    ])
   }
 
   // Get user from database
-  const prisma = new PrismaClient()
-
   async function runQuery () {
     const kids = await prisma.kid.findMany()
     if (kids.length) {

@@ -4,7 +4,6 @@ export const useCurrentUser = () => {
   const runtimeConfig = useRuntimeConfig()
 
   const canViewAdmin = computed(() => {
-    log('grown', grownUp.value)
     return grownUp.value && runtimeConfig.public.enableAdminRoute
   })
   const grownUp = useState('currentUserGrownUp', () => false)
