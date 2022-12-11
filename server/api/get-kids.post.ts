@@ -2,7 +2,7 @@ import { log } from '~/utils/console'
 import prisma from '~/utils/prisma'
 import { Kid } from '~/types'
 
-export default defineEventHandler((): Promise<Kid[]> => {
+export default defineEventHandler(() => {
   log('API: get-kids')
   const runtimeConfig = useRuntimeConfig()
 
@@ -41,6 +41,9 @@ export default defineEventHandler((): Promise<Kid[]> => {
     const kids = await prisma.kid.findMany({
       include: {
         adjustments: {
+          orderBy: {
+            id: 'desc'
+          },
           take: 1
         }
       }

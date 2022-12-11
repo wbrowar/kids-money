@@ -8,6 +8,7 @@ export interface Adjustment {
 }
 
 export interface Kid {
+    adjustments: Adjustment[]
     allowance: number;
     color: string;
     id: number;

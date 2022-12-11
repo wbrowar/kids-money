@@ -28,7 +28,11 @@ export default defineEventHandler(async (event) => {
   async function runQuery () {
     const kid = await prisma.kid.findUnique({
       include: {
-        adjustments: true
+        adjustments: {
+          orderBy: {
+            id: 'desc'
+          }
+        }
       },
       where: {
         slug: body.slug

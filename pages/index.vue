@@ -1,7 +1,15 @@
 <script lang="ts" setup>
+import { Kid } from '~/types'
+import { useStringFormatter } from '~/composables/useStringFormatter'
+
+const { convertToLocalCurrency } = useStringFormatter()
 const { canViewAdmin } = useCurrentUser()
 
-const { data: kids } = await useFetch('/api/get-kids', {
+function kidsTotal (kid: Kid) {
+  return convertToLocalCurrency(kid?.adjustments?.[0]?.totalToDate ?? 0)
+}
+
+const { data: kids, refresh: refreshKids } = await useFetch('/api/get-kids', {
   body: {
     includeAdjustments: true
   },
@@ -27,7 +35,8 @@ const { data: kids } = await useFetch('/api/get-kids', {
           {{ kid.name }}
         </NuxtLink>
         <p>{{ kid.slug }}</p>
-        <AddAdjustmentForm />
+        <p>Total: {{ kidsTotal(kid) }}</p>
+        <AddAdjustmentForm :kid-id="kid.id" @adjustment-added="refreshKids" />
       </div>
     </div>
   </div>
