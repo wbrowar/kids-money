@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 const route = useRoute()
+const { canViewAdmin } = useCurrentUser()
 const { convertToLocalCurrency } = useStringFormatter()
 
 const kidSlug = ref(route.params.kidSlug)
@@ -33,7 +34,7 @@ const { data: kid, refresh: refreshKid } = await useFetch('/api/get-kid-adjustme
             <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">
               Total to Date
             </th>
-            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+            <th v-if="canViewAdmin" scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
               <span class="sr-only">Actions</span>
             </th>
           </tr>
@@ -65,7 +66,7 @@ const { data: kid, refresh: refreshKid } = await useFetch('/api/get-kid-adjustme
             <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
               {{ convertToLocalCurrency(adjustment.totalToDate) }}
             </td>
-            <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+            <td v-if="canViewAdmin" class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
               <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Lindsay Walton</span></a>
             </td>
           </tr>

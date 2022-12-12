@@ -3,10 +3,6 @@ const { logIn } = useCurrentUser()
 
 const username = ref('phil')
 const password = ref('my-pass')
-
-definePageMeta({
-  layout: 'blank'
-})
 </script>
 
 <template>

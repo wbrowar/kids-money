@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-const { canViewAdmin } = useCurrentUser()
+const { canViewAdmin, loggedIn } = useCurrentUser()
 </script>
 
 <template>
   <div class="container mx-auto px-4 py-10 lg:py-20">
     <slot />
-    <div class="inline-block absolute top-3 right-3 space-x-2">
+    <div v-if="loggedIn" class="inline-block absolute top-3 right-3 space-x-2">
       <LinkButton
         v-if="$route.path !== '/'"
         class="bg-primary"

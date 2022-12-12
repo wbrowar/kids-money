@@ -15,6 +15,7 @@ const props = defineProps({
   }
 })
 
+const { canViewAdmin } = useCurrentUser()
 const { convertToLocalCurrency } = useStringFormatter()
 
 const total = computed(() => {
@@ -52,6 +53,6 @@ function onAdjustmentAdded () {
       </div>
     </NuxtLink>
 
-    <AddAdjustmentForm class="mt-4" :kid-id="kid.id" @adjustment-added="onAdjustmentAdded" />
+    <AddAdjustmentForm v-if="canViewAdmin" class="mt-4" :kid-id="kid.id" @adjustment-added="onAdjustmentAdded" />
   </div>
 </template>
