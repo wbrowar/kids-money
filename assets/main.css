@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --color-ui-primary-rgb: 31 210 44;
+    --color-ui-primary-100-rgb: 31 210 44;
+    --color-ui-primary-200-rgb: 31 210 44;
+    --color-ui-primary-300-rgb: 31 210 44;
+    --color-ui-primary-400-rgb: 31 210 44;
+    --color-ui-primary-500-rgb: 31 210 44;
+    --color-ui-primary-600-rgb: 31 210 44;
+    --color-ui-primary-700-rgb: 31 210 44;
+    --color-ui-primary-800-rgb: 31 210 44;
+    --color-ui-primary-900-rgb: 31 210 44;
+
+    --color-ui-positive-rgb: 31 210 44;
+    --color-ui-negative-rgb: 210 31 31;
+}
+
+.color-preview {
+    color: rgb(31 210 44);
+    color: rgb(210, 31, 31);
+}
