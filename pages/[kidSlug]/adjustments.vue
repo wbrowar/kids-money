@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const route = useRoute()
 const { canViewAdmin } = useCurrentUser()
-const { convertToLocalCurrency } = useStringFormatter()
+const { formatUTCDate, convertToLocalCurrency } = useStringFormatter()
 
 const kidSlug = ref(route.params.kidSlug)
 
@@ -10,6 +10,10 @@ const { data: kid, refresh: refreshKid } = await useFetch('/api/get-kid-adjustme
     slug: kidSlug.value
   },
   method: 'post'
+})
+
+kid.value.adjustments.forEach((row) => {
+  log(row.createdDate)
 })
 </script>
 
@@ -32,6 +36,9 @@ const { data: kid, refresh: refreshKid } = await useFetch('/api/get-kid-adjustme
               Percent Adjustment
             </th>
             <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">
+              Created Date
+            </th>
+            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">
               Total to Date
             </th>
             <th v-if="canViewAdmin" scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
@@ -50,6 +57,12 @@ const { data: kid, refresh: refreshKid } = await useFetch('/api/get-kid-adjustme
                 <dd class="mt-1 truncate text-gray-700">
                   {{ adjustment.percentAdjustment }}%
                 </dd>
+                <dt class="sr-only">
+                  Created Date
+                </dt>
+                <dd class="mt-1 truncate text-gray-700">
+                  {{ formatUTCDate(adjustment.createdDate) }}
+                </dd>
                 <div class="mt-1 flex gap-2">
                   <dt class="sm:hidden">
                     Total to Date
@@ -64,10 +77,23 @@ const { data: kid, refresh: refreshKid } = await useFetch('/api/get-kid-adjustme
               {{ adjustment.percentAdjustment }}%
             </td>
             <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
+              {{ formatUTCDate(adjustment.createdDate) }}
+            </td>
+            <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
               {{ convertToLocalCurrency(adjustment.totalToDate) }}
             </td>
             <td v-if="canViewAdmin" class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-              <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Lindsay Walton</span></a>
+              <LinkButton
+                class="bg-primary"
+                retain-style
+                theme="small"
+                title="Edit Adjustment"
+              >
+                <div class="sr-only">
+                  Edit
+                </div>
+                <IconEdit />
+              </LinkButton>
             </td>
           </tr>
         </tbody>
