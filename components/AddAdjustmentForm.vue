@@ -137,6 +137,7 @@ function validateDollarAdjustment () {
             v-model.number="dollarAdjustment"
             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary dark:opacity-90"
             autocomplete="off"
+            inputmode="decimal"
             type="text"
             name="dollarAdjustment"
             :placeholder="dollarAdjustmentInputPlaceholder"
