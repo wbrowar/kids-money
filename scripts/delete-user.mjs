@@ -23,7 +23,6 @@ async function main () {
     exit(1)
   }
 
-
   const user = await prisma.user.delete({
     where: {
       username: args.username,

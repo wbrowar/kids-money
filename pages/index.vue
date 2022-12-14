@@ -19,7 +19,7 @@ const { data: kids, refresh: refreshKids } = await useFetch('/api/get-kids', {
         <KidSummary
           v-for="kid in kids"
           :key="kid.slug"
-          class="basis-[200px] flex-grow max-w-[400px]"
+          class="basis-[200px] flex-grow max-w-[500px]"
           enable-link
           :kid="kid"
           @adjustment-added="refreshKids"

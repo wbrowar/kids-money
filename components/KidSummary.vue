@@ -15,9 +15,17 @@ const props = defineProps({
   }
 })
 
-const { canViewAdmin } = useCurrentUser()
+const { canViewAdmin, grownUp } = useCurrentUser()
 const { convertToLocalCurrency, favoriteColor } = useStringFormatter()
 
+const helpText = ref('')
+const mode = ref<'idle' | 'adding'>('idle')
+const showAdjustmentsButtons = computed(() => {
+  if (grownUp.value && mode.value === 'adding' && props.enableLink) {
+    return true
+  }
+  return false
+})
 const total = computed(() => {
   return convertToLocalCurrency(props.kid?.adjustments?.[0].totalToDate ?? 0)
 })
@@ -28,27 +36,42 @@ function onAdjustmentAdded () {
 </script>
 
 <template>
-  <div v-if="kid" class="@container/main">
-    <NuxtLink
-      class="block space-y-2 bg-white border border-primary-300 rounded-lg text-favorite dark:opacity-90"
-      :class="{ 'hover:transition hover:rotate-[2deg] hover:translate-y-[-10px]': enableLink }"
+  <div v-if="kid" class="@container group">
+    <div
+      class="block space-y-2 bg-white border border-primary-300 rounded-lg text-favorite shadow-md dark:opacity-90"
       :style="{
-        borderColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.1 }) : null,
+        borderColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.2 }) : null,
         color: favoriteColor({ kid })
       }"
-      :to="enableLink ? `${kid.slug}/adjustments` : null"
     >
-      <div class="p-8 pb-6 font-bold text-3xl text-center @xs/main:text-5xl @sm/main:text-6xl">
+      <NuxtLink
+        class="block p-8 pb-6 font-bold text-3xl text-center @xs:text-5xl @sm:text-6xl"
+        :class="{ 'cursor-pointer hover:grayscale': enableLink }"
+        element-type="button"
+        @click="mode = mode === 'idle' ? 'adding' : 'idle'"
+        @mouseover="helpText = 'Add an adjustment'"
+      >
         {{ total }}
-      </div>
-      <div class="flex items-center justify-center gap-3 p-4 h-16 bg-gray-100 border-t border-t-solid border-t-primary/20 rounded-b-lg @xs/main:h-24" :style="{ backgroundColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.07 }) : null, borderTopColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.1 }) : null }">
-        <img v-if="kid.photoUrl" class="w-10 h-10 rounded-full object-cover shadow border-4 @xs/main:w-16 @xs/main:h-16" :src="kid.photoUrl" :style="{ borderColor: favoriteColor({ kid, opacity:.7 }) }">
-        <div class="text-3xl" :style="{ color: favoriteColor({ kid }) }">
+      </NuxtLink>
+      <AddAdjustmentForm v-if="showAdjustmentsButtons" class="mt-4 px-3" :kid="kid" @adjustment-added="onAdjustmentAdded" />
+      <NuxtLink
+        class="flex items-center justify-center gap-3 p-4 h-16 bg-primary border-t border-t-solid border-t-primary/20 rounded-b-lg text-white @xs:h-24"
+        :class="{ 'hover:grayscale': enableLink }"
+        :style="{ backgroundColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.07 }) : null, borderTopColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.1 }) : null }"
+        :to="enableLink ? `${kid.slug}/adjustments` : null"
+        @mouseover="helpText = 'View details'"
+      >
+        <img v-if="kid.photoUrl" class="w-10 h-10 rounded-full object-cover shadow border-4 @xs:w-16 @xs:h-16" :src="kid.photoUrl" :style="{ borderColor: favoriteColor({ kid, opacity:.7 }) }">
+        <div class="text-3xl text-primary-100" :style="{ color: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid }) : null }">
           {{ kid.name }}
         </div>
-      </div>
-    </NuxtLink>
+      </NuxtLink>
 
-    <AddAdjustmentForm v-if="canViewAdmin" class="mt-4" :kid="kid" @adjustment-added="onAdjustmentAdded" />
+      <p v-if="enableLink" class="absolute top-full text-sm text-primary-600 opacity-0 transition duration-300 group-hover:delay-1000 group-hover:opacity-100">
+        {{ helpText }}
+      </p>
+    </div>
+
+    <AddAdjustmentForm v-if="!enableLink" class="mt-4" :kid="kid" @adjustment-added="onAdjustmentAdded" />
   </div>
 </template>

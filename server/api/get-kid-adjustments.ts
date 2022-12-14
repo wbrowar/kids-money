@@ -26,11 +26,18 @@ export default defineEventHandler(async (event) => {
 
   // Get user from database
   async function runQuery () {
+    const oneYearAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+
     const kid = await prisma.kid.findUnique({
       include: {
         adjustments: {
           orderBy: {
             id: 'desc'
+          },
+          where: {
+            createdDate: {
+              gte: new Date(oneYearAgo)
+            }
           }
         }
       },

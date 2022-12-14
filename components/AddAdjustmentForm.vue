@@ -18,6 +18,15 @@ const dollarAdjustment = ref()
 const dollarAdjustmentInputPlaceholder = computed(() => {
   return convertToLocalCurrency(0, { signDisplay: 'never' })
 })
+const gridColumns = computed(() => {
+  if (props.kid?.allowance > 0 && props.kid.interest > 0) {
+    return '1fr max-content max-content'
+  } else if (props.kid?.allowance > 0 || props.kid.interest > 0) {
+    return '1fr max-content'
+  }
+
+  return '1fr'
+})
 const submitButtonValue = computed(() => {
   return dollarAdjustment.value < 0 ? '-' : '+'
 })
@@ -129,7 +138,7 @@ function validateDollarAdjustment () {
 <template>
   <div class="@container/adjustment-form">
     <form action="" @submit.prevent="addAdjustment">
-      <div class="grid grid-cols-2 gap-4 w-full @sm/adjustment-form:grid-cols-[1fr_max-content_max-content]">
+      <div class="grid grid-cols-2 gap-4 w-full @sm/adjustment-form:grid-cols-[var(--grid-cols)]" :style="{ '--grid-cols': gridColumns }">
         <div class="grid grid-cols-[1fr_45px] gap-2 col-span-2 @sm/adjustment-form:col-span-1">
           <label for="email" class="sr-only">Add Adjustment</label>
           <input
@@ -158,9 +167,9 @@ function validateDollarAdjustment () {
         </div>
 
         <LinkButton
+          v-if="kid.interest > 0"
           class="bg-primary"
-          :class="{ 'bg-gray-300 cursor-not-allowed': kid.allowance <= 0 }"
-          :disabled="kid.allowance <= 0"
+          :class="{ 'bg-gray-200 cursor-not-allowed': kid.allowance <= 0 }"
           element-type="button"
           type="button"
           retain-style
@@ -171,9 +180,9 @@ function validateDollarAdjustment () {
         </LinkButton>
 
         <LinkButton
+          v-if="kid.interest > 0"
           class="bg-primary"
-          :class="{ 'bg-gray-300 cursor-not-allowed': kid.interest <= 0 }"
-          :disabled="kid.interest <= 0"
+          :class="{ 'bg-gray-200 cursor-not-allowed': kid.interest <= 0 }"
           element-type="button"
           type="button"
           retain-style

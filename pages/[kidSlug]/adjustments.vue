@@ -21,7 +21,7 @@ const { data: kid, refresh: refreshKid } = await useFetch('/api/get-kid-adjustme
 
     <div v-if="kid">
       <KidSummary
-        class="max-w-[400px]"
+        class="max-w-[500px]"
         :kid="kid"
         @adjustment-added="refreshKid"
       />
