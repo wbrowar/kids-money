@@ -127,15 +127,15 @@ function validateDollarAdjustment () {
 </script>
 
 <template>
-  <div>
+  <div class="@container/adjustment-form">
     <form action="" @submit.prevent="addAdjustment">
-      <div class="grid grid-cols-[1fr_max-content_max-content] gap-4 w-full ">
-        <div class="grid grid-cols-[1fr_45px] gap-2">
+      <div class="grid grid-cols-2 gap-4 w-full @sm/adjustment-form:grid-cols-[1fr_max-content_max-content]">
+        <div class="grid grid-cols-[1fr_45px] gap-2 col-span-2 @sm/adjustment-form:col-span-1">
           <label for="email" class="sr-only">Add Adjustment</label>
           <input
             id="dollarAdjustment"
             v-model.number="dollarAdjustment"
-            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary dark:opacity-90"
             autocomplete="off"
             type="text"
             name="dollarAdjustment"
@@ -158,6 +158,8 @@ function validateDollarAdjustment () {
 
         <LinkButton
           class="bg-primary"
+          :class="{ 'bg-gray-300 cursor-not-allowed': kid.allowance <= 0 }"
+          :disabled="kid.allowance <= 0"
           element-type="button"
           type="button"
           retain-style
@@ -169,6 +171,8 @@ function validateDollarAdjustment () {
 
         <LinkButton
           class="bg-primary"
+          :class="{ 'bg-gray-300 cursor-not-allowed': kid.interest <= 0 }"
+          :disabled="kid.interest <= 0"
           element-type="button"
           type="button"
           retain-style

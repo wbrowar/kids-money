@@ -7,6 +7,10 @@ const props = defineProps({
     default: '',
     type: String
   },
+  disabled: {
+    default: false,
+    type: Boolean
+  },
   elementType: {
     default: 'a',
     type: String
@@ -140,6 +144,7 @@ onClick (event) {
     v-if="elementType !== 'a'"
     :class="classes"
     :aria-label="ariaLabel || null"
+    :disabled="disabled"
     :target="newWindow ? '_blank' : target || null"
     :to="formattedTo"
     :rel="newWindow || target ? 'noopener' : null"
@@ -152,6 +157,7 @@ onClick (event) {
     v-else
     :class="classes"
     :aria-label="ariaLabel || null"
+    :disabled="disabled"
     :target="newWindow ? '_blank' : target || null"
     :to="formattedTo"
     :rel="newWindow || target ? 'noopener' : null"

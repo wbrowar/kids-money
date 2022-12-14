@@ -9,3 +9,9 @@ definePageMeta({
   layout: 'blank'
 })
 </script>
+
+<template>
+  <Head>
+    <Title>🪵 Logout : Kids Money</Title>
+  </Head>
+</template>

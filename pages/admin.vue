@@ -88,6 +88,10 @@ definePageMeta({
 
 <template>
   <div>
+    <Head>
+      <Title>⚙️ Settings : Kids Money</Title>
+    </Head>
+
     <NuxtLayout name="default">
       <div>
         <div class="flex justify-between gap-8">
@@ -104,26 +108,26 @@ definePageMeta({
         </div>
         <div class="grid mt-8" :class="{'grid-cols-[1fr_350px] gap-12': kidAction === 'delete' || kidAction === 'edit'}">
           <div>
-            <div class="-mx-4 bg-white overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
+            <div class="-mx-4 bg-white overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg dark:bg-primary-300">
               <table class="min-w-full divide-y divide-gray-300">
-                <thead class="bg-gray-50">
+                <thead class="bg-gray-50 dark:bg-primary-200">
                   <tr>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-slate-300">
                       Name
                     </th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-slate-300">
                       Slug
                     </th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-slate-300">
                       Photo
                     </th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-slate-300">
                       Color
                     </th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-slate-300">
                       Allowance
                     </th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-slate-300">
                       Interest
                     </th>
                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
@@ -133,25 +137,25 @@ definePageMeta({
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                   <tr v-for="kid in kids" :key="kid.slug">
-                    <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
+                    <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:w-auto sm:max-w-none sm:pl-6 dark:text-slate-200">
                       {{ kid.name }}
                     </td>
-                    <td class="px-3 py-4 text-sm text-gray-500">
+                    <td class="px-3 py-4 text-sm text-gray-500 dark:text-slate-400">
                       {{ kid.slug }}
                     </td>
-                    <td class="px-3 py-4 text-sm text-gray-500">
+                    <td class="px-3 py-4 text-sm text-gray-500 dark:text-slate-400">
                       <img v-if="kid.photoUrl" class="w-16 h-16 rounded-full object-cover shadow border-4" :src="kid.photoUrl" :style="{ borderColor: favoriteColor({ kid, opacity:.7 }) }">
                     </td>
-                    <td class="px-3 py-4 text-sm text-gray-500">
+                    <td class="px-3 py-4 text-sm text-gray-500 dark:text-slate-400">
                       <div class="grid grid-cols-[auto_1fr] items-center gap-2">
                         <span class="block w-8 h-8 rounded-full" :style="{ backgroundColor: favoriteColor({ kid, opacity:.7 }) }" />
                         <span class="font-medium" :style="{ color: favoriteColor({ kid }) }">{{ kid.color }}</span>
                       </div>
                     </td>
-                    <td class="px-3 py-4 text-sm text-gray-500">
+                    <td class="px-3 py-4 text-sm text-gray-500 dark:text-slate-400">
                       {{ kid.allowance }}
                     </td>
-                    <td class="px-3 py-4 text-sm text-gray-500">
+                    <td class="px-3 py-4 text-sm text-gray-500 dark:text-slate-400">
                       {{ kid.interest }}
                     </td>
                     <td class="space-x-2 py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
@@ -185,7 +189,7 @@ definePageMeta({
               </table>
             </div>
 
-            <div class="grid gap-10 mt-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+            <div class="grid gap-10 mt-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 dark:text-gray-400">
               <div>
                 <h2 class="text-lg font-medium">
                   Name
@@ -239,7 +243,9 @@ definePageMeta({
 
           <div>
             <div v-if="kidAction === 'delete'">
-              <p>Are you sure you want to remove <strong>{{ deletedKid.name }}</strong> and all related data?</p>
+              <p class="dark:text-gray-400">
+                Are you sure you want to remove <strong>{{ deletedKid.name }}</strong> and all related data?
+              </p>
               <div class="mt-4 space-x-2">
                 <LinkButton
                   class="bg-negative"
@@ -259,37 +265,37 @@ definePageMeta({
             </div>
             <form v-if="kidAction === 'edit'" id="add-kid" class="space-y-4" action="" @submit.prevent="saveKid">
               <div>
-                <label for="editedKidName" class="block text-sm font-medium text-gray-700">Name</label>
+                <label for="editedKidName" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Name</label>
                 <div class="mt-1">
                   <input id="editedKidName" v-model="editedKidName" type="text" name="name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
               </div>
               <div>
-                <label for="editedKidSlug" class="block text-sm font-medium text-gray-700">Slug</label>
+                <label for="editedKidSlug" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Slug</label>
                 <div class="mt-1">
                   <input id="editedKidSlug" v-model="editedKidSlug" type="text" name="name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
               </div>
               <div>
-                <label for="editedKidColor" class="block text-sm font-medium text-gray-700">Color</label>
+                <label for="editedKidColor" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Color</label>
                 <div class="mt-1">
                   <input id="editedKidColor" v-model="editedKidColor" type="text" name="name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
               </div>
               <div>
-                <label for="editedKidPhotoUrl" class="block text-sm font-medium text-gray-700">Photo URL</label>
+                <label for="editedKidPhotoUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Photo URL</label>
                 <div class="mt-1">
                   <input id="editedKidPhotoUrl" v-model="editedKidPhotoUrl" type="text" name="name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
               </div>
               <div>
-                <label for="editedKidAllowance" class="block text-sm font-medium text-gray-700">Allowance</label>
+                <label for="editedKidAllowance" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Allowance</label>
                 <div class="mt-1">
                   <input id="editedKidAllowance" v-model.number="editedKidAllowance" type="text" name="name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
               </div>
               <div>
-                <label for="editedKidInterest" class="block text-sm font-medium text-gray-700">Interest</label>
+                <label for="editedKidInterest" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Interest</label>
                 <div class="mt-1">
                   <input id="editedKidInterest" v-model.number="editedKidInterest" type="text" name="name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
