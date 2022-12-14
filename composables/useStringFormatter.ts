@@ -33,8 +33,6 @@ export const useStringFormatter = () => {
       timeStyle: 'short'
     })
 
-    log('new dates', newDate)
-
     return newDate
   }
 

@@ -1,4 +1,4 @@
-import { addDollarAdjustmentToTotal } from '~/utils/adjustments'
+import { addDollarAdjustmentToTotal, addPercentAdjustmentToTotal } from '~/utils/adjustments'
 import { log } from '~/utils/console'
 import prisma from '~/utils/prisma'
 
@@ -28,13 +28,27 @@ export default defineEventHandler(async (event) => {
     }
 
     // Create new adjustment
+    let createParams = {}
+    if (body.dollarAdjustment) {
+      createParams = {
+        dollarAdjustment: body.dollarAdjustment,
+        totalToDate: body.dollarAdjustment + previousAdjustment
+      }
+    } else if (body.percentAdjustment) {
+      const calculatedDollarAdjustment = (body.percentAdjustment * 0.01) * previousAdjustment
+      log('calc', calculatedDollarAdjustment)
+      createParams = {
+        dollarAdjustment: calculatedDollarAdjustment,
+        percentAdjustment: body.percentAdjustment,
+        totalToDate: calculatedDollarAdjustment + previousAdjustment
+      }
+    }
+
     await prisma.kid.update({
       data: {
         adjustments: {
-          create: {
-            dollarAdjustment: body.dollarAdjustment,
-            totalToDate: addDollarAdjustmentToTotal(body.dollarAdjustment, previousAdjustment)
-          }
+          // @ts-ignore
+          create: createParams
         }
       },
       where: {

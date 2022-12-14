@@ -11,10 +11,6 @@ const { data: kid, refresh: refreshKid } = await useFetch('/api/get-kid-adjustme
   },
   method: 'post'
 })
-
-kid.value.adjustments.forEach((row) => {
-  log(row.createdDate)
-})
 </script>
 
 <template>

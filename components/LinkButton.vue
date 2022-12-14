@@ -43,7 +43,7 @@ const props = defineProps({
     default: '',
     type: String
   },
-  to: Object,
+  to: [Object, String],
   theme: {
     default: 'default',
     type: String as PropType<'default' | 'small'>

@@ -49,6 +49,6 @@ function onAdjustmentAdded () {
       </div>
     </NuxtLink>
 
-    <AddAdjustmentForm v-if="canViewAdmin" class="mt-4" :kid-id="kid.id" @adjustment-added="onAdjustmentAdded" />
+    <AddAdjustmentForm v-if="canViewAdmin" class="mt-4" :kid="kid" @adjustment-added="onAdjustmentAdded" />
   </div>
 </template>
