@@ -15,4 +15,5 @@ dist
 .idea
 
 # Local Development
+ecosystem.config.js
 prisma/db
