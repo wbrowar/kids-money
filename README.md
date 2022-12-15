@@ -37,6 +37,46 @@ node scripts/delete-user.mjs -u=my-username
 
 > **NOTE:** All users have access to all kids and adjustments. Deleting a user will not delete any data, other than the user log in credentials and admin status.
 
+## CLI Commands
+
+If you want to set up a cron job (or if you prefer the command line for things) you can use the `add-adjustments` script to add (or remove) money for a specific kid.
+
+In general, this starts with calling the command and passing in the slug for the kid:
+
+```bash
+node scripts/add-adjustment.mjs -kid=kid-slug
+```
+
+From there you will need to pass in arguments based on the type of adjustment you are trying to make. Here are some examples:
+
+```bash
+node scripts/add-adjustment.mjs -kid=kid-slug -dollar=5
+```
+
+This adds $5 to the balance for the kid with the slug, `kid-slug`.
+
+```bash
+node scripts/add-adjustment.mjs -kid=kid-slug -interest=1
+```
+
+This will increase the balance for the kid with the slug, `kid-slug`, by 1%.
+
+> **NOTE:** You can only add either a dollar or interest adjustment per time the command is run. If you add arguments for both, you’ll get the dollar adjustment.
+
+```bash
+node scripts/add-adjustment.mjs -kid=kid-slug -allowance
+```
+
+This adds the amount set in Settings for the Allowance field for the kid with the slug, `kid-slug`.
+
+```bash
+node scripts/add-adjustment.mjs -kid=kid-slug -dollar=5
+```
+
+This adds the amount set in Settings for the Interest field for the kid with the slug, `kid-slug`.
+
+> **NOTE:** You can also only use one `-allowence` or `-interest` argument per time the command is run. If you add both arguments an error will appear and you will need to update your command.
+
 ## Hosting
 
 This is a Nuxt 3 project, so you can [follow instructions for deploying](https://nuxt.com/docs/getting-started/deployment) one and for running the app on various different server types.

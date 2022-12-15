@@ -13,6 +13,8 @@ function parseArgv() {
       args.password = arg.split('=')[1];
     } else if (arg.startsWith('-admin=')) {
       args.grownUp = arg.split('=')[1] === 'true';
+    } else if (arg === '-admin') {
+      args.grownUp = true
     }
   })
 
