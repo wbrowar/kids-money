@@ -3,7 +3,7 @@ import { PropType } from 'vue'
 import { Kid } from '~/types'
 import { addPercentAdjustmentToTotal } from '~/utils/adjustments'
 
-const emit = defineEmits(['adjustment-added'])
+const emit = defineEmits(['adjustment-added', 'mouseover-element'])
 const props = defineProps({
   kid: {
     required: true,
@@ -159,6 +159,7 @@ function validateDollarAdjustment () {
             type="button"
             retain-style
             @click="addAdjustment"
+            @mouseover="emit('mouseover-element', { target: 'add', tooltip: `Add $${dollarAdjustment ?? 0} to total` })"
           >
             <div class="sr-only">
               Add
@@ -172,6 +173,7 @@ function validateDollarAdjustment () {
             type="button"
             retain-style
             @click="addAdjustment({ mode: 'subtract' })"
+            @mouseover="emit('mouseover-element', { target: 'subtract', tooltip: `Subtract $${dollarAdjustment ?? 0} from total` })"
           >
             <div class="sr-only">
               Subtract
@@ -188,6 +190,7 @@ function validateDollarAdjustment () {
           type="button"
           retain-style
           @click="addAllowance"
+          @mouseover="emit('mouseover-element', { target: 'allowance', tooltip: `Add $${kid.allowance} allowance to total` })"
         >
           <IconAdd class="w-4 h-4" />
           <span>Allowance</span>
@@ -201,6 +204,7 @@ function validateDollarAdjustment () {
           type="button"
           retain-style
           @click="addInterest"
+          @mouseover="emit('mouseover-element', { target: 'allowance', tooltip: `Add ${kid.allowance}% interest to total` })"
         >
           <IconAdd class="w-4 h-4" />
           <span>Interest</span>

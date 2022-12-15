@@ -75,7 +75,7 @@ node scripts/add-adjustment.mjs -kid=kid-slug -dollar=5
 
 This adds the amount set in Settings for the Interest field for the kid with the slug, `kid-slug`.
 
-> **NOTE:** You can also only use one `-allowence` or `-interest` argument per time the command is run. If you add both arguments an error will appear and you will need to update your command.
+> **NOTE:** You can also only use one `-allowance` or `-interest` argument per time the command is run. If you add both arguments an error will appear and you will need to update your command.
 
 ## Hosting
 

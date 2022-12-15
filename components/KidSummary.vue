@@ -21,12 +21,9 @@ const { convertToLocalCurrency, favoriteColor } = useStringFormatter()
 const helpText = ref('')
 const mode = ref<'idle' | 'adding'>('idle')
 const showAdjustmentsButtons = computed(() => {
-  log('gonas show')
   if (grownUp.value && mode.value === 'adding' && props.enableLink) {
-    log('showwwinggg')
     return true
   }
-  log('now shoe')
   return false
 })
 const total = computed(() => {
@@ -56,7 +53,7 @@ function onAdjustmentAdded () {
       >
         {{ total }}
       </NuxtLink>
-      <AddAdjustmentForm v-if="showAdjustmentsButtons" class="mt-4 px-3" :kid="kid" @adjustment-added="onAdjustmentAdded" />
+      <AddAdjustmentForm v-if="showAdjustmentsButtons" class="mt-4 px-3" :kid="kid" @adjustment-added="onAdjustmentAdded" @mouseover-element="helpText = $event.tooltip" />
       <NuxtLink
         class="flex items-center justify-center gap-3 p-4 h-16 bg-primary border-t border-t-solid border-t-primary/20 rounded-b-lg text-white @xs:h-24"
         :class="{ 'hover:grayscale': enableLink }"
@@ -75,6 +72,6 @@ function onAdjustmentAdded () {
       </p>
     </div>
 
-    <AddAdjustmentForm v-if="!enableLink" class="mt-4" :kid="kid" @adjustment-added="onAdjustmentAdded" />
+    <AddAdjustmentForm v-if="!enableLink" class="mt-4" :kid="kid" @adjustment-added="onAdjustmentAdded" @mouseover-element="helpText = $event.tooltip" />
   </div>
 </template>
