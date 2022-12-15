@@ -27,11 +27,8 @@ const gridColumns = computed(() => {
 
   return '1fr'
 })
-const submitButtonValue = computed(() => {
-  return dollarAdjustment.value < 0 ? '-' : '+'
-})
 
-async function addAdjustment () {
+async function addAdjustment ({ mode }: { mode: 'add' | 'subtract' } = { mode: 'add' }) {
   if (canAdd.value) {
     debounceAdd()
   } else {
@@ -42,20 +39,22 @@ async function addAdjustment () {
 
   validateDollarAdjustment()
 
-  if (dollarAdjustment.value === 0) {
+  if (dollarAdjustment.value === 0 || typeof dollarAdjustment.value !== 'number') {
     return
   }
 
+  const dollarValue = mode === 'subtract' ? dollarAdjustment.value * -1 : dollarAdjustment.value
+
   const { data } = await useFetch('/api/save-kid-adjustment', {
     body: {
-      dollarAdjustment: dollarAdjustment.value,
+      dollarAdjustment: dollarValue,
       id: props.kid.id
     },
     method: 'post'
   })
 
   if (data.value) {
-    dollarAdjustment.value = 0
+    dollarAdjustment.value = undefined
     emit('adjustment-added')
   }
 
@@ -129,45 +128,60 @@ function debounceAdd () {
 }
 
 function validateDollarAdjustment () {
-  if (typeof dollarAdjustment.value !== 'number') {
-    dollarAdjustment.value = 0
+  if (dollarAdjustment.value < 0) {
+    dollarAdjustment.value = dollarAdjustment.value * -1
   }
 }
 </script>
 
 <template>
   <div class="@container/adjustment-form">
-    <form action="" @submit.prevent="addAdjustment">
+    <form action="">
       <div class="grid grid-cols-2 gap-4 w-full @sm/adjustment-form:grid-cols-[var(--grid-cols)]" :style="{ '--grid-cols': gridColumns }">
-        <div class="grid grid-cols-[1fr_45px] gap-2 col-span-2 @sm/adjustment-form:col-span-1">
+        <div class="grid grid-cols-[1fr_45px_45px] gap-2 col-span-2 @sm/adjustment-form:col-span-1">
           <label for="email" class="sr-only">Add Adjustment</label>
           <input
             id="dollarAdjustment"
             v-model.number="dollarAdjustment"
-            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary dark:opacity-90"
+            class="block w-full rounded-md border-gray-300 text-gray-800 shadow-sm focus:border-primary focus:ring-primary dark:opacity-90"
             autocomplete="off"
             inputmode="decimal"
-            type="text"
             name="dollarAdjustment"
+            pattern="[0-9]+([\.,][0-9]+)?"
+            type="text"
             :placeholder="dollarAdjustmentInputPlaceholder"
+            @blur="validateDollarAdjustment"
           >
           <LinkButton
-            class="!px-0 !py-0"
-            :class="{ 'bg-negative': submitButtonValue === '-', 'bg-positive': submitButtonValue === '+' }"
+            class="!px-0 !py-0 bg-positive"
             :disabled="dollarAdjustment === 0"
             element-type="button"
+            type="button"
             retain-style
+            @click="addAdjustment"
           >
             <div class="sr-only">
-              {{ submitButtonValue === '+' ? 'Add' : 'Subtract' }}
+              Add
             </div>
-            <IconAdd v-if="submitButtonValue === '+'" class="w-5 h-5" />
-            <IconSubtract v-else class="w-5 h-5" />
+            <IconAdd class="w-5 h-5" />
+          </LinkButton>
+          <LinkButton
+            class="!px-0 !py-0 bg-negative"
+            :disabled="dollarAdjustment === 0"
+            element-type="button"
+            type="button"
+            retain-style
+            @click="addAdjustment({ mode: 'subtract' })"
+          >
+            <div class="sr-only">
+              Subtract
+            </div>
+            <IconSubtract class="w-5 h-5" />
           </LinkButton>
         </div>
 
         <LinkButton
-          v-if="kid.interest > 0"
+          v-if="kid.allowance > 0"
           class="bg-primary"
           :class="{ 'bg-gray-200 cursor-not-allowed': kid.allowance <= 0 }"
           element-type="button"

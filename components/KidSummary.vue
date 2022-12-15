@@ -15,15 +15,18 @@ const props = defineProps({
   }
 })
 
-const { canViewAdmin, grownUp } = useCurrentUser()
+const { grownUp } = useCurrentUser()
 const { convertToLocalCurrency, favoriteColor } = useStringFormatter()
 
 const helpText = ref('')
 const mode = ref<'idle' | 'adding'>('idle')
 const showAdjustmentsButtons = computed(() => {
+  log('gonas show')
   if (grownUp.value && mode.value === 'adding' && props.enableLink) {
+    log('showwwinggg')
     return true
   }
+  log('now shoe')
   return false
 })
 const total = computed(() => {
