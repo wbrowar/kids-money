@@ -6,6 +6,9 @@ const { data: kids, refresh: refreshKids } = await useFetch('/api/get-kids', {
   method: 'post'
 })
 
+definePageMeta({
+  layout: false
+})
 </script>
 
 <template>
@@ -13,6 +16,23 @@ const { data: kids, refresh: refreshKids } = await useFetch('/api/get-kids', {
     <Head>
       <Title>🏠 : Kids Money</Title>
     </Head>
+
+    <NuxtLayout name="default">
+      <template #action-buttons>
+        <LinkButton
+          class="bg-primary"
+          retain-style
+          theme="small"
+          title="Refresh"
+          @click="refreshKids"
+        >
+          <div class="sr-only">
+            Refresh
+          </div>
+          <IconRefresh />
+        </LinkButton>
+      </template>
+    </NuxtLayout>
 
     <div v-if="kids">
       <div class="flex flex-wrap justify-center gap-16" :style="{ '--count': kids.length }">

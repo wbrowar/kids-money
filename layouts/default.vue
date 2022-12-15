@@ -19,22 +19,21 @@ const { canViewAdmin, loggedIn } = useCurrentUser()
         </div>
         <IconHome />
       </LinkButton>
-      <slot name="action-buttons">
-        <LinkButton
-          v-if="canViewAdmin"
-          class="bg-primary"
-          retain-style
-          label-text="Admin"
-          theme="small"
-          title="Admin"
-          to="/admin"
-        >
-          <div class="sr-only">
-            Admin
-          </div>
-          <IconAdmin />
-        </LinkButton>
-      </slot>
+      <slot name="action-buttons" />
+      <LinkButton
+        v-if="canViewAdmin"
+        class="bg-primary"
+        retain-style
+        label-text="Admin"
+        theme="small"
+        title="Admin"
+        to="/admin"
+      >
+        <div class="sr-only">
+          Admin
+        </div>
+        <IconAdmin />
+      </LinkButton>
       <LinkButton
         class="bg-primary"
         retain-style
