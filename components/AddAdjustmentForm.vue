@@ -151,6 +151,7 @@ function validateDollarAdjustment () {
             type="text"
             :placeholder="dollarAdjustmentInputPlaceholder"
             @blur="validateDollarAdjustment"
+            @mouseover="emit('mouseover-element', { target: 'field', tooltip: `Enter an amount to add or subtract from total` })"
           >
           <LinkButton
             class="!px-0 !py-0 bg-positive"
