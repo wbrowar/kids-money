@@ -16,12 +16,19 @@ export default defineEventHandler(async (event) => {
   }
 
   // Get user from database
+  const whereParams:{
+    username: string;
+    password?: string;
+  } = {
+    username: body.username
+  }
+  if (body.password) {
+    whereParams.password = body.password
+  }
   async function runQuery () {
     if (body.username) {
-      const user = await prisma.user.findUnique({
-        where: {
-          username: body.username
-        }
+      const user = await prisma.user.findFirst({
+        where: whereParams
       })
       if (user) {
         return {
@@ -40,7 +47,8 @@ export default defineEventHandler(async (event) => {
     .catch(async (e) => {
       console.error(e)
       await prisma.$disconnect()
-      process.exit(1)
+      throw e
+      // process.exit(1)
     })
 
   return response

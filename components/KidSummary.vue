@@ -55,14 +55,14 @@ function onAdjustmentAdded () {
       </NuxtLink>
       <AddAdjustmentForm v-if="showAdjustmentsButtons" class="mt-4 px-3" :kid="kid" @adjustment-added="onAdjustmentAdded" @mouseover-element="helpText = $event.tooltip" />
       <NuxtLink
-        class="flex items-center justify-center gap-3 p-4 h-16 bg-primary border-t border-t-solid border-t-primary/20 rounded-b-lg text-white @xs:h-24"
+        class="flex items-center justify-center gap-3 p-4 h-16 bg-primary border-t border-t-solid border-t-primary/20 rounded-b-[0.4rem] text-white @xs:h-24"
         :class="{ 'hover:grayscale': enableLink }"
         :style="{ backgroundColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.07 }) : null, borderTopColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.1 }) : null }"
         :to="enableLink ? `${kid.slug}/adjustments` : null"
         @mouseover="helpText = 'View details'"
       >
         <img v-if="kid.photoUrl" class="w-10 h-10 rounded-full object-cover shadow border-4 @xs:w-16 @xs:h-16" :src="kid.photoUrl" :style="{ borderColor: favoriteColor({ kid, opacity:.7 }) }">
-        <div class="text-3xl text-primary-100" :style="{ color: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid }) : null }">
+        <div class="text-3xl text-primary-100 dark:text-primary-800" :style="{ color: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid }) : null }">
           {{ kid.name }}
         </div>
       </NuxtLink>

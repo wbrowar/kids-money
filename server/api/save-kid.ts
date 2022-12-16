@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     if (body.id > -1) {
       // If editing existing kid, get the existing record to update
       const newKid: Partial<Kid> = {}
-      const existingKid: Kid | null = await prisma.kid.findUnique({
+      const existingKid = await prisma.kid.findUnique({
         where: {
           id: body.id
         }
@@ -63,6 +63,7 @@ export default defineEventHandler(async (event) => {
     .catch(async (e) => {
       console.error(e)
       await prisma.$disconnect()
-      process.exit(1)
+      throw e
+      // process.exit(1)
     })
 })

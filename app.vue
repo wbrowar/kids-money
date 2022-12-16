@@ -4,7 +4,7 @@ import '@/assets/main.css'
 </script>
 
 <template>
-  <div class="py-8 min-h-[100dvh] bg-primary-100">
+  <div class="py-8 min-h-[100dvh]">
     <Head>
       <Meta charset="utf-8" />
       <Meta content="width=device-width,initial-scale=1.0" name="viewport" />

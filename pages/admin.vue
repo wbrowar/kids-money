@@ -95,7 +95,7 @@ definePageMeta({
     <NuxtLayout name="default">
       <div class="w-full">
         <div class="flex justify-between gap-8">
-          <h2 class="text-primary-700 text-2xl">
+          <h2 class="text-primary-700 text-2xl dark:text-slate-300">
             Kids
           </h2>
           <div>
@@ -109,7 +109,7 @@ definePageMeta({
         <div class="mt-8 lg:grid" :class="{'lg:grid-cols-[1fr_350px] gap-12': kidAction === 'delete' || kidAction === 'edit'}">
           <div>
             <div class="w-full overflow-x-auto bg-white shadow ring-1 ring-black ring-opacity-5 md:mx-0 md:rounded-lg dark:bg-primary-300">
-              <table class="divide-y divide-gray-300 w-full">
+              <table class="divide-y divide-gray-300 w-full dark:divide-primary-100">
                 <thead class="bg-gray-50 dark:bg-primary-200">
                   <tr>
                     <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-slate-300">
@@ -135,7 +135,7 @@ definePageMeta({
                     </th>
                   </tr>
                 </thead>
-                <tbody class="w-full divide-y divide-gray-200">
+                <tbody class="w-full divide-y divide-gray-200 dark:divide-primary-200">
                   <tr v-for="kid in kids" :key="kid.slug" class="w-full">
                     <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:w-auto sm:max-w-none sm:pl-6 dark:text-slate-200">
                       {{ kid.name }}
@@ -143,19 +143,19 @@ definePageMeta({
                         <dt class="text-xs">
                           Slug
                         </dt>
-                        <dd class="mt-1 truncate text-gray-700 dark:text-slate-400">
+                        <dd class="mt-1 truncate text-gray-700 dark:text-primary-800">
                           {{ kid.slug }}
                         </dd>
                         <dt class="mt-4 text-xs">
                           Photo
                         </dt>
-                        <dd class="mt-1 truncate text-gray-700 dark:text-slate-400">
+                        <dd class="mt-1 truncate text-gray-700 dark:text-primary-800">
                           <img v-if="kid.photoUrl" class="w-16 h-16 rounded-full object-cover shadow border-4" :src="kid.photoUrl" :style="{ borderColor: favoriteColor({ kid, opacity:.7 }) }">
                         </dd>
                         <dt class="mt-4 text-xs">
                           Color
                         </dt>
-                        <dd class="mt-1 truncate text-gray-700 dark:text-slate-400">
+                        <dd class="mt-1 truncate text-gray-700 dark:text-primary-800">
                           <span class="grid grid-cols-[auto_1fr] items-center gap-2">
                             <span class="block w-8 h-8 rounded-full" :style="{ backgroundColor: favoriteColor({ kid, opacity:.7 }) }" />
                             <span class="font-medium" :style="{ color: favoriteColor({ kid }) }">{{ kid.color }}</span>
@@ -164,13 +164,13 @@ definePageMeta({
                         <dt class="mt-4 text-xs">
                           Allowance
                         </dt>
-                        <dd class="mt-1 truncate text-gray-700 dark:text-slate-400">
+                        <dd class="mt-1 truncate text-gray-700 dark:text-primary-800">
                           {{ kid.allowance }}
                         </dd>
                         <dt class="mt-4 text-xs">
                           Interest
                         </dt>
-                        <dd class="mt-1 truncate text-gray-700 dark:text-slate-400">
+                        <dd class="mt-1 truncate text-gray-700 dark:text-primary-800">
                           {{ kid.interest }}
                         </dd>
                         <div class="mt-4">
@@ -206,22 +206,22 @@ definePageMeta({
                         </div>
                       </dl>
                     </td>
-                    <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-slate-400 md:table-cell">
+                    <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-primary-800 md:table-cell">
                       {{ kid.slug }}
                     </td>
-                    <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-slate-400 md:table-cell">
+                    <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-primary-800 md:table-cell">
                       <img v-if="kid.photoUrl" class="w-16 h-16 rounded-full object-cover shadow border-4" :src="kid.photoUrl" :style="{ borderColor: favoriteColor({ kid, opacity:.7 }) }">
                     </td>
-                    <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-slate-400 md:table-cell">
+                    <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-primary-800 md:table-cell">
                       <span class="grid grid-cols-[auto_1fr] items-center gap-2">
                         <span class="block w-8 h-8 rounded-full" :style="{ backgroundColor: favoriteColor({ kid, opacity:.7 }) }" />
                         <span class="font-medium" :style="{ color: favoriteColor({ kid }) }">{{ kid.color }}</span>
                       </span>
                     </td>
-                    <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-slate-400 md:table-cell">
+                    <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-primary-800 md:table-cell">
                       {{ kid.allowance }}
                     </td>
-                    <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-slate-400 md:table-cell">
+                    <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-primary-800 md:table-cell">
                       {{ kid.interest }}
                     </td>
                     <td class="hidden space-x-2 py-4 pl-3 pr-4 text-right text-sm font-medium md:table-cell sm:pr-6">
@@ -255,7 +255,7 @@ definePageMeta({
               </table>
             </div>
 
-            <div class="grid gap-10 mt-8 w-full sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 dark:text-gray-400">
+            <div class="grid gap-10 mt-8 w-full sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 dark:text-slate-300">
               <div>
                 <h2 class="text-lg font-medium">
                   Name

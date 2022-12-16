@@ -20,9 +20,9 @@
   ],
   "id": "/?source=pwa",
   "start_url": "/?source=pwa",
-  "background_color": "#010C01",
+  "background_color": "#1E211E",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#010C01",
+  "theme_color": "#1E211E",
   "description": "Help kids save money and earn interest"
 }

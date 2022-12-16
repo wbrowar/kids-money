@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    background-color: rgb(var(--color-ui-primary-100-rgb));
+}
+
 :root {
     --color-ui-primary-rgb: 31 210 44;
+
     --color-ui-primary-100-rgb: 248 255 248;
     --color-ui-primary-200-rgb: 225 250 225;
     --color-ui-primary-300-rgb: 185 252 185;
@@ -14,16 +19,34 @@
     --color-ui-primary-800-rgb: 36 52 36;
     --color-ui-primary-900-rgb: 0 26 0;
 
-    --color-ui-positive-rgb: 31 210 44;
+    --color-ui-positive-rgb: var(--color-ui-primary-rgb);
     --color-ui-negative-rgb: 210 31 31;
+}
+
+.color-preview {
+    color: rgb(31 210 44);
+
+    color: rgb(248 255 248);
+    color: rgb(225 250 225);
+    color: rgb(185 252 185);
+    color: rgb(125 243 125);
+    color: rgb(30 246 30);
+    color: rgb(0 155 0);
+    color: rgb(45 73 45);
+    color: rgb(36 52 36);
+    color: rgb(1 12 1);
+
+    color: rgb(31 210 44);
+    color: rgb(210 31 31);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --color-ui-primary-rgb: 45 73 45;
-        --color-ui-primary-100-rgb: 1 12 1;
-        --color-ui-primary-200-rgb: 36 52 36;
-        --color-ui-primary-300-rgb: 45 73 45;
+        --color-ui-primary-rgb: 0 100 7;
+
+        --color-ui-primary-100-rgb: 30 33 30;
+        --color-ui-primary-200-rgb: 0 47 4;
+        --color-ui-primary-300-rgb: 0 84 7;
         --color-ui-primary-400-rgb: 0 155 0;
         --color-ui-primary-500-rgb: 30 246 30;
         --color-ui-primary-600-rgb: 125 243 125;
@@ -31,22 +54,24 @@
         --color-ui-primary-800-rgb: 225 250 225;
         --color-ui-primary-900-rgb: 248 255 248;
 
-        --color-ui-positive-rgb: 45 73 45;
+        --color-ui-positive-rgb: var(--color-ui-primary-rgb);
         --color-ui-negative-rgb: 126 18 18;
     }
 }
 
-.color-preview {
-    color: rgb(248, 255, 248);
-    color: rgb(225, 250, 225);
-    color: rgb(185, 252, 185);
-    color: rgb(125, 243, 125);
-    color: rgb(30, 246, 30);
-    color: rgb(0, 155, 0);
-    color: rgb(45, 73, 45);
-    color: rgb(36, 52, 36);
-    color: rgb(1, 12, 1);
+.color-dark-preview {
+    color: rgb(0 100 7);
+
+    color: rgb(30 33 30);
+    color: rgb(0 47 4);
+    color: rgb(0 84 7);
+    color: rgb(0 155 0);
+    color: rgb(30 246 30);
+    color: rgb(125 243 125);
+    color: rgb(185 252 185);
+    color: rgb(225 250 225);
+    color: rgb(248 255 248);
+
     color: rgb(31 210 44);
-    color: rgb(210, 31, 31);
-    color: rgb(126, 18, 18);
+    color: rgb(126 18 18);
 }
