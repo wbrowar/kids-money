@@ -1,5 +1,47 @@
 <script lang="ts" setup>
-const { logIn } = useCurrentUser()
+import { User } from '~/types'
+
+const { grownUp, loggedIn, loggedInCookie } = useCurrentUser()
+
+async function logIn ({
+  password: passwordArg,
+  redirect,
+  username: usernameArg
+}: {
+  password: string;
+  redirect: string;
+  username: string;
+}) {
+  try {
+    const { data } = await useFetch<User>('/api/get-user', {
+      body: {
+        password: passwordArg,
+        username: usernameArg
+      },
+      method: 'post',
+      pick: ['grownUp', 'id', 'username']
+    })
+
+    if (data.value && (data.value.username ?? false)) {
+      grownUp.value = data.value.grownUp ?? false
+      loggedIn.value = true
+      username.value = data.value.username
+      const cookieValue = {
+        grownUp: grownUp.value,
+        username: username.value
+      }
+      loggedInCookie.value = cookieValue
+      log('Logged in user:', username.value)
+      if (redirect) {
+        navigateTo(redirect)
+      }
+    } else {
+      showError({ statusCode: 500, statusMessage: 'Page Not Found' })
+    }
+  } catch (e) {
+    showError({ statusCode: 500, statusMessage: 'Page Not Found' })
+  }
+}
 
 const username = ref('phil')
 const password = ref('my-new-password')
