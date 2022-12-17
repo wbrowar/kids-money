@@ -36,15 +36,15 @@ async function logIn ({
         navigateTo(redirect)
       }
     } else {
-      showError({ statusCode: 500, statusMessage: 'Page Not Found' })
+      showError({ statusCode: 500, statusMessage: 'Username/password was in correct.' })
     }
   } catch (e) {
-    showError({ statusCode: 500, statusMessage: 'Page Not Found' })
+    showError({ statusCode: 500, statusMessage: 'There was an error logging in.' })
   }
 }
 
 const username = ref('phil')
-const password = ref('my-new-password')
+const password = ref('my-new-passworddd')
 </script>
 
 <template>

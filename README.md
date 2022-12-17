@@ -1,5 +1,9 @@
 # Kids Money
 
+A self-hosted money management app to help grownups manage "bank accounts"* for the kids in their life.
+
+<small>* "Bank account" as in not a real bank account. This doesn’t integrate with any sort of external system.</small>
+
 ## Setup
 
 1. Move files onto server.
@@ -12,6 +16,7 @@
    ```bash
    node scripts/create-user.mjs -u=my-username -p=my-password -admin=true
    ```
+
 
 ## User Management
 
@@ -36,6 +41,7 @@ node scripts/delete-user.mjs -u=my-username
 ```
 
 > **NOTE:** All users have access to all kids and adjustments. Deleting a user will not delete any data, other than the user log in credentials and admin status.
+
 
 ## CLI Commands
 
@@ -76,6 +82,7 @@ node scripts/add-adjustment.mjs -kid=kid-slug -dollar=5
 This adds the amount set in Settings for the Interest field for the kid with the slug, `kid-slug`.
 
 > **NOTE:** You can also only use one `-allowance` or `-interest` argument per time the command is run. If you add both arguments an error will appear and you will need to update your command.
+
 
 ## Hosting
 
@@ -125,4 +132,9 @@ As an example, here’s how you could host this project on a Laravel Forge-provi
    npm run build
    
    pm2 start
+   ```
+7. Once you’ve got Nuxt 3 built and `pm2` started you can run the `scripts/create-user.mjs` script and set up your admin user and log into the app to configure everything in Settings.
+8. If you want to enable automatic allowance or interest adjustments, you can create a cron job using Forge’s Scheduler (replacing the node version and directory name to match your server):
+   ```bash
+   /home/forge/.nvm/versions/node/v16.18.1/bin/node /home/forge/REPLACE_WITH_SITE_DIRECTORY_NAME/scripts/add-adjustment.mjs -kid=kid-slug -interest
    ```

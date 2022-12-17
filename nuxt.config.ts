@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   postcss: {
     plugins: {
       tailwindcss: {
-        content: ['app.vue', 'components/**/*', 'layouts/**/*', 'pages/**/*'],
+        content: ['app.vue', 'error.vue', 'components/**/*', 'layouts/**/*', 'pages/**/*'],
         theme: {
           extend: {
             colors: {

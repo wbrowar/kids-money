@@ -11,6 +11,9 @@ const { data: kid, refresh: refreshKid } = await useFetch('/api/get-kid-adjustme
   },
   method: 'post'
 })
+if (!kid.value) {
+  showError({ statusCode: 500, statusMessage: 'There was an error loading this page.' })
+}
 
 definePageMeta({
   layout: false

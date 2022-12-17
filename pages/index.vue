@@ -5,6 +5,9 @@ const { data: kids, refresh: refreshKids } = await useFetch('/api/get-kids', {
   },
   method: 'post'
 })
+if (!kids.value) {
+  showError({ statusCode: 500, statusMessage: 'There was an error loading this page.' })
+}
 
 definePageMeta({
   layout: false
