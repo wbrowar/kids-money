@@ -1,6 +1,15 @@
 import { Kid } from '~/types'
 
 export const useStringFormatter = () => {
+  function colorIsRgb (color: string) {
+    return /\d+ \d+ \d+/g.test(color)
+  }
+
+  function componentToHex (part: number) {
+    const hex = part.toString(16)
+    return hex.length === 1 ? '0' + hex : hex
+  }
+
   function convertToLocalCurrency (value = 0, options: { signDisplay?: string } = {}) {
     const formatterOptions = {
       currency: 'USD',
@@ -20,7 +29,7 @@ export const useStringFormatter = () => {
   }) {
     const color = kid.color ?? '180 0 255'
 
-    return /\d+ \d+ \d+/g.test(color) ? `rgb(${color} / ${opacity})` : color
+    return colorIsRgb(color) ? `rgb(${color} / ${opacity})` : color
   }
 
   function formatUTCDate (date: Date) {
@@ -44,10 +53,16 @@ export const useStringFormatter = () => {
       : '0 0 0'
   }
 
+  function rgbToHex (r: number, g: number, b: number) {
+    return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b)
+  }
+
   return {
+    colorIsRgb,
     convertToLocalCurrency,
     favoriteColor,
     formatUTCDate,
-    hexToRgb
+    hexToRgb,
+    rgbToHex
   }
 }

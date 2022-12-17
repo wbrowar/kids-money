@@ -38,8 +38,8 @@ definePageMeta({
         </LinkButton>
       </template>
 
-      <div v-if="kids.length">
-        <div class="flex flex-wrap justify-center gap-16" :style="{ '--count': kids.length }">
+      <div v-if="kids.length" class="space-y-14">
+        <div class="flex flex-wrap justify-center gap-16 px-8" :style="{ '--count': kids.length }">
           <KidSummary
             v-for="kid in kids"
             :key="kid.slug"
@@ -50,7 +50,7 @@ definePageMeta({
           />
         </div>
 
-        <div class="mt-8">
+        <div>
           <ChartAdjustmentsMonthly :kids="kids" />
         </div>
       </div>
