@@ -2,7 +2,7 @@
 import { Kid } from '~/types'
 import { useStringFormatter } from '~/composables/useStringFormatter'
 
-const { favoriteColor } = useStringFormatter()
+const { hexToRgb, favoriteColor } = useStringFormatter()
 
 const { data: kids, refresh: refreshKids } = await useFetch('/api/get-kids', {
   method: 'post'
@@ -42,7 +42,8 @@ function startDeletingKid (kid: Kid) {
 
 // Edit or add a kid record
 const editedKidAllowance = ref(0)
-const editedKidColor = ref('#0026ff')
+const editedKidColor = ref('#1FD22C')
+const editedKidColorPicker = ref('#1FD22C')
 const editedKidId = ref(-1)
 const editedKidInterest = ref(0)
 const editedKidName = ref('')
@@ -87,6 +88,10 @@ function startEditingKid (slug = '') {
     kidAction.value = 'edit'
   }
 }
+
+watch(editedKidColorPicker, () => {
+  editedKidColor.value = hexToRgb(editedKidColorPicker.value)
+})
 
 definePageMeta({
   layout: false
@@ -164,7 +169,7 @@ definePageMeta({
                         </dt>
                         <dd class="mt-1 truncate text-gray-700 dark:text-primary-800">
                           <span class="grid grid-cols-[auto_1fr] items-center gap-2">
-                            <span class="block w-8 h-8 rounded-full" :style="{ backgroundColor: favoriteColor({ kid, opacity:.7 }) }" />
+                            <span class="block w-8 h-8 rounded-full" :style="{ backgroundColor: favoriteColor({ kid }) }" />
                             <span class="font-medium" :style="{ color: favoriteColor({ kid }) }">{{ kid.color }}</span>
                           </span>
                         </dd>
@@ -351,8 +356,9 @@ definePageMeta({
               </div>
               <div>
                 <label for="editedKidColor" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Color</label>
-                <div class="mt-1">
+                <div class="grid grid-cols-[1fr_max-content] gap-2 mt-1">
                   <input id="editedKidColor" v-model="editedKidColor" type="text" name="name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <input v-model="editedKidColorPicker" type="color" class="w-9 h-9 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
               </div>
               <div>
