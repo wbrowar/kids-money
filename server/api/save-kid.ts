@@ -45,6 +45,15 @@ export default defineEventHandler(async (event) => {
     } else {
       // Remove ID so a new one can be generated
       delete body.id
+
+      // Add initial adjustment so they start with zero
+      body.adjustments = {
+        create: {
+          dollarAdjustment: 0,
+          totalToDate: 0
+        }
+      }
+
       saved = await prisma.kid.create({
         data: body
       })

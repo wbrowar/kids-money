@@ -43,8 +43,8 @@ async function logIn ({
   }
 }
 
-const username = ref('phil')
-const password = ref('my-new-passworddd')
+const username = ref('')
+const password = ref('')
 </script>
 
 <template>

@@ -77,7 +77,7 @@ function startEditingKid (slug = '') {
     const editedKid = kids.value.find((kid: Kid) => kid.slug === slug)
 
     editedKidAllowance.value = editedKid?.allowance ?? 0
-    editedKidColor.value = editedKid?.color ?? '#0026ff'
+    editedKidColor.value = editedKid?.color ?? '#1FD22C'
     editedKidId.value = editedKid?.id ?? -1
     editedKidInterest.value = editedKid?.interest ?? 0
     editedKidName.value = editedKid?.name ?? ''
