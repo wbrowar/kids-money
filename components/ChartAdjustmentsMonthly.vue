@@ -79,7 +79,7 @@ onMounted(() => {
           datasets: datasets.value
         },
         options: {
-          responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: {
               position: 'top'
@@ -87,6 +87,15 @@ onMounted(() => {
             title: {
               display: true,
               text: 'Totals per Month'
+            }
+          },
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                padding: 20
+              }
             }
           }
         }
@@ -105,7 +114,7 @@ watch(() => props.kids, () => {
 
 <template>
   <div>
-    <div class="w-full max-w-[60rem] mx-auto">
+    <div class="w-full max-w-[60rem] h-[400px] mx-auto md:h-[500px]">
       <canvas ref="chartRef" />
     </div>
   </div>
