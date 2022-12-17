@@ -3,7 +3,6 @@ import Chart from 'chart.js/auto'
 import GroupBy from 'lodash-es/groupBy'
 import Sum from 'lodash-es/sum'
 import { PropType } from 'vue'
-import * as Utils from '~/utils/chart-utils'
 import { Kid } from '~/types'
 import { useStringFormatter } from '~/composables/useStringFormatter'
 
@@ -34,6 +33,17 @@ const MONTHS = [
   'December'
 ]
 
+const labels = computed(() => {
+  const months = []
+  const today = new Date()
+  today.setDate(1)
+  for (let i = 0; i <= 11; i++) {
+    today.setMonth(today.getMonth() + 1)
+    months.push(`${MONTHS[today.getMonth()]} ${today.getFullYear() - 1}`)
+  }
+  return months
+})
+
 const datasets = computed(() => {
   return props.kids?.map((kid) => {
     const data: Record<string, number> = {}
@@ -42,13 +52,11 @@ const datasets = computed(() => {
     Object.keys(dataByMonth).forEach((key) => {
       const monthData = dataByMonth[key]
 
-      const totalToDates = monthData.map((monthDataRow) => {
-        return monthDataRow.dollarAdjustment
-      })
+      const lastTotalToDates = monthData[0].totalToDate
 
-      const sumOfTotals = Sum(totalToDates)
+      const rowYear = new Date(monthData[0].createdDate)
 
-      data[MONTHS[parseInt(key)]] = sumOfTotals
+      data[`${MONTHS[parseInt(key)]} ${rowYear.getFullYear()}`] = lastTotalToDates
     })
 
     return {
@@ -61,15 +69,13 @@ const datasets = computed(() => {
 })
 
 onMounted(() => {
-  const labels = Utils.months({ count: 12 })
-
   if (chartRef.value) {
     chart = new Chart(
       chartRef.value,
       {
         type: 'line',
         data: {
-          labels,
+          labels: labels.value,
           datasets: datasets.value
         },
         options: {
@@ -80,7 +86,7 @@ onMounted(() => {
             },
             title: {
               display: true,
-              text: 'Chart.js Line Chart'
+              text: 'Totals per Month'
             }
           }
         }
