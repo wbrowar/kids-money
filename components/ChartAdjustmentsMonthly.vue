@@ -16,25 +16,26 @@ const props = defineProps({
 
 const { favoriteColor } = useStringFormatter()
 
-const chart = ref()
+const chartRef = ref()
+let chart
 
-onMounted(() => {
-  const MONTHS = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ]
+const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+]
 
-  const datasets = props.kids?.map((kid) => {
+const datasets = computed(() => {
+  return props.kids?.map((kid) => {
     const data: Record<string, number> = {}
 
     const dataByMonth = GroupBy(kid.adjustments, ({ createdDate }) => new Date(createdDate).getMonth())
@@ -57,19 +58,19 @@ onMounted(() => {
       label: kid.name
     }
   })
+})
 
-  log('the data', datasets)
-
+onMounted(() => {
   const labels = Utils.months({ count: 12 })
 
-  if (chart.value) {
-    new Chart(
-      chart.value,
+  if (chartRef.value) {
+    chart = new Chart(
+      chartRef.value,
       {
         type: 'line',
         data: {
           labels,
-          datasets
+          datasets: datasets.value
         },
         options: {
           responsive: true,
@@ -88,12 +89,18 @@ onMounted(() => {
   }
 })
 
+watch(() => props.kids, () => {
+  if (chart) {
+    chart.data.datasets = datasets.value
+    chart.update()
+  }
+})
 </script>
 
 <template>
   <div>
     <div class="w-full max-w-[60rem] mx-auto">
-      <canvas ref="chart" />
+      <canvas ref="chartRef" />
     </div>
   </div>
 </template>
