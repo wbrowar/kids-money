@@ -35,19 +35,23 @@ definePageMeta({
           <IconRefresh />
         </LinkButton>
       </template>
-    </NuxtLayout>
 
-    <div v-if="kids">
-      <div class="flex flex-wrap justify-center gap-16" :style="{ '--count': kids.length }">
-        <KidSummary
-          v-for="kid in kids"
-          :key="kid.slug"
-          class="basis-[200px] flex-grow max-w-[500px]"
-          enable-link
-          :kid="kid"
-          @adjustment-added="refreshKids"
-        />
+      <div v-if="kids">
+        <div class="flex flex-wrap justify-center gap-16" :style="{ '--count': kids.length }">
+          <KidSummary
+            v-for="kid in kids"
+            :key="kid.slug"
+            class="basis-[200px] flex-grow max-w-[500px]"
+            enable-link
+            :kid="kid"
+            @adjustment-added="refreshKids"
+          />
+        </div>
+
+        <div class="mt-8">
+          <ChartAdjustmentsMonthly :kids="kids" />
+        </div>
       </div>
-    </div>
+    </NuxtLayout>
   </div>
 </template>

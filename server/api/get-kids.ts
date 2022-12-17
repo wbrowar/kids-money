@@ -1,9 +1,9 @@
 import { log } from '~/utils/console'
 import prisma from '~/utils/prisma'
-import { Kid } from '~/types'
 
-export default defineEventHandler(() => {
-  log('API: get-kids')
+export default defineEventHandler(async (event) => {
+  const body = await readBody(event)
+  log('API: get-kids', body)
   const runtimeConfig = useRuntimeConfig()
 
   // If option is set, use mock data
@@ -38,17 +38,30 @@ export default defineEventHandler(() => {
 
   // Get user from database
   async function runQuery () {
-    const kids = await prisma.kid.findMany({
-      include: {
-        adjustments: {
-          orderBy: {
-            id: 'desc'
-          },
-          take: 1
+    const oneYearAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+
+    let kids
+
+    if (body?.includeAdjustments) {
+      kids = await prisma.kid.findMany({
+        include: {
+          adjustments: {
+            orderBy: {
+              id: 'desc'
+            },
+            where: {
+              createdDate: {
+                gte: new Date(oneYearAgo)
+              }
+            }
+          }
         }
-      }
-    })
+      })
+    } else {
+      kids = await prisma.kid.findMany()
+    }
     if (kids.length) {
+      log(kids)
       return kids
     }
     return []
