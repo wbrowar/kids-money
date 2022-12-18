@@ -286,7 +286,7 @@ definePageMeta({
                       retain-style
                       theme="small"
                       title="Edit"
-                      @clicked="startEditingKid(kid.slug)"
+                      @clicked="startEditingKid(kid)"
                     >
                       <span class="sr-only">
                         Edit
@@ -311,7 +311,7 @@ definePageMeta({
             </table>
           </div>
 
-          <Teleport v-if="editedKid?.slug" :disabled="containerWidth >= 736" :to="`#action-target-${editedKid?.slug ?? ''}`">
+          <Teleport v-if="kidAction === 'delete' || kidAction === 'edit'" :disabled="containerWidth >= 736" :to="`#action-target-${editedKid?.slug ?? ''}`">
             <div class="max-w-md xl:row-span-2">
               <div v-if="kidAction === 'delete'">
                 <p class="mt-4 dark:text-gray-400">

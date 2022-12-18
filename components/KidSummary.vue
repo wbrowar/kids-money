@@ -72,6 +72,6 @@ function onAdjustmentAdded () {
       </p>
     </div>
 
-    <AddAdjustmentForm v-if="!enableLink && showAdjustmentsButtons" class="mt-4" :kid="kid" @adjustment-added="onAdjustmentAdded" @mouseover-element="helpText = $event.tooltip" />
+    <AddAdjustmentForm v-if="!enableLink && grownUp" class="mt-4" :kid="kid" @adjustment-added="onAdjustmentAdded" @mouseover-element="helpText = $event.tooltip" />
   </div>
 </template>

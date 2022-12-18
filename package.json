@@ -18,7 +18,6 @@
     "@nuxtjs/eslint-config-typescript": "12.0.0",
     "@tailwindcss/container-queries": "0.1.0",
     "@tailwindcss/forms": "0.5.3",
-    "@types/luxon": "^3.1.0",
     "autoprefixer": "10.4.13",
     "chart.js": "4.1.0",
     "eslint": "^8.29.0",
