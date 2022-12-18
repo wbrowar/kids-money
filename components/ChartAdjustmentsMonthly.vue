@@ -91,8 +91,16 @@ onMounted(() => {
           },
           responsive: true,
           scales: {
+            x: {
+              grid: {
+                color: '#CECECE83'
+              }
+            },
             y: {
               beginAtZero: true,
+              grid: {
+                color: '#CECECE83'
+              },
               ticks: {
                 padding: 20
               }

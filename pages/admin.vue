@@ -73,27 +73,25 @@ async function saveKid () {
   }
 }
 
-function startEditingKid (slug = '') {
-  if (kids.value) {
-    editedKid.value = kids.value.find((kid: Kid) => kid.slug === slug)
+function startEditingKid (kid: Kid) {
+  editedKid.value = kid
 
-    editedKidAllowance.value = editedKid?.allowance ?? 0
-    editedKidColor.value = editedKid?.color ?? '#1FD22C'
-    editedKidId.value = editedKid?.id ?? -1
-    editedKidInterest.value = editedKid?.interest ?? 0
-    editedKidName.value = editedKid?.name ?? ''
-    editedKidPhotoUrl.value = editedKid?.photoUrl ?? ''
-    editedKidSlug.value = editedKid?.slug ?? ''
+  editedKidAllowance.value = kid?.allowance ?? 0
+  editedKidColor.value = kid?.color ?? '#1FD22C'
+  editedKidId.value = kid?.id ?? -1
+  editedKidInterest.value = kid?.interest ?? 0
+  editedKidName.value = kid?.name ?? ''
+  editedKidPhotoUrl.value = kid?.photoUrl ?? ''
+  editedKidSlug.value = kid?.slug ?? ''
 
-    if (colorIsRgb(editedKidColor.value)) {
-      const rgb = editedKidColor.value.split(' ')
-      editedKidColorPicker.value = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]))
-    } else if (editedKidColor.value.startsWith('#')) {
-      editedKidColorPicker.value = editedKidColor.value
-    }
-
-    kidAction.value = 'edit'
+  if (colorIsRgb(editedKidColor.value)) {
+    const rgb = editedKidColor.value.split(' ')
+    editedKidColorPicker.value = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]))
+  } else if (editedKidColor.value.startsWith('#')) {
+    editedKidColorPicker.value = editedKidColor.value
   }
+
+  kidAction.value = 'edit'
 }
 
 watch(editedKidColorPicker, () => {
@@ -237,7 +235,7 @@ definePageMeta({
                               retain-style
                               theme="small"
                               title="Edit"
-                              @clicked="startEditingKid(kid.slug)"
+                              @clicked="startEditingKid(kid)"
                             >
                               <span class="sr-only">
                                 Edit
@@ -340,20 +338,38 @@ definePageMeta({
                 <div>
                   <label for="editedKidName" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Name</label>
                   <div class="mt-1">
-                    <input id="editedKidName" v-model="editedKidName" type="text" name="name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <input
+                      id="editedKidName"
+                      v-model="editedKidName"
+                      class="block w-full rounded-md border-gray-300 text-slate-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      type="text"
+                      name="name"
+                    >
                   </div>
                 </div>
                 <div>
                   <label for="editedKidSlug" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Slug</label>
                   <div class="mt-1">
-                    <input id="editedKidSlug" v-model="editedKidSlug" type="text" name="name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <input
+                      id="editedKidSlug"
+                      v-model="editedKidSlug"
+                      class="block w-full rounded-md border-gray-300 text-slate-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      type="text"
+                      name="name"
+                    >
                   </div>
                 </div>
                 <div>
                   <label for="editedKidColor" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Color</label>
                   <div class="grid grid-cols-[max-content_1fr] gap-2 mt-1">
                     <input v-model="editedKidColorPicker" type="color" class="w-9 h-9 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    <input id="editedKidColor" v-model="editedKidColor" type="text" name="name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <input
+                      id="editedKidColor"
+                      v-model="editedKidColor"
+                      class="block w-full rounded-md border-gray-300 text-slate-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      type="text"
+                      name="name"
+                    >
                   </div>
                 </div>
                 <div>
@@ -362,7 +378,7 @@ definePageMeta({
                     <input
                       id="editedKidPhotoUrl"
                       v-model="editedKidPhotoUrl"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      class="block w-full rounded-md border-gray-300 text-slate-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       inputmode="url"
                       name="name"
                       type="text"
@@ -375,7 +391,7 @@ definePageMeta({
                     <input
                       id="editedKidAllowance"
                       v-model.number="editedKidAllowance"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      class="block w-full rounded-md border-gray-300 text-slate-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       inputmode="decimal"
                       name="name"
                       type="text"
@@ -388,7 +404,7 @@ definePageMeta({
                     <input
                       id="editedKidInterest"
                       v-model.number="editedKidInterest"
-                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      class="block w-full rounded-md border-gray-300 text-slate-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       inputmode="decimal"
                       name="name"
                       type="text"
