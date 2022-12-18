@@ -61,7 +61,6 @@ export default defineEventHandler(async (event) => {
       kids = await prisma.kid.findMany()
     }
     if (kids.length) {
-      log(kids)
       return kids
     }
     return []

@@ -46,10 +46,10 @@ function onAdjustmentAdded () {
     >
       <NuxtLink
         class="block p-8 pb-6 font-bold text-3xl text-center @xs:text-5xl @sm:text-6xl"
-        :class="{ 'cursor-pointer hover:grayscale': enableLink }"
+        :class="{ 'cursor-pointer hover:grayscale': showAdjustmentsButtons }"
         element-type="button"
         @click="mode = mode === 'idle' ? 'adding' : 'idle'"
-        @mouseover="helpText = 'Add an adjustment'"
+        @mouseover="helpText = showAdjustmentsButtons ? 'Add an adjustment' : null"
       >
         {{ total }}
       </NuxtLink>
@@ -72,6 +72,6 @@ function onAdjustmentAdded () {
       </p>
     </div>
 
-    <AddAdjustmentForm v-if="!enableLink" class="mt-4" :kid="kid" @adjustment-added="onAdjustmentAdded" @mouseover-element="helpText = $event.tooltip" />
+    <AddAdjustmentForm v-if="!enableLink && showAdjustmentsButtons" class="mt-4" :kid="kid" @adjustment-added="onAdjustmentAdded" @mouseover-element="helpText = $event.tooltip" />
   </div>
 </template>
