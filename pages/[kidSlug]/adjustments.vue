@@ -40,6 +40,20 @@ definePageMeta({
           </div>
           <IconRefresh />
         </LinkButton>
+
+        <LinkButton
+          v-if="kid"
+          class="bg-primary"
+          retain-style
+          theme="small"
+          title="Settings"
+          :to="`/${kid.slug}/settings`"
+        >
+          <div class="sr-only">
+            Settings
+          </div>
+          <IconSettings />
+        </LinkButton>
       </template>
 
       <div v-if="kid">
