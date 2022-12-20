@@ -67,7 +67,7 @@ definePageMeta({
 
     <NuxtLayout name="default">
       <div v-if="kid" class="flex flex-col items-center justify-center space-y-8">
-        <div class="block space-y-2 bg-white border border-primary-300 rounded-lg text-favorite shadow-md dark:opacity-90">
+        <div class="block space-y-2 bg-white rounded-lg text-favorite shadow-md dark:opacity-90">
           <div
             class="flex items-center justify-center gap-3 p-6 h-16 bg-primary border border-solid border-primary/20 rounded-[0.4rem] text-white @xs:h-24"
             :style="{ backgroundColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.07 }) : null, borderColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.1 }) : null }"
@@ -79,14 +79,14 @@ definePageMeta({
           </div>
         </div>
 
-        <div class="block space-y-2 bg-white border border-primary-300 rounded-lg text-favorite shadow-md dark:opacity-90">
+        <div class="block space-y-2 bg-white rounded-lg text-favorite shadow-md dark:opacity-90">
           <div
             class="flex items-center justify-center gap-3 p-6 h-16 bg-primary border border-solid border-primary/20 rounded-[0.4rem] text-white @xs:h-24"
             :style="{ backgroundColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.07 }) : null, borderColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.1 }) : null, color: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid }) : null }"
           >
             <div class="flex items-center gap-2">
-              <input v-model="editedKidColorPicker" type="color" class="w-9 h-9 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" @blur="updateColor">
-              <span class="text-lg">Favorite Color</span>
+              <input id="color-picker" v-model="editedKidColorPicker" class="w-9 h-9 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" type="color" @blur="updateColor">
+              <label class="text-lg" for="color-picker">Favorite Color</label>
             </div>
           </div>
         </div>

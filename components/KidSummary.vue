@@ -15,8 +15,12 @@ const props = defineProps({
   }
 })
 
+const { playConfettiAnimation } = useConfetti()
 const { grownUp } = useCurrentUser()
+const runtimeConfig = useRuntimeConfig()
 const { convertToLocalCurrency, favoriteColor } = useStringFormatter()
+
+const previousTotalCookie = useCookie<number>(`${props.kid.slug}:previous-total`, () => 0)
 
 const helpText = ref('')
 const mode = ref<'idle' | 'adding'>('idle')
@@ -26,8 +30,23 @@ const showAdjustmentsButtons = computed(() => {
   }
   return false
 })
+const totalValue = computed(() => {
+  return props.kid?.adjustments?.[0].totalToDate ?? 0
+})
 const total = computed(() => {
-  return convertToLocalCurrency(props.kid?.adjustments?.[0].totalToDate ?? 0)
+  return convertToLocalCurrency(totalValue.value)
+})
+
+watch(totalValue, () => {
+  if (runtimeConfig.public.fun && previousTotalCookie.value !== null) {
+    if (totalValue.value > previousTotalCookie.value) {
+      playConfettiAnimation()
+    }
+
+    previousTotalCookie.value = totalValue.value
+  }
+}, {
+  immediate: true
 })
 
 function onAdjustmentAdded () {
