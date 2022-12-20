@@ -1,9 +1,44 @@
+/*
+ * Log an object and show all of its properties and their values in the console.
+ *
+ * @param args Any amount of items to log. If an argument is just a string, it will be logged via console.log().
+ *
+ * ```
+ * import { dir } from 'utils/console'
+ *
+ * dir('My object', myObject)
+ * ```
+ */
 export function dir (...args: any[]) {
   logger('dir', args)
 }
+
+/*
+ * Displays an error in the console along with a stack trace to help debug the origin of the error.
+ *
+ * @param args Any amount of items to log.
+ *
+ * ```
+ * import { error } from 'utils/console'
+ *
+ * error('An error occured here.')
+ * ```
+ */
 export function error (...args: any[]) {
   logger('error', args)
 }
+
+/*
+ * Logs anything (string, number, array, object, etc...) to the console.
+ *
+ * @param args Any amount of items to log.
+ *
+ * ```
+ * import { log } from 'utils/console'
+ *
+ * log('These are things I’d like to log', itemOne, itemTwo)
+ * ```
+ */
 export function log (...args: any[]) {
   logger('log', args)
 }

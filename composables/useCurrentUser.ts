@@ -1,3 +1,6 @@
+/*
+ * Computed helpers based on logged-in user and their Admin status.
+ */
 export const useCurrentUser = () => {
   const loggedInCookie = useCookie<Record<string, any>>('logged-in')
   const runtimeConfig = useRuntimeConfig()

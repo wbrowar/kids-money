@@ -10,10 +10,7 @@ const kidSlug = ref(route.params.kidSlug)
 const colorEditable = ref(false)
 const editedKidColorPicker = ref('#1FD22C')
 
-const { data: kid, refresh: refreshKid } = await useFetch<{
-  kid: Kid;
-  refreshKid: Function;
-}>('/api/get-kid-adjustments', {
+const { data: kid, refresh: refreshKid } = await useFetch<Kid>('/api/get-kid-adjustments', {
   body: {
     slug: kidSlug.value
   },
