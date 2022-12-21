@@ -497,10 +497,10 @@ definePageMeta({
           <h2 class="text-primary-700 text-2xl dark:text-slate-300">
             Users
           </h2>
-          <ul class="mt-8 space-y-4">
+          <ul class="grid grid-cols-3 gap-10 mt-8 lg:grid-cols-8">
             <li v-for="user in users" :key="user.username">
-              <span class="block font-semibold text-2xl text-secondary">{{ user.username }}</span>
-              <span class="block font-semibold text-xs leading-tight text-secondary/70 uppercase">{{ user.grownUp ? 'Admin' : 'Non-Admin' }}</span>
+              <span class="block font-semibold text-2xl text-gray-800 dark:text-gray-200">{{ user.username }}</span>
+              <span class="block font-semibold text-xs leading-tight text-gray-600 uppercase dark:text-gray-300">{{ user.grownUp ? 'Admin' : 'Non-Admin' }}</span>
             </li>
           </ul>
         </div>

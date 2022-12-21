@@ -18,9 +18,12 @@ const props = defineProps({
 const { playConfettiAnimation } = useConfetti()
 const { grownUp } = useCurrentUser()
 const runtimeConfig = useRuntimeConfig()
-const { convertToLocalCurrency, favoriteColor } = useStringFormatter()
+const { convertToLocalCurrency, cookieExpirationDate, favoriteColor } = useStringFormatter()
 
-const previousTotalCookie = useCookie<number>(`${props.kid.slug}:previous-total`, () => 0)
+const previousTotalCookie = useCookie<number>(`${props.kid.slug}:previous-total`, {
+  default: () => 0,
+  maxAge: cookieExpirationDate()
+})
 
 const helpText = ref('')
 const mode = ref<'idle' | 'adding'>('idle')

@@ -32,13 +32,13 @@ const { canViewAdmin, loggedIn } = useCurrentUser()
         v-if="canViewAdmin"
         class="bg-primary"
         retain-style
-        label-text="Admin"
+        label-text="Settings"
         theme="small"
-        title="Admin"
+        title="Settings"
         to="/admin"
       >
         <div class="sr-only">
-          Admin
+          Settings
         </div>
         <IconAdmin />
       </LinkButton>

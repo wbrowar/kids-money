@@ -75,6 +75,7 @@ export function warn (...args: any[]) {
 
 /*
  * A helper function that formats and logs all console commands.
+ * Instead of using this, use one of the other logging functions.
  *
  * @param type Determines the type of log to display.
  * @param args Arguments to be logged.

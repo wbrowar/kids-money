@@ -6,16 +6,21 @@ A self-hosted money management app to help grownups manage "bank accounts"* for 
 
 ## Setup
 
-1. Move files onto server.
-2. Set the `DATABASE_URL` path to an absolute path where you would like your database to live.
-3. Run database migration to set up sqlite database:
+1. Pull this repo down and move the files to your server (or fork this repo and set up deployment from there).
+2. Copy `.env.example` to `.env`.
+3. If you plan on using `pm2` to run the app, copy `ecosystem.config.example.js` to `ecosystem.config.js`
+4. If you aren’t using `pm2` change the `DATABASE_URL` path to an absolute path where you would like your database to live.
+5. Run database migration to set up sqlite database:
    ```bash
    npx prisma migrate deploy
    ```
-4. Create an admin user using the command (the `-admin` argument is optional for other users):
+6. Run `npm run build` to build out Nuxt app.
+7. Start Nuxt app with either `pm2 start` or `node ./.output/server/index.mjs` from the root directory. You may have to [set up your server to proxy requests to the Nuxt app.](https://nuxt.com/docs/getting-started/deployment)
+8. Create an admin user using the command (the `-admin` argument is optional for other users):
    ```bash
-   node scripts/create-user.mjs -u=my-username -p=my-password -admin=true
+   node scripts/create-user.mjs -u=my-username -p=my-password -admin
    ```
+9. Log in with the admin user and visit `/admin` to add and configure kids.
 
 
 ## User Management
@@ -23,10 +28,10 @@ A self-hosted money management app to help grownups manage "bank accounts"* for 
 Right now the only way to create a user is via a node script run on the command line:
 
 ```bash
-node scripts/create-user.mjs -u=my-username -p=my-password -admin=true
+node scripts/create-user.mjs -u=my-username -p=my-password -admin
 ```
 
-In this script, the `-admin` argument is optional, but it’s needed in order to show the Settings page to manage kids in the app. You can choose to turn this on when you are setting up the project, then update the user to turn it off.
+In this script, the `-admin` argument is optional, but it’s needed in order to show the Settings page to manage kids in the app, as well as to add or remove money from kids’ balances. You can set `-admin=false` to remove admin status from a user.
 
 To update a user’s password or admin status, you can run the `update-user` script:
 
@@ -76,7 +81,7 @@ node scripts/add-adjustment.mjs -kid=kid-slug -allowance
 This adds the amount set in Settings for the Allowance field for the kid with the slug, `kid-slug`.
 
 ```bash
-node scripts/add-adjustment.mjs -kid=kid-slug -dollar=5
+node scripts/add-adjustment.mjs -kid=kid-slug -interest
 ```
 
 This adds the amount set in Settings for the Interest field for the kid with the slug, `kid-slug`.
@@ -90,7 +95,7 @@ This is a Nuxt 3 project, so you can [follow instructions for deploying](https:/
 
 ### Hosting on the Edge
 
-What makes this app tricky is that the SQLite database needs to be hosted on a server where it will persist and where database files are allowed (which makes this harder to host on Netlify and Vercel). One option you can try out is to change the `DATABASE_URL` environment value to use a database that you have hosted elsewhere.
+What makes this app tricky to host is that the SQLite database needs to be hosted on a server where it will persist and where database files are allowed (which makes this harder to host on Netlify and Vercel). One option you can try out is to change the `DATABASE_URL` environment value to use a database that you have hosted elsewhere.
 
 The connection to the database is done through Prisma, so [you can check out these options](https://www.prisma.io/docs/reference/database-reference/connection-urls) for setting up an external database connection.
 

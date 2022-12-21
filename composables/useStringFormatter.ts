@@ -65,6 +65,27 @@ export const useStringFormatter = () => {
   }
 
   /*
+   * Takes the passed-in date and returns the seconds for one month in the future.
+   * The returned value is good to use when setting a cookie.
+   *
+   * @param dateString A date string to start from. Leave this blank to start from today.
+   *
+   * ```
+   * cookieExpirationDate('2022-12-25')
+   * // 1643000400
+   *
+   * const loggedInCookie = useCookie<Record<string, any>>('logged-in', {
+   *   maxAge: cookieExpirationDate()
+   * })
+   * ```
+   */
+  function cookieExpirationDate (dateString = '') {
+    const now = dateString ?? false ? new Date(dateString) : new Date()
+    const cookieExpirationDate = new Date(now.getFullYear(), (now.getMonth() + 1) % 12, now.getDate())
+    return Math.round(cookieExpirationDate.getTime() / 1000)
+  }
+
+  /*
    * Display the color selected for a kid at different opacities.
    *
    * @param kid The Kid to get the favorite color from.
@@ -154,6 +175,7 @@ export const useStringFormatter = () => {
   return {
     colorIsRgb,
     convertToLocalCurrency,
+    cookieExpirationDate,
     favoriteColor,
     formatUTCDate,
     hexToRgb,
