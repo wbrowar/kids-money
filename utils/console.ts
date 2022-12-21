@@ -21,7 +21,7 @@ export function dir (...args: any[]) {
  * ```
  * import { error } from 'utils/console'
  *
- * error('An error occured here.')
+ * error('An error occurred here.')
  * ```
  */
 export function error (...args: any[]) {
@@ -42,13 +42,48 @@ export function error (...args: any[]) {
 export function log (...args: any[]) {
   logger('log', args)
 }
+
+/*
+ * Logs data using console.table.
+ *
+ * @param args Any amount of items to log.
+ *
+ * ```
+ * import { table } from 'utils/console'
+ *
+ * table(itemOne, itemTwo)
+ * ```
+ */
 export function table (...args: any[]) {
   logger('log', args)
 }
+
+/*
+ * Logs a warning into the console.
+ *
+ * @param args Any amount of items to log.
+ *
+ * ```
+ * import { warn } from 'utils/console'
+ *
+ * warn('Something isn’t right here, but it’s not bad enough to show an error')
+ * ```
+ */
 export function warn (...args: any[]) {
   logger('warn', args)
 }
-function logger (type: string, args: any[]) {
+
+/*
+ * A helper function that formats and logs all console commands.
+ *
+ * @param type Determines the type of log to display.
+ * @param args Arguments to be logged.
+ *
+ * ```
+ * logger('log', itemsToLog)
+ * ```
+ */
+function logger (type: 'dir' | 'error' | 'log' | 'table' | 'warn', args: any[]) {
   const spirit = '💰'
 
   // TODO figure out how to check for `nuxt.config.dev`

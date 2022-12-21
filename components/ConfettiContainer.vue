@@ -21,7 +21,7 @@ function playConfettiAnimation () {
     setTimeout(() => {
       confettiInstance.reset()
       showConfetti.value = false
-    }, 5000)
+    }, 3000)
   }
 }
 
