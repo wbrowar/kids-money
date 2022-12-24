@@ -40,21 +40,27 @@ const total = computed(() => {
   return convertToLocalCurrency(totalValue.value)
 })
 
-watch(totalValue, () => {
+function playConfettiIfTotalDiff () {
   if (runtimeConfig.public.fun && previousTotalCookie.value !== null) {
     if (totalValue.value > previousTotalCookie.value) {
       playConfettiAnimation()
     }
 
-    previousTotalCookie.value = totalValue.value
+    if (process.client) {
+      previousTotalCookie.value = totalValue.value
+    }
   }
-}, {
-  immediate: true
-})
+}
+
+watch(totalValue, () => playConfettiIfTotalDiff())
 
 function onAdjustmentAdded () {
   emit('adjustment-added')
 }
+
+onMounted(() => {
+  playConfettiIfTotalDiff()
+})
 </script>
 
 <template>
