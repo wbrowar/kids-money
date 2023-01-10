@@ -12,5 +12,5 @@ export default defineNuxtConfig({
       fun: true,
       useMockApiData: false
     }
-  }
+  },
 })
