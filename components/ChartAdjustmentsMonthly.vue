@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import Chart from 'chart.js/auto'
 import GroupBy from 'lodash-es/groupBy'
-import Sum from 'lodash-es/sum'
 import { PropType } from 'vue'
-import { Kid } from '~/types'
+import { Adjustment, Kid } from '~/types'
 import { useStringFormatter } from '~/composables/useStringFormatter'
 
 const props = defineProps({
@@ -16,7 +15,7 @@ const props = defineProps({
 const { favoriteColor } = useStringFormatter()
 
 const chartRef = ref()
-let chart
+let chart: Chart
 
 const MONTHS = [
   'January',
@@ -46,17 +45,26 @@ const labels = computed(() => {
 
 const datasets = computed(() => {
   return props.kids?.map((kid) => {
-    const data: Record<string, number> = {}
+    const data: number[] = []
+    const monthsData: Record<string, number> = {}
 
-    const dataByMonth = GroupBy(kid.adjustments, ({ createdDate }) => new Date(createdDate).getMonth())
+    // Group all data by month
+    const dataByMonth = GroupBy(kid.adjustments, ({ createdDate }: {createdDate: Date}) => new Date(createdDate).getMonth())
+
+    // Get totals from each month and key them to match labels
     Object.keys(dataByMonth).forEach((key) => {
-      const monthData = dataByMonth[key]
+      const monthData = dataByMonth[key] as Adjustment[]
 
       const lastTotalToDates = monthData[0].totalToDate
 
       const rowYear = new Date(monthData[0].createdDate)
 
-      data[`${MONTHS[parseInt(key)]} ${rowYear.getFullYear()}`] = lastTotalToDates
+      monthsData[`${MONTHS[parseInt(key)]} ${rowYear.getFullYear()}`] = lastTotalToDates
+    })
+
+    // Add data in order of labels
+    labels.value.forEach((label) => {
+      data.push(monthsData[label] ?? 0)
     })
 
     return {
