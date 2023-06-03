@@ -134,38 +134,43 @@ definePageMeta({
             </thead>
             <tbody class="divide-y divide-[var(--color-favorite-100)] bg-[var(--color-favorite-80)]">
               <tr v-for="adjustment in filteredAdjustments" :key="adjustment.id">
-                <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm text-white sm:w-auto sm:max-w-none sm:pl-6">
-                  {{ convertToLocalCurrency(adjustment.dollarAdjustment) }}
-                  <dl class="font-normal sm:hidden">
-                    <dt class="sr-only">
-                      Percent Adjustment
-                    </dt>
-                    <dd class="mt-1 truncate text-white">
-                      {{ adjustment.percentAdjustment }}%
-                    </dd>
-                    <dt class="sr-only">
-                      Created Date
-                    </dt>
-                    <dd class="mt-1 truncate text-white">
-                      {{ formatUTCDate(adjustment.createdDate) }}
-                    </dd>
-                    <div class="mt-1 flex gap-2">
-                      <dt class="sm:hidden">
+                <td class="w-full max-w-0 py-4 pl-4 pr-3 text-white sm:w-auto sm:max-w-none sm:pl-6">
+                  <span class="hidden font-normal text-xl sm:inline" :title="`$${adjustment.dollarAdjustment}`">{{ convertToLocalCurrency(adjustment.dollarAdjustment) }}</span>
+                  <dl class="grid grid-cols-[1fr_min-content] gap-2 font-normal sm:hidden">
+                    <span class="font-bold text-4xl sm:font-normal sm:text-sm">{{ convertToLocalCurrency(adjustment.dollarAdjustment) }}</span>
+                    <div>
+                      <dt class="sr-only">
+                        Percent Adjustment
+                      </dt>
+                      <dd class="mt-1 truncate text-white text-xl">
+                        <span v-if="adjustment.percentAdjustment !== 0">{{ adjustment.percentAdjustment }}%</span>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt class="sr-only">
+                        Created Date
+                      </dt>
+                      <dd class="mt-1 truncate text-white text-sm">
+                        {{ formatUTCDate(adjustment.createdDate) }}
+                      </dd>
+                    </div>
+                    <div class="mt-1 flex gap-2 sm:hidden">
+                      <dt class="sr-only">
                         Total to Date
                       </dt>
-                      <dd class="truncate text-white sm:hidden">
+                      <dd class="truncate text-white text-sm">
                         {{ convertToLocalCurrency(adjustment.totalToDate) }}
                       </dd>
                     </div>
                   </dl>
                 </td>
                 <td class="hidden px-3 py-4 text-sm text-white sm:table-cell">
-                  {{ adjustment.percentAdjustment }}%
+                  <span v-if="adjustment.percentAdjustment !== 0" :title="`$${adjustment.dollarAdjustment}`">{{ adjustment.percentAdjustment }}%</span>
                 </td>
                 <td class="hidden px-3 py-4 text-sm text-white sm:table-cell">
                   {{ formatUTCDate(adjustment.createdDate) }}
                 </td>
-                <td class="hidden px-3 py-4 font-bold text-sm text-white sm:table-cell">
+                <td class="hidden px-3 py-4 font-bold text-sm text-white sm:table-cell" :title="`$${adjustment.totalToDate}`">
                   {{ convertToLocalCurrency(adjustment.totalToDate) }}
                 </td>
               <!--              <td v-if="canViewAdmin" class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">-->
