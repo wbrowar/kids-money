@@ -17,7 +17,7 @@ const { canViewAdmin, loggedIn } = useCurrentUser()
       <teleport to="body">
         <LinkButton
           v-if="$route.path !== '/'"
-          class="fixed bottom-4 left-4 bg-primary z-50"
+          class="fixed bottom-5 left-5 bg-primary z-50"
           retain-style
           theme="round"
           title="Home"

@@ -1,4 +1,8 @@
-import { addDollarAdjustmentToTotal, addPercentAdjustmentToTotal } from '~/utils/adjustments'
+import {
+  addDollarAdjustmentToTotal,
+  addPercentAdjustmentToTotal,
+  dollarAdjustmentFromInterestPercentage
+} from '~/utils/adjustments'
 import { log } from '~/utils/console'
 import prisma from '~/utils/prisma'
 
@@ -35,7 +39,7 @@ export default defineEventHandler(async (event) => {
         totalToDate: body.dollarAdjustment + previousAdjustment
       }
     } else if (body.percentAdjustment) {
-      const calculatedDollarAdjustment = (body.percentAdjustment * 0.01) * previousAdjustment
+      const calculatedDollarAdjustment = dollarAdjustmentFromInterestPercentage(body.percentAdjustment, previousAdjustment)
       log('calc', calculatedDollarAdjustment)
       createParams = {
         dollarAdjustment: calculatedDollarAdjustment,

@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { Kid } from '~/types'
+import { estimateInterestTotalOverTime } from '~/utils/adjustments'
 
 const route = useRoute()
 // const { canViewAdmin } = useCurrentUser()
-const { favoriteColor, formatUTCDate, convertToLocalCurrency } = useStringFormatter()
+const { convertToLocalCurrency, favoriteColor, formatUTCDate } = useStringFormatter()
 
 const kidSlug = ref(route.params.kidSlug)
 const tableFilter = ref<'all' | 'dollar' | 'interest'>('all')
@@ -17,6 +18,10 @@ const { data: kid, refresh: refreshKid } = await useFetch<Kid>('/api/get-kid-adj
 if (!kid.value) {
   showError({ statusCode: 500, statusMessage: 'There was an error loading this page.' })
 }
+
+const totalValue = computed(() => {
+  return kid.value?.adjustments[0]?.totalToDate ?? 0
+})
 
 const filteredAdjustments = computed(() => {
   if (kid.value) {
@@ -81,33 +86,84 @@ definePageMeta({
         }"
       >
         <div class="grid items-end gap-8 lg:grid-cols-[minmax(200px,500px)_1fr]">
-          <KidSummary
-            class="max-w-[500px]"
-            :kid="kid"
-            @adjustment-added="refreshKid"
-          />
+          <div>
+            <KidSummary
+              class="mb-4 max-w-[500px]"
+              :kid="kid"
+              @adjustment-added="refreshKid"
+            />
 
-          <div class="text-right">
-            <span class="isolate inline-flex rounded-md shadow-sm">
+            <div
+              class="block px-8 py-4 bg-white border border-primary-300 rounded-lg text-primary shadow-md dark:opacity-90"
+              :style="{
+                borderColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.2 }) : null,
+                color: favoriteColor({ kid })
+              }"
+            >
+              <dl class="flex flex-wrap justify-center gap-6 text-center">
+                <div class="mr-4">
+                  <dd class="text-2xl">
+                    <span>{{ convertToLocalCurrency(dollarAdjustmentFromInterestPercentage(kid.interest, totalValue) ?? 0) }}</span>
+                  </dd>
+                  <dt class="text-sm">
+                    Daily Interest
+                  </dt>
+                </div>
+                <div class="opacity-70">
+                  <dd class="text-2xl">
+                    <span>{{ convertToLocalCurrency(estimateInterestTotalOverTime(7, kid.interest, totalValue) ?? 0) }}</span>
+                  </dd>
+                  <dt class="text-sm">
+                    1 Week
+                  </dt>
+                </div>
+                <div class="opacity-70">
+                  <dd class="text-2xl">
+                    <span>{{ convertToLocalCurrency(estimateInterestTotalOverTime(30, kid.interest, totalValue) ?? 0) }}</span>
+                  </dd>
+                  <dt class="text-sm">
+                    30 Days
+                  </dt>
+                </div>
+                <div class="opacity-70">
+                  <dd class="text-2xl">
+                    <span>{{ convertToLocalCurrency(estimateInterestTotalOverTime(365, kid.interest, totalValue) ?? 0) }}</span>
+                  </dd>
+                  <dt class="text-sm">
+                    1 Year
+                  </dt>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-end justify-end gap-4">
+            <div class="isolate flex h-[42px] rounded-md shadow-sm">
               <button
                 class="relative inline-flex items-center rounded-l-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
                 :class="{ 'bg-[var(--color-favorite-100)] text-white': tableFilter === 'all', 'bg-white text-gray-700 hover:bg-gray-50': tableFilter !== 'all' }"
                 type="button"
                 @click="tableFilter = 'all'"
-              >All</button>
+              >
+                All
+              </button>
               <button
                 class="relative -ml-px inline-flex items-center border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
                 :class="{ 'bg-[var(--color-favorite-100)] text-white': tableFilter === 'dollar', 'bg-white text-gray-700 hover:bg-gray-50': tableFilter !== 'dollar' }"
                 type="button"
                 @click="tableFilter = 'dollar'"
-              >Dollar</button>
+              >
+                Dollar
+              </button>
               <button
                 class="relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
                 :class="{ 'bg-[var(--color-favorite-100)] text-white': tableFilter === 'interest', 'bg-white text-gray-700 hover:bg-gray-50': tableFilter !== 'interest' }"
                 type="button"
                 @click="tableFilter = 'interest'"
-              >Interest</button>
-            </span>
+              >
+                Interest
+              </button>
+            </div>
           </div>
         </div>
 
@@ -132,6 +188,7 @@ definePageMeta({
               <!--              </th>-->
               </tr>
             </thead>
+
             <tbody class="divide-y divide-[var(--color-favorite-100)] bg-[var(--color-favorite-80)]">
               <tr v-for="adjustment in filteredAdjustments" :key="adjustment.id">
                 <td class="w-full max-w-0 py-4 pl-4 pr-3 text-white sm:w-auto sm:max-w-none sm:pl-6">
