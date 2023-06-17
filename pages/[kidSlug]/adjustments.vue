@@ -94,19 +94,25 @@ definePageMeta({
             />
 
             <div
-              class="@container block px-6 py-4 bg-white border border-primary-300 rounded-lg text-primary shadow-md dark:opacity-90"
+              class="@container block p-5 bg-white border border-primary-300 rounded-lg text-primary shadow-md dark:opacity-90"
               :style="{
                 borderColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.2 }) : null,
                 color: favoriteColor({ kid })
               }"
             >
               <dl class="grid grid-cols-2 justify-center gap-6 text-center @sm:grid-cols-4">
-                <div>
+                <div
+                  class="bg-primary/20 outline outline-8 rounded-sm"
+                  :style="{
+                    backgroundColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.1 }) : null,
+                    outlineColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.1 }) : null,
+                  }"
+                >
                   <dd class="text-2xl">
                     <span>{{ convertToLocalCurrency(dollarAdjustmentFromInterestPercentage(kid.interest, totalValue) ?? 0) }}</span>
                   </dd>
                   <dt class="text-sm">
-                    1 Day
+                    Daily
                   </dt>
                 </div>
                 <div class="opacity-70">
