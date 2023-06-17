@@ -19,9 +19,9 @@ const dollarAdjustmentInputPlaceholder = computed(() => {
   return convertToLocalCurrency(0, { signDisplay: 'never' })
 })
 const gridColumns = computed(() => {
-  if (props.kid?.allowance > 0 && props.kid.interest > 0) {
+  if (props.kid?.allowance > 0 && props.kid?.interest > 0) {
     return '1fr max-content max-content'
-  } else if (props.kid?.allowance > 0 || props.kid.interest > 0) {
+  } else if (props.kid?.allowance > 0 || props.kid?.interest > 0) {
     return '1fr max-content'
   }
 
@@ -137,8 +137,8 @@ function validateDollarAdjustment () {
 <template>
   <div class="@container/adjustment-form">
     <form action="">
-      <div class="grid grid-cols-2 gap-4 w-full @sm/adjustment-form:grid-cols-[var(--grid-cols)]" :style="{ '--grid-cols': gridColumns }">
-        <div class="grid grid-cols-[1fr_45px_45px] gap-2 col-span-2 @sm/adjustment-form:col-span-1">
+      <div class="grid grid-cols-[1fr_100px] gap-4 w-full @md/adjustment-form:grid-cols-[var(--grid-cols)]" :style="{ '--grid-cols': gridColumns }">
+        <div class="grid grid-cols-[1fr_45px_45px] gap-2">
           <label for="email" class="sr-only">Add Adjustment</label>
           <input
             id="dollarAdjustment"
