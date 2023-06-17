@@ -50,7 +50,7 @@ const props = defineProps({
   to: [Object, String],
   theme: {
     default: 'default',
-    type: String as PropType<'default' | 'small'>
+    type: String as PropType<'default' | 'round' | 'small'>
   },
   unstyle: {
     default: false,
@@ -64,15 +64,18 @@ const classes = computed(() => {
   if (styleAsButton.value) {
     classes.push('inline-flex flex-row flex-no-wrap items-center justify-center')
 
-    if (['default', 'small'].includes(props.theme)) {
-      classes.push('rounded-md border border-transparent font-medium text-white shadow-sm hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 sm:w-auto')
+    if (['default', 'round', 'small'].includes(props.theme)) {
+      classes.push('border border-transparent font-medium text-white shadow-sm hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2')
     }
     switch (props.theme) {
       case 'default':
-        classes.push('px-4 py-2 text-sm')
+        classes.push('px-4 py-2 rounded-md text-sm sm:w-auto')
+        break
+      case 'round':
+        classes.push('px-2 py-1 w-14 h-14 rounded-full text-xs')
         break
       case 'small':
-        classes.push('px-2 py-1 text-xs')
+        classes.push('px-2 py-1 rounded-md text-xs sm:w-auto')
         break
     }
     if (props.href) {

@@ -142,7 +142,7 @@ definePageMeta({
                       <dt class="sr-only">
                         Percent Adjustment
                       </dt>
-                      <dd class="mt-1 truncate text-white text-xl">
+                      <dd class="mt-1 truncate text-white text-xl opacity-70">
                         <span v-if="adjustment.percentAdjustment !== 0">{{ adjustment.percentAdjustment }}%</span>
                       </dd>
                     </div>
@@ -150,24 +150,24 @@ definePageMeta({
                       <dt class="sr-only">
                         Created Date
                       </dt>
-                      <dd class="mt-1 truncate text-white text-sm">
-                        {{ formatUTCDate(adjustment.createdDate) }}
+                      <dd class="mt-1 truncate text-white text-sm opacity-70">
+                        <i>{{ formatUTCDate(adjustment.createdDate) }}</i>
                       </dd>
                     </div>
                     <div class="mt-1 flex gap-2 sm:hidden">
                       <dt class="sr-only">
                         Total to Date
                       </dt>
-                      <dd class="truncate text-white text-sm">
+                      <dd class="truncate text-white text-sm opacity-90">
                         {{ convertToLocalCurrency(adjustment.totalToDate) }}
                       </dd>
                     </div>
                   </dl>
                 </td>
-                <td class="hidden px-3 py-4 text-sm text-white sm:table-cell">
+                <td class="hidden px-3 py-4 text-sm text-white opacity-80 sm:table-cell">
                   <span v-if="adjustment.percentAdjustment !== 0" :title="`$${adjustment.dollarAdjustment}`">{{ adjustment.percentAdjustment }}%</span>
                 </td>
-                <td class="hidden px-3 py-4 text-sm text-white sm:table-cell">
+                <td class="hidden px-3 py-4 text-sm text-white opacity-80 sm:table-cell">
                   {{ formatUTCDate(adjustment.createdDate) }}
                 </td>
                 <td class="hidden px-3 py-4 font-bold text-sm text-white sm:table-cell" :title="`$${adjustment.totalToDate}`">

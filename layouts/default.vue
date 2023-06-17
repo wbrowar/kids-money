@@ -14,19 +14,21 @@ const { canViewAdmin, loggedIn } = useCurrentUser()
     </div>
 
     <div v-if="loggedIn" class="inline-block absolute top-3 right-3 space-x-2">
-      <LinkButton
-        v-if="$route.path !== '/'"
-        class="bg-primary"
-        retain-style
-        theme="small"
-        title="Home"
-        to="/"
-      >
-        <div class="sr-only">
-          Home
-        </div>
-        <IconHome />
-      </LinkButton>
+      <teleport to="body">
+        <LinkButton
+          v-if="$route.path !== '/'"
+          class="fixed bottom-4 left-4 bg-primary z-50"
+          retain-style
+          theme="round"
+          title="Home"
+          to="/"
+        >
+          <div class="sr-only">
+            Home
+          </div>
+          <IconHome />
+        </LinkButton>
+      </teleport>
       <slot name="action-buttons" />
       <LinkButton
         v-if="canViewAdmin"
