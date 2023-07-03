@@ -14,21 +14,6 @@ export function addDollarAdjustmentToTotal (adjustment: number, total: number) {
 }
 
 /*
- * Adds a percentage value to a total number.
- *
- * @param adjustment A percentage as a decimal.
- * @param total The current total that the `adjustment` will be added to.
- *
- * ```
- * addPercentAdjustmentToTotal(0.5, 100)
- * // 100.05
- * ```
- */
-export function addPercentAdjustmentToTotal (adjustment: number, total: number) {
-  return (adjustment * total) + total
-}
-
-/*
  * Calculates the dollar adjustment from a total and an interest percentage.
  *
  * @param percentAdjustment A percentage as a decimal.

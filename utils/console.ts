@@ -55,7 +55,7 @@ export function log (...args: any[]) {
  * ```
  */
 export function table (...args: any[]) {
-  logger('log', args)
+  logger('table', args)
 }
 
 /*

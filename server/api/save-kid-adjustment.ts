@@ -1,6 +1,4 @@
 import {
-  addDollarAdjustmentToTotal,
-  addPercentAdjustmentToTotal,
   dollarAdjustmentFromInterestPercentage
 } from '~/utils/adjustments'
 import { log } from '~/utils/console'

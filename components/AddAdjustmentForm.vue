@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { PropType } from 'vue'
 import { Kid } from '~/types'
-import { addPercentAdjustmentToTotal } from '~/utils/adjustments'
+import { dollarAdjustmentFromInterestPercentage } from '~/utils/adjustments'
 
 const emit = defineEmits(['adjustment-added', 'mouseover-element'])
 const props = defineProps({
@@ -98,7 +98,7 @@ async function addInterest () {
 
   log('Adding allowance for kid', props.kid?.interest, props.kid.name)
 
-  const adjustment = addPercentAdjustmentToTotal(props.kid.interest, props.kid?.adjustments[0].totalToDate ?? 0)
+  const adjustment = dollarAdjustmentFromInterestPercentage(props.kid.interest, props.kid?.adjustments[0].totalToDate ?? 0)
 
   if (adjustment === 0) {
     return
