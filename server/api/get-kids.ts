@@ -61,6 +61,13 @@ export default defineEventHandler(async (event) => {
       kids = await prisma.kid.findMany()
     }
     if (kids.length) {
+      if (body?.screenshotMode) {
+        return kids.map((kid, index) => {
+          kid.name = `Kid ${index + 1}`
+          kid.photoUrl = 'http://placekitten.com/g/200/300'
+          return kid
+        })
+      }
       return kids
     }
     return []

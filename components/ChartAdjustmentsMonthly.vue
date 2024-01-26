@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import Chart from 'chart.js/auto'
 import GroupBy from 'lodash-es/groupBy'
-import { PropType } from 'vue'
-import { Adjustment, Kid } from '~/types'
+import type { Adjustment, Kid } from '~/types'
 import { useStringFormatter } from '~/composables/useStringFormatter'
 
 const props = defineProps({

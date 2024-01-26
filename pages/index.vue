@@ -1,9 +1,14 @@
 <script lang="ts" setup>
 const { canViewAdmin } = useCurrentUser()
 
+const screenshotModeCookie = useCookie<boolean>('screenshot-mode', {
+  default: () => false
+})
+
 const { data: kids, refresh: refreshKids } = await useFetch('/api/get-kids', {
   body: {
-    includeAdjustments: true
+    includeAdjustments: true,
+    screenshotMode: screenshotModeCookie.value
   },
   method: 'post'
 })

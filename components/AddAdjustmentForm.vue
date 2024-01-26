@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { PropType } from 'vue'
-import { Kid } from '~/types'
+import type { Kid } from '~/types'
 import { dollarAdjustmentFromInterestPercentage } from '~/utils/adjustments'
 
 const emit = defineEmits(['adjustment-added', 'mouseover-element'])

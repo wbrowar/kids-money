@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useStringFormatter } from '~/composables/useStringFormatter'
-import { Kid } from '~/types'
+import type { Kid } from '~/types'
 
 const route = useRoute()
 
@@ -10,8 +10,13 @@ const kidSlug = ref(route.params.kidSlug)
 const colorEditable = ref(false)
 const editedKidColorPicker = ref('#1FD22C')
 
+const screenshotModeCookie = useCookie<boolean>('screenshot-mode', {
+  default: () => false
+})
+
 const { data: kid, refresh: refreshKid } = await useFetch<Kid>('/api/get-kid-adjustments', {
   body: {
+    screenshotMode: screenshotModeCookie.value,
     slug: kidSlug.value
   },
   method: 'post'

@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { PropType } from 'vue'
-
 const emit = defineEmits(['clicked'])
 const props = defineProps({
   ariaLabel: {

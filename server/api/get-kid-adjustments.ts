@@ -45,7 +45,13 @@ export default defineEventHandler(async (event) => {
         slug: body.slug
       }
     })
-    if (kid ?? false) {
+    if (kid) {
+      if (body?.screenshotMode) {
+        kid.name = 'Kid Name'
+        kid.photoUrl = 'http://placekitten.com/g/200/300'
+        return kid
+      }
+
       return kid
     }
     return []

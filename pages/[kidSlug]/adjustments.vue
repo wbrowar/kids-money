@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Kid } from '~/types'
+import type { Kid } from '~/types'
 import { estimateInterestTotalOverTime } from '~/utils/adjustments'
 
 const route = useRoute()
@@ -9,8 +9,13 @@ const { convertToLocalCurrency, favoriteColor, formatUTCDate } = useStringFormat
 const kidSlug = ref(route.params.kidSlug)
 const tableFilter = ref<'all' | 'dollar' | 'interest'>('all')
 
+const screenshotModeCookie = useCookie<boolean>('screenshot-mode', {
+  default: () => false
+})
+
 const { data: kid, refresh: refreshKid } = await useFetch<Kid>('/api/get-kid-adjustments', {
   body: {
+    screenshotMode: screenshotModeCookie.value,
     slug: kidSlug.value
   },
   method: 'post'

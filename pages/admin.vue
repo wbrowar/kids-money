@@ -1,10 +1,17 @@
 <script lang="ts" setup>
-import { Kid } from '~/types'
+import type { Kid } from '~/types'
 import { useStringFormatter } from '~/composables/useStringFormatter'
 
 const { colorIsRgb, hexToRgb, favoriteColor, rgbToHex } = useStringFormatter()
 
+const screenshotModeCookie = useCookie<boolean>('screenshot-mode', {
+  default: () => false
+})
+
 const { data: kids, refresh: refreshKids } = await useFetch('/api/get-kids', {
+  body: {
+    screenshotMode: screenshotModeCookie.value
+  },
   method: 'post'
 })
 if (!kids.value) {
@@ -105,6 +112,11 @@ watch(editedKidColorPicker, () => {
   editedKidColor.value = hexToRgb(editedKidColorPicker.value)
 })
 
+function toggleScreenshotMode () {
+  log('Setting screenshot mode', screenshotModeCookie.value)
+  screenshotModeCookie.value = !screenshotModeCookie.value
+}
+
 const containerRef = ref()
 const containerWidth = ref()
 const resizeObserver = ref<ResizeObserver>()
@@ -186,7 +198,7 @@ definePageMeta({
                   </tr>
                 </thead>
                 <tbody class="w-full divide-y divide-gray-200 dark:divide-primary-200">
-                  <tr v-for="kid in kids" :key="kid.slug" class="w-full">
+                  <tr v-for="(kid, index) in kids" :key="kid.slug" class="w-full">
                     <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-bold text-gray-900 sm:w-auto sm:max-w-none sm:pl-6 dark:text-slate-200">
                       {{ kid.name }}
                       <dl class="grid grid-cols-3 mt-4 w-full font-normal md:hidden">
@@ -195,7 +207,7 @@ definePageMeta({
                             Slug
                           </dt>
                           <dd class="mt-1 truncate text-gray-700 dark:text-primary-800">
-                            {{ kid.slug }}
+                            {{ screenshotModeCookie ? `kid-${index}` : kid.slug }}
                           </dd>
                         </div>
                         <div>
@@ -272,7 +284,7 @@ definePageMeta({
                       </dl>
                     </td>
                     <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-primary-800 md:table-cell">
-                      {{ kid.slug }}
+                      {{ screenshotModeCookie ? `kid-${index}` : kid.slug }}
                     </td>
                     <td class="hidden px-3 py-4 text-sm text-gray-500 dark:text-primary-800 md:table-cell">
                       <img v-if="kid.photoUrl" class="w-16 h-16 rounded-full object-cover shadow border-4" :src="kid.photoUrl" :style="{ borderColor: favoriteColor({ kid, opacity:.7 }) }">
@@ -498,11 +510,21 @@ definePageMeta({
             Users
           </h2>
           <ul class="grid grid-cols-3 gap-10 mt-8 lg:grid-cols-8">
-            <li v-for="user in users" :key="user.username">
-              <span class="block font-semibold text-2xl text-gray-800 dark:text-gray-200">{{ user.username }}</span>
+            <li v-for="(user, index) in users" :key="user.username">
+              <span class="block font-semibold text-2xl text-gray-800 dark:text-gray-200">{{ screenshotModeCookie ? `User ${index}` : user.username }}</span>
               <span class="block font-semibold text-xs leading-tight text-gray-600 uppercase dark:text-gray-300">{{ user.grownUp ? 'Admin' : 'Non-Admin' }}</span>
             </li>
           </ul>
+        </div>
+        <div>
+          <h2 class="text-primary-700 text-2xl dark:text-slate-300">
+            Dev
+          </h2>
+          <LinkButton
+            class="bg-primary mt-8"
+            :label-text="`Screenshot mode: ${screenshotModeCookie ? 'ENABLED' : 'DISABLED'}`"
+            @clicked="toggleScreenshotMode"
+          />
         </div>
       </div>
     </NuxtLayout>

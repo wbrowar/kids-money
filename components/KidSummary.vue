@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { useStringFormatter } from '~/composables/useStringFormatter'
-import { Kid } from '~/types'
+import type { Kid } from '~/types'
 
 const emit = defineEmits(['adjustment-added'])
 const props = defineProps({
