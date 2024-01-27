@@ -148,7 +148,10 @@ definePageMeta({
             </div>
           </div>
 
-          <div class="flex flex-wrap items-end justify-end gap-4">
+          <div class="flex flex-col items-end justify-end gap-4">
+            <div class="flex-grow w-full">
+              <ChartAllForKid :adjustments="filteredAdjustments" :color="favoriteColor({ kid })" />
+            </div>
             <div class="isolate flex h-[42px] rounded-md shadow-sm">
               <button
                 class="relative inline-flex items-center rounded-l-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
