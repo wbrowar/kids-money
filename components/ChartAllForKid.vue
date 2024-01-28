@@ -18,8 +18,11 @@ const chartRef = ref()
 let chart: Chart
 
 const datasets = computed(() => {
-  const data: {x: string; y: number}[] = props.adjustments?.map((adjustment) => {
-    return { x: new Date(adjustment.createdDate).toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' }), y: adjustment.totalToDate }
+  const data: {x: string; y: number}[] | {}[] = props.adjustments?.map((adjustment, index) => {
+    if (index < 60) {
+      return { x: new Date(adjustment.createdDate).toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' }), y: adjustment.totalToDate }
+    }
+    return {}
   })
 
   return [{
@@ -47,7 +50,7 @@ onMounted(() => {
             },
             title: {
               display: true,
-              text: 'All Adjustments'
+              text: '60 Most Recent'
             }
           },
           responsive: true,
