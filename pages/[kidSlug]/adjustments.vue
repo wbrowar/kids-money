@@ -2,12 +2,15 @@
 import type { Kid } from '~/types'
 import { estimateInterestTotalOverTime } from '~/utils/adjustments'
 
+const chart = ref()
+
 const route = useRoute()
 // const { canViewAdmin } = useCurrentUser()
 const { convertToLocalCurrency, favoriteColor, formatUTCDate } = useStringFormatter()
 
 const kidSlug = ref(route.params.kidSlug)
 const tableFilter = ref<'all' | 'dollar' | 'interest'>('all')
+const tableRowLimit = ref<'30' | '60' | 'all'>('30')
 
 const screenshotModeCookie = useCookie<boolean>('screenshot-mode', {
   default: () => false
@@ -30,6 +33,7 @@ const totalValue = computed(() => {
 
 const filteredAdjustments = computed(() => {
   if (kid.value) {
+    // Filter by adjustment type
     if (tableFilter.value === 'dollar') {
       return kid.value.adjustments.filter(adjustment => adjustment.percentAdjustment === 0)
     }
@@ -39,6 +43,37 @@ const filteredAdjustments = computed(() => {
 
     return kid.value.adjustments
   }
+
+  return []
+})
+
+const limitedAdjustments = computed(() => {
+  if (tableRowLimit.value !== 'all') {
+    // Limit results based on `tableRowLimit`
+    let compareToDate: Date
+
+    const today = new Date()
+    switch (tableRowLimit.value) {
+      case '30':
+        compareToDate = new Date(new Date().setDate(today.getDate() - 30))
+        break
+      case '60':
+        compareToDate = new Date(new Date().setDate(today.getDate() - 60))
+        break
+    }
+
+    if (compareToDate) {
+      return filteredAdjustments.value.filter((adjustment) => {
+        return new Date(adjustment.createdDate).getTime() > compareToDate.getTime()
+      })
+    }
+  }
+
+  return filteredAdjustments.value
+})
+
+watch(() => limitedAdjustments, () => {
+  chart.value.updateChart()
 })
 
 definePageMeta({
@@ -150,33 +185,62 @@ definePageMeta({
 
           <div class="flex flex-col items-end justify-end gap-4">
             <div class="flex-grow w-full">
-              <ChartAllForKid :adjustments="filteredAdjustments" :color="favoriteColor({ kid })" />
+              <ChartAllForKid ref="chart" :adjustments="limitedAdjustments" :color="favoriteColor({ kid })" />
             </div>
-            <div class="isolate flex h-[42px] rounded-md shadow-sm">
-              <button
-                class="relative inline-flex items-center rounded-l-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
-                :class="{ 'bg-[var(--color-favorite-100)] text-white': tableFilter === 'all', 'bg-white text-gray-700 hover:bg-gray-50': tableFilter !== 'all' }"
-                type="button"
-                @click="tableFilter = 'all'"
-              >
-                All
-              </button>
-              <button
-                class="relative -ml-px inline-flex items-center border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
-                :class="{ 'bg-[var(--color-favorite-100)] text-white': tableFilter === 'dollar', 'bg-white text-gray-700 hover:bg-gray-50': tableFilter !== 'dollar' }"
-                type="button"
-                @click="tableFilter = 'dollar'"
-              >
-                Dollar
-              </button>
-              <button
-                class="relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
-                :class="{ 'bg-[var(--color-favorite-100)] text-white': tableFilter === 'interest', 'bg-white text-gray-700 hover:bg-gray-50': tableFilter !== 'interest' }"
-                type="button"
-                @click="tableFilter = 'interest'"
-              >
-                Interest
-              </button>
+            <div class="flex justify-between gap-4">
+              <div class="isolate flex h-[42px] rounded-md shadow-sm">
+                <button
+                  class="relative inline-flex items-center rounded-l-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
+                  :class="{ 'bg-[var(--color-favorite-100)] text-white': tableRowLimit === '30', 'bg-white text-gray-700 hover:bg-gray-50': tableRowLimit !== '30' }"
+                  type="button"
+                  @click="tableRowLimit = '30'"
+                >
+                  30 Days
+                </button>
+                <button
+                  class="relative -ml-px inline-flex items-center border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
+                  :class="{ 'bg-[var(--color-favorite-100)] text-white': tableRowLimit === '60', 'bg-white text-gray-700 hover:bg-gray-50': tableRowLimit !== '60' }"
+                  type="button"
+                  @click="tableRowLimit = '60'"
+                >
+                  60 Days
+                </button>
+                <button
+                  class="relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
+                  :class="{ 'bg-[var(--color-favorite-100)] text-white': tableRowLimit === 'all', 'bg-white text-gray-700 hover:bg-gray-50': tableRowLimit !== 'all' }"
+                  type="button"
+                  @click="tableRowLimit = 'all'"
+                >
+                  All
+                </button>
+              </div>
+
+              <div class="isolate flex h-[42px] rounded-md shadow-sm">
+                <button
+                  class="relative inline-flex items-center rounded-l-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
+                  :class="{ 'bg-[var(--color-favorite-100)] text-white': tableFilter === 'all', 'bg-white text-gray-700 hover:bg-gray-50': tableFilter !== 'all' }"
+                  type="button"
+                  @click="tableFilter = 'all'"
+                >
+                  All
+                </button>
+                <button
+                  class="relative -ml-px inline-flex items-center border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
+                  :class="{ 'bg-[var(--color-favorite-100)] text-white': tableFilter === 'dollar', 'bg-white text-gray-700 hover:bg-gray-50': tableFilter !== 'dollar' }"
+                  type="button"
+                  @click="tableFilter = 'dollar'"
+                >
+                  Dollar
+                </button>
+                <button
+                  class="relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
+                  :class="{ 'bg-[var(--color-favorite-100)] text-white': tableFilter === 'interest', 'bg-white text-gray-700 hover:bg-gray-50': tableFilter !== 'interest' }"
+                  type="button"
+                  @click="tableFilter = 'interest'"
+                >
+                  Interest
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -204,7 +268,7 @@ definePageMeta({
             </thead>
 
             <tbody class="divide-y divide-[var(--color-favorite-100)] bg-[var(--color-favorite-80)]">
-              <tr v-for="adjustment in filteredAdjustments" :key="adjustment.id">
+              <tr v-for="adjustment in limitedAdjustments" :key="adjustment.id">
                 <td class="w-full max-w-0 py-4 pl-4 pr-3 text-white sm:w-auto sm:max-w-none sm:pl-6">
                   <span class="hidden font-normal text-xl sm:inline" :title="`$${adjustment.dollarAdjustment}`">{{ convertToLocalCurrency(adjustment.dollarAdjustment) }}</span>
                   <dl class="grid grid-cols-[1fr_min-content] gap-2 font-normal sm:hidden">

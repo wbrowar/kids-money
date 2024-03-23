@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import Chart from 'chart.js/auto'
 import type { Adjustment } from '~/types'
-import { useStringFormatter } from '~/composables/useStringFormatter'
 
 const props = defineProps({
   adjustments: {
     required: true,
-    type: Object as PropType<Adjustment[]>
+    type: Array as PropType<Adjustment[]>
   },
   color: {
     default: 'rgb(31 210 44)',
@@ -19,10 +18,7 @@ let chart: Chart
 
 const datasets = computed(() => {
   const data: {x: string; y: number}[] | {}[] = props.adjustments?.map((adjustment, index) => {
-    if (index < 60) {
-      return { x: new Date(adjustment.createdDate).toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' }), y: adjustment.totalToDate }
-    }
-    return {}
+    return { x: new Date(adjustment.createdDate).toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' }), y: adjustment.totalToDate }
   })
 
   return [{
@@ -76,11 +72,19 @@ onMounted(() => {
   }
 })
 
-watch(() => props.adjustments, () => {
+function updateChart () {
   if (chart) {
     chart.data.datasets = datasets.value
     chart.update()
   }
+}
+
+watch(() => props.adjustments, () => {
+  updateChart()
+})
+
+defineExpose({
+  updateChart
 })
 </script>
 
