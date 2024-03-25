@@ -125,7 +125,7 @@ definePageMeta({
           '--color-favorite-50': favoriteColor({kid, opacity: 0.5})
         }"
       >
-        <div class="grid items-end gap-8 lg:grid-cols-[minmax(200px,500px)_1fr]">
+        <div class="@container grid items-end gap-8 lg:grid-cols-[minmax(200px,500px)_1fr]">
           <div>
             <KidSummary
               class="mb-4 max-w-[500px]"
@@ -183,12 +183,12 @@ definePageMeta({
             </div>
           </div>
 
-          <div class="flex flex-col items-end justify-end gap-4">
+          <div class="flex flex-col justify-end gap-4 @sm:items-end">
             <div class="flex-grow w-full">
               <ChartAllForKid ref="chart" :adjustments="limitedAdjustments" :color="favoriteColor({ kid })" />
             </div>
-            <div class="flex justify-between gap-4">
-              <div class="isolate flex h-[42px] rounded-md shadow-sm">
+            <div class="flex flex-col gap-4 @sm:flex-row">
+              <div class="isolate flex h-[42px] rounded-md @sm:shadow-sm">
                 <button
                   class="relative inline-flex items-center rounded-l-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
                   :class="{ 'bg-[var(--color-favorite-100)] text-white': tableRowLimit === '30', 'bg-white text-gray-700 hover:bg-gray-50': tableRowLimit !== '30' }"
@@ -215,7 +215,7 @@ definePageMeta({
                 </button>
               </div>
 
-              <div class="isolate flex h-[42px] rounded-md shadow-sm">
+              <div class="isolate flex h-[42px] rounded-md @sm:shadow-sm">
                 <button
                   class="relative inline-flex items-center rounded-l-md border border-gray-300 px-4 py-2 text-sm font-medium focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-[var(--color-favorite-50)] dark:border-gray-800"
                   :class="{ 'bg-[var(--color-favorite-100)] text-white': tableFilter === 'all', 'bg-white text-gray-700 hover:bg-gray-50': tableFilter !== 'all' }"
