@@ -13,12 +13,14 @@ const props = defineProps({
   }
 })
 
+const { selectedCurrency, convertUsdToCurrency } = useCurrency()
+
 const chartRef = ref()
 let chart: Chart
 
 const datasets = computed(() => {
   const data: {x: string; y: number}[] | {}[] = props.adjustments?.map((adjustment, index) => {
-    return { x: new Date(adjustment.createdDate).toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' }), y: adjustment.totalToDate }
+    return { x: new Date(adjustment.createdDate).toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' }), y: convertUsdToCurrency(adjustment.totalToDate) }
   })
 
   return [{
@@ -79,7 +81,7 @@ function updateChart () {
   }
 }
 
-watch(() => props.adjustments, () => {
+watch([() => props.adjustments, selectedCurrency], () => {
   updateChart()
 })
 

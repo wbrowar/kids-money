@@ -125,10 +125,10 @@ definePageMeta({
           '--color-favorite-50': favoriteColor({kid, opacity: 0.5})
         }"
       >
-        <div class="@container grid items-end gap-8 lg:grid-cols-[minmax(200px,500px)_1fr]">
+        <div class="@container grid items-end gap-8 lg:grid-cols-[minmax(200px,600px)_1fr]">
           <div>
             <KidSummary
-              class="mb-4 max-w-[500px]"
+              class="mb-4"
               :kid="kid"
               @adjustment-added="refreshKid"
             />
@@ -148,34 +148,34 @@ definePageMeta({
                     outlineColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.1 }) : null,
                   }"
                 >
-                  <dd class="text-2xl">
+                  <dd class="text-sm @sm:text-lg">
                     <span>{{ convertToLocalCurrency(dollarAdjustmentFromInterestPercentage(kid.interest, totalValue) ?? 0) }}</span>
                   </dd>
-                  <dt class="text-sm">
+                  <dt class="text-xs">
                     Daily
                   </dt>
                 </div>
                 <div class="opacity-70">
-                  <dd class="text-2xl">
+                  <dd class="text-sm @sm:text-lg">
                     <span>{{ convertToLocalCurrency(estimateInterestTotalOverTime(7, kid.interest, totalValue) ?? 0) }}</span>
                   </dd>
-                  <dt class="text-sm">
+                  <dt class="text-xs">
                     1 Week
                   </dt>
                 </div>
                 <div class="opacity-70">
-                  <dd class="text-2xl">
+                  <dd class="text-sm @sm:text-lg">
                     <span>{{ convertToLocalCurrency(estimateInterestTotalOverTime(30, kid.interest, totalValue) ?? 0) }}</span>
                   </dd>
-                  <dt class="text-sm">
+                  <dt class="text-xs">
                     30 Days
                   </dt>
                 </div>
                 <div class="opacity-70">
-                  <dd class="text-2xl">
+                  <dd class="text-sm @sm:text-lg">
                     <span>{{ convertToLocalCurrency(estimateInterestTotalOverTime(365, kid.interest, totalValue) ?? 0) }}</span>
                   </dd>
-                  <dt class="text-sm">
+                  <dt class="text-xs">
                     1 Year
                   </dt>
                 </div>

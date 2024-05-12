@@ -70,7 +70,7 @@ const classes = computed(() => {
         classes.push('px-4 py-2 rounded-md text-sm sm:w-auto')
         break
       case 'round':
-        classes.push('px-2 py-1 w-14 h-14 rounded-full text-xs')
+        classes.push('px-2 py-1 w-12 h-12 rounded-full text-xs')
         break
       case 'small':
         classes.push('px-2 py-1 rounded-md text-xs sm:w-auto')
