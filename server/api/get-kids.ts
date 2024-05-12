@@ -16,8 +16,8 @@ export default defineEventHandler(async (event) => {
         id: 0,
         interest: 0.01,
         name: 'Kid 1',
-        photoUrl: 'http://placekitten.com/g/200/300',
-        savingFor: 'http://placekitten.com/g/400/600',
+        photoUrl: 'https://i.pravatar.cc/300',
+        savingFor: 'https://i.pravatar.cc/600',
         savingForType: 'image',
         slug: 'kid-1'
       },
@@ -64,7 +64,7 @@ export default defineEventHandler(async (event) => {
       if (body?.screenshotMode) {
         return kids.map((kid, index) => {
           kid.name = `Kid ${index + 1}`
-          kid.photoUrl = 'http://placekitten.com/g/200/300'
+          kid.photoUrl = 'https://i.pravatar.cc/300'
           return kid
         })
       }

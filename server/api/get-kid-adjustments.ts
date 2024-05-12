@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
     if (kid) {
       if (body?.screenshotMode) {
         kid.name = 'Kid Name'
-        kid.photoUrl = 'http://placekitten.com/g/200/300'
+        kid.photoUrl = 'https://i.pravatar.cc/300'
         return kid
       }
 

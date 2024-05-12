@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+
 const { canViewAdmin } = useCurrentUser()
 
 const screenshotModeCookie = useCookie<boolean>('screenshot-mode', {

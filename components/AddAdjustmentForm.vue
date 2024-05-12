@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Kid } from '~/types'
-import { dollarAdjustmentFromInterestPercentage } from '~/utils/adjustments'
+import { Currency } from '~/constants/currencies'
 
 const emit = defineEmits(['adjustment-added', 'mouseover-element'])
 const props = defineProps({
@@ -10,6 +10,7 @@ const props = defineProps({
   }
 })
 
+const { selectedCurrency, convertCurrencyToUsd } = useCurrency()
 const { convertToLocalCurrency } = useStringFormatter()
 
 const canAdd = ref(true)
@@ -18,13 +19,19 @@ const dollarAdjustmentInputPlaceholder = computed(() => {
   return convertToLocalCurrency(0, { signDisplay: 'never' })
 })
 const gridColumns = computed(() => {
-  if (props.kid?.allowance > 0 && props.kid?.interest > 0) {
-    return '1fr max-content max-content'
-  } else if (props.kid?.allowance > 0 || props.kid?.interest > 0) {
+  if (selectedCurrency.value !== Currency.UnitedStatesDollar) {
     return '1fr max-content'
   }
 
   return '1fr'
+})
+
+const dollarAdjustmentInUsd = computed(() => {
+  if (selectedCurrency.value === Currency.UnitedStatesDollar) {
+    return dollarAdjustment.value
+  }
+
+  return convertCurrencyToUsd(dollarAdjustment.value ?? 0)
 })
 
 async function addAdjustment ({ mode }: { mode: 'add' | 'subtract' } = { mode: 'add' }) {
@@ -34,15 +41,15 @@ async function addAdjustment ({ mode }: { mode: 'add' | 'subtract' } = { mode: '
     return
   }
 
-  log('Adding adjustment for kid', dollarAdjustment.value, props.kid.name)
+  log('Adding adjustment for kid', dollarAdjustmentInUsd.value, props.kid.name)
 
   validateDollarAdjustment()
 
-  if (dollarAdjustment.value === 0 || typeof dollarAdjustment.value !== 'number') {
+  if (dollarAdjustmentInUsd.value === 0 || typeof dollarAdjustmentInUsd.value !== 'number') {
     return
   }
 
-  const dollarValue = mode === 'subtract' ? dollarAdjustment.value * -1 : dollarAdjustment.value
+  const dollarValue = mode === 'subtract' ? dollarAdjustmentInUsd.value * -1 : dollarAdjustmentInUsd.value
 
   const { data } = await useFetch('/api/save-kid-adjustment', {
     body: {
@@ -54,64 +61,6 @@ async function addAdjustment ({ mode }: { mode: 'add' | 'subtract' } = { mode: '
 
   if (data.value) {
     dollarAdjustment.value = undefined
-    emit('adjustment-added')
-  }
-
-  return data.value
-}
-
-async function addAllowance () {
-  if (canAdd.value) {
-    debounceAdd()
-  } else {
-    return
-  }
-
-  log('Adding allowance for kid', props.kid?.allowance, props.kid.name)
-
-  if (props.kid?.allowance === 0) {
-    return
-  }
-
-  const { data } = await useFetch('/api/save-kid-adjustment', {
-    body: {
-      dollarAdjustment: props.kid.allowance,
-      id: props.kid.id
-    },
-    method: 'post'
-  })
-
-  if (data.value) {
-    emit('adjustment-added')
-  }
-
-  return data.value
-}
-
-async function addInterest () {
-  if (canAdd.value) {
-    debounceAdd()
-  } else {
-    return
-  }
-
-  log('Adding allowance for kid', props.kid?.interest, props.kid.name)
-
-  const adjustment = dollarAdjustmentFromInterestPercentage(props.kid.interest, props.kid?.adjustments[0].totalToDate ?? 0)
-
-  if (adjustment === 0) {
-    return
-  }
-
-  const { data } = await useFetch('/api/save-kid-adjustment', {
-    body: {
-      percentAdjustment: props.kid.interest,
-      id: props.kid.id
-    },
-    method: 'post'
-  })
-
-  if (data.value) {
     emit('adjustment-added')
   }
 
@@ -136,7 +85,7 @@ function validateDollarAdjustment () {
 <template>
   <div class="@container/adjustment-form">
     <form action="">
-      <div class="grid grid-cols-[1fr_100px] gap-4 w-full @md/adjustment-form:grid-cols-[var(--grid-cols)]" :style="{ '--grid-cols': gridColumns }">
+      <div class="grid grid-cols-[1fr_100px] items-center gap-4 w-full @md/adjustment-form:grid-cols-[var(--grid-cols)]" :style="{ '--grid-cols': gridColumns }">
         <div class="grid grid-cols-[1fr_45px_45px] gap-2">
           <label for="email" class="sr-only">Add Adjustment</label>
           <input
@@ -152,6 +101,7 @@ function validateDollarAdjustment () {
             @blur="validateDollarAdjustment"
             @mouseover="emit('mouseover-element', { target: 'field', tooltip: `Enter an amount to add or subtract from total` })"
           >
+
           <LinkButton
             class="!px-0 !py-0 bg-positive"
             :disabled="dollarAdjustment === 0"
@@ -166,6 +116,7 @@ function validateDollarAdjustment () {
             </div>
             <IconAdd class="w-5 h-5" />
           </LinkButton>
+
           <LinkButton
             class="!px-0 !py-0 bg-negative"
             :disabled="dollarAdjustment === 0"
@@ -182,33 +133,9 @@ function validateDollarAdjustment () {
           </LinkButton>
         </div>
 
-        <LinkButton
-          v-if="kid.allowance > 0"
-          class="bg-primary"
-          :class="{ 'bg-gray-200 cursor-not-allowed': kid.allowance <= 0 }"
-          element-type="button"
-          type="button"
-          retain-style
-          @click="addAllowance"
-          @mouseover="emit('mouseover-element', { target: 'allowance', tooltip: `Add $${kid.allowance} allowance to total` })"
-        >
-          <IconAdd class="w-4 h-4" />
-          <span>Allowance</span>
-        </LinkButton>
-
-        <LinkButton
-          v-if="kid.interest > 0"
-          class="bg-primary"
-          :class="{ 'bg-gray-200 cursor-not-allowed': kid.interest <= 0 }"
-          element-type="button"
-          type="button"
-          retain-style
-          @click="addInterest"
-          @mouseover="emit('mouseover-element', { target: 'allowance', tooltip: `Add ${kid.allowance}% interest to total` })"
-        >
-          <IconAdd class="w-4 h-4" />
-          <span>Interest</span>
-        </LinkButton>
+        <div v-if="selectedCurrency !== Currency.UnitedStatesDollar">
+          {{ convertToLocalCurrency(dollarAdjustmentInUsd, {}, { currency: Currency.UnitedStatesDollar }) }}
+        </div>
       </div>
     </form>
   </div>

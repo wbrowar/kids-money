@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import ConfettiContainer from '~/components/ConfettiContainer.vue'
+import CurrencySelect from '~/components/CurrencySelect.vue'
 
 const { canViewAdmin, loggedIn } = useCurrentUser()
 </script>
@@ -11,24 +12,24 @@ const { canViewAdmin, loggedIn } = useCurrentUser()
     </div>
     <div class="container relative mx-auto px-4 py-16 lg:py-20">
       <slot />
+
+      <CurrencySelect v-if="$route.path === '/' || $route.path.endsWith('/adjustments')" class="mt-16 mx-auto max-w-[900px]" />
     </div>
 
     <div v-if="loggedIn" class="inline-block absolute top-3 right-3 space-x-2">
-      <teleport to="body">
-        <LinkButton
-          v-if="$route.path !== '/'"
-          class="fixed bottom-5 left-5 bg-primary z-50"
-          retain-style
-          theme="round"
-          title="Home"
-          to="/"
-        >
-          <div class="sr-only">
-            Home
-          </div>
-          <IconHome />
-        </LinkButton>
-      </teleport>
+      <LinkButton
+        v-if="$route.path !== '/'"
+        class="bg-primary"
+        retain-style
+        theme="round"
+        title="Home"
+        to="/"
+      >
+        <div class="sr-only">
+          Home
+        </div>
+        <IconHome />
+      </LinkButton>
       <slot name="action-buttons" />
       <LinkButton
         v-if="canViewAdmin"

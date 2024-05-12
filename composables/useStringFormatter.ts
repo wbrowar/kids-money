@@ -1,9 +1,12 @@
 import { Kid } from '~/types'
+import { Currency } from '~/constants/currencies'
 
 /*
  * Helper functions that format strings and take into account reactive data.
  */
 export const useStringFormatter = () => {
+  const { selectedCurrency, convertUsdToCurrency } = useCurrency()
+
   /*
    * Check to see if a color value is in the format:
    *
@@ -51,17 +54,17 @@ export const useStringFormatter = () => {
    * // 64
    * ```
    */
-  function convertToLocalCurrency (value = 0, options: { signDisplay?: string } = {}) {
+  function convertToLocalCurrency (value = 0, formatterOptionOverrides: { signDisplay?: string } = {}, options: { currency?: Currency } = {}) {
     const formatterOptions = {
-      currency: 'USD',
+      currency: options.currency ?? selectedCurrency.value,
       style: 'currency'
     }
 
-    Object.assign(formatterOptions, options)
+    Object.assign(formatterOptions, formatterOptionOverrides)
 
     const formatter = new Intl.NumberFormat('en-US', formatterOptions)
 
-    return formatter.format(value)
+    return formatter.format(options.currency ? value : convertUsdToCurrency(value))
   }
 
   /*
