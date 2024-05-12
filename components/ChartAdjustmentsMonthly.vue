@@ -11,6 +11,8 @@ const props = defineProps({
   }
 })
 
+const { selectedCurrency, convertUsdToCurrency } = useCurrency()
+
 const { favoriteColor } = useStringFormatter()
 
 const chartRef = ref()
@@ -58,7 +60,7 @@ const datasets = computed(() => {
 
       const rowYear = new Date(monthData[0].createdDate)
 
-      monthsData[`${MONTHS[parseInt(key)]} ${rowYear.getFullYear()}`] = lastTotalToDates
+      monthsData[`${MONTHS[parseInt(key)]} ${rowYear.getFullYear()}`] = convertUsdToCurrency(lastTotalToDates)
     })
 
     // Add data in order of labels
@@ -119,7 +121,7 @@ onMounted(() => {
   }
 })
 
-watch(() => props.kids, () => {
+watch([() => props.kids, selectedCurrency], () => {
   if (chart) {
     chart.data.datasets = datasets.value
     chart.update()
