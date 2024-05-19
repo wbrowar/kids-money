@@ -26,7 +26,7 @@ onMounted(() => {
 <template>
   <div class="@container">
     <div class="grid grid-cols-[1fr_1.5rem_1fr] gap-x-2 gap-y-4 @lg:grid-cols-[minmax(200px,400px)_minmax(100px,1fr)_1.5rem_minmax(100px,1fr)]">
-      <div class="col-span-3 @lg:col-span-1">
+      <div class="col-span-3 @lg:col-span-1 dark:text-slate-300">
         <h2 class="text-2xl">
           Set Currency
         </h2>
@@ -35,7 +35,7 @@ onMounted(() => {
         </p>
       </div>
 
-      <div class="col-span-3 row-start-3 @lg:col-start-2 @lg:row-start-1">
+      <div class="col-span-3 row-start-3 @lg:col-start-2 @lg:row-start-1 dark:text-slate-300">
         <h2 class="text-2xl">
           Preview Currency
         </h2>
@@ -45,7 +45,7 @@ onMounted(() => {
       </div>
 
       <div class="col-span-3 @lg:col-span-1">
-        <label for="currency" class="block text-sm font-medium leading-6 text-gray-900">Currency</label>
+        <label for="currency" class="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300">Currency</label>
         <select id="currency" v-model="selectedCurrency" name="currency" class="block w-full rounded-md border-gray-300 text-gray-800 shadow-sm focus:border-primary focus:ring-primary dark:opacity-90">
           <option v-for="currency in Currency" :key="currency" :value="currency">
             {{ currencyDetails[currency].symbol }}: {{ currencyDetails[currency].title }}
@@ -54,7 +54,7 @@ onMounted(() => {
       </div>
 
       <div>
-        <label for="value-usd">{{ currencyDetails[Currency.UnitedStatesDollar].symbol }}</label>
+        <label for="value-usd" class="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300">{{ currencyDetails[Currency.UnitedStatesDollar].symbol }}</label>
         <input
           id="value-usd"
           v-model.number="valueUsd"
@@ -74,7 +74,7 @@ onMounted(() => {
       </div>
 
       <div>
-        <label for="value-converted">{{ currencyDetails[selectedCurrency].symbol }}</label>
+        <label for="value-converted" class="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300">{{ currencyDetails[selectedCurrency].symbol }}</label>
 
         <input
           id="value-converted"

@@ -6,6 +6,7 @@ export default defineNuxtConfig({
       tailwindcss: tailwindConfig
     }
   },
+
   runtimeConfig: {
     public: {
       enableAdminRoute: false,
@@ -13,4 +14,6 @@ export default defineNuxtConfig({
       useMockApiData: false
     }
   },
+
+  modules: ['@vite-pwa/nuxt']
 })

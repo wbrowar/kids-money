@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import type { Kid } from '~/types'
-import { estimateInterestTotalOverTime } from '~/utils/adjustments'
+import { Currency } from '~/constants/currencies'
 
 const chart = ref()
 
 const route = useRoute()
-// const { canViewAdmin } = useCurrentUser()
+const { selectedCurrency } = useCurrency()
 const { convertToLocalCurrency, favoriteColor, formatUTCDate } = useStringFormatter()
 
 const kidSlug = ref(route.params.kidSlug)
@@ -74,6 +74,14 @@ const limitedAdjustments = computed(() => {
 
 watch(() => limitedAdjustments, () => {
   chart.value.updateChart()
+})
+
+const estimateTextClass = computed(() => {
+  if ([Currency.MalaysianRinggit, Currency.SingaporeDollar].includes(selectedCurrency.value)) {
+    return 'text-sm @sm:text-lg'
+  }
+
+  return 'text-xl'
 })
 
 definePageMeta({
@@ -148,7 +156,7 @@ definePageMeta({
                     outlineColor: favoriteColor({ kid }).startsWith('rgb') ? favoriteColor({ kid, opacity:.1 }) : null,
                   }"
                 >
-                  <dd class="text-sm @sm:text-lg">
+                  <dd :class="estimateTextClass">
                     <span>{{ convertToLocalCurrency(dollarAdjustmentFromInterestPercentage(kid.interest, totalValue) ?? 0) }}</span>
                   </dd>
                   <dt class="text-xs">
@@ -156,7 +164,7 @@ definePageMeta({
                   </dt>
                 </div>
                 <div class="opacity-70">
-                  <dd class="text-sm @sm:text-lg">
+                  <dd :class="estimateTextClass">
                     <span>{{ convertToLocalCurrency(estimateInterestTotalOverTime(7, kid.interest, totalValue) ?? 0) }}</span>
                   </dd>
                   <dt class="text-xs">
@@ -164,7 +172,7 @@ definePageMeta({
                   </dt>
                 </div>
                 <div class="opacity-70">
-                  <dd class="text-sm @sm:text-lg">
+                  <dd :class="estimateTextClass">
                     <span>{{ convertToLocalCurrency(estimateInterestTotalOverTime(30, kid.interest, totalValue) ?? 0) }}</span>
                   </dd>
                   <dt class="text-xs">
@@ -172,7 +180,7 @@ definePageMeta({
                   </dt>
                 </div>
                 <div class="opacity-70">
-                  <dd class="text-sm @sm:text-lg">
+                  <dd :class="estimateTextClass">
                     <span>{{ convertToLocalCurrency(estimateInterestTotalOverTime(365, kid.interest, totalValue) ?? 0) }}</span>
                   </dd>
                   <dt class="text-xs">
