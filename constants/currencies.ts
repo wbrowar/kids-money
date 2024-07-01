@@ -10,22 +10,22 @@ export const currencyDetails = {
   [Currency.Euro]: {
     conversionRate: {
       fromUsd: 0.93,
-      toUsd: 1.08
+      toUsd: 1.07
     },
     symbol: '€',
     title: 'Euro'
   },
   [Currency.JapaneseYen]: {
     conversionRate: {
-      fromUsd: 155.78,
-      toUsd: 0.0064
+      fromUsd: 161.26,
+      toUsd: 0.0062
     },
     symbol: '¥',
     title: 'Japanese Yen'
   },
   [Currency.MalaysianRinggit]: {
     conversionRate: {
-      fromUsd: 4.74,
+      fromUsd: 4.713,
       toUsd: 0.21
     },
     symbol: 'MYR',
@@ -33,7 +33,7 @@ export const currencyDetails = {
   },
   [Currency.SingaporeDollar]: {
     conversionRate: {
-      fromUsd: 1.35,
+      fromUsd: 1.36,
       toUsd: 0.74
     },
     symbol: 'SGD',
