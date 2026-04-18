@@ -1,0 +1,61 @@
+{
+  "base": {
+    "color": {
+      "$type": "color",
+      "black": { "$value": "rgb(0 0 0)" },
+      "fpo": { "$value": "oklch(0.7103 0.3503 329.82)" },
+      "green": { "$value": "oklch(0.7751 0.304 149.19)" },
+      "green-dark": { "$value": "oklch(0.186 0.057 146.054)" },
+      "green-light": { "$value": "oklch(0.9574 0.0222 149.19)" },
+      "status": {
+        "error": { "$value": "oklch(0.6456 0.2911 24.36)" },
+        "info": { "$value": "oklch(0.6669 0.1973 249.91)" },
+        "success": { "$value": "oklch(0.7751 0.304 149.19)" }
+      },
+      "white": { "$value": "rgb(255 255 255)" }
+    },
+    "size": {
+      "$type": "dimension",
+      "1": {
+        "$value": "4px",
+        "em": {
+          "$value": "0.25em"
+        },
+        "rem": {
+          "$value": "0.25rem"
+        }
+      },
+      "2": {
+        "$value": "8px",
+        "em": {
+          "$value": "0.5em"
+        },
+        "rem": {
+          "$value": "0.5rem"
+        }
+      },
+      "3": {
+        "$value": "12px",
+        "em": {
+          "$value": "0.75em"
+        },
+        "rem": {
+          "$value": "0.75rem"
+        }
+      },
+      "4": {
+        "$value": "16px",
+        "em": {
+          "$value": "1em"
+        },
+        "rem": {
+          "$value": "1rem"
+        }
+      }
+    }
+  },
+  "color": {
+    "$type": "color",
+    "favorite": { "$value": "{base.color.green}" }
+  }
+}

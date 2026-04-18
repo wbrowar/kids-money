@@ -1,0 +1,76 @@
+{
+  "color": {
+    "$type": "color",
+    "alert": {
+      "error": {
+        "$value": "{base.color.status.error}"
+      },
+      "info": {
+        "$value": "{base.color.status.info}"
+      },
+      "success": {
+        "$value": "{base.color.status.success}"
+      }
+    },
+    "bg": {
+      "site": {
+        "$value": "light-dark({base.color.green-light}, {base.color.green-dark})"
+      }
+    },
+    "fpo": {
+      "$value": "{base.color.fpo}"
+    },
+    "text": {
+      "copy": {
+        "$value": "light-dark({base.color.black}, {base.color.white})"
+      },
+      "header": {
+        "$value": "light-dark({base.color.black}, {base.color.white})"
+      }
+    }
+  },
+  "duration": {
+    "$type": "duration",
+    "hover": {
+      "$value": "0.3s"
+    }
+  },
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "default": {
+        "$value": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'"
+      }
+    },
+    "size": {
+      "$type": "fontSize",
+      "xs": {
+        "$value": "0.75rem"
+      },
+      "sm": {
+        "$value": "0.875rem"
+      },
+      "md": {
+        "$value": "1rem"
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "normal": {
+        "$value": 400
+      },
+      "semibold": {
+        "$value": 600
+      },
+      "bold": {
+        "$value": 700
+      }
+    }
+  },
+  "z-index": {
+    "$type": "number",
+    "alert": {
+      "$value": 5000
+    }
+  }
+}

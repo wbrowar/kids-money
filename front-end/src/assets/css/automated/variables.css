@@ -1,0 +1,22 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --color-alert-error: oklch(0.6456 0.2911 24.36);
+  --color-alert-info: oklch(0.6669 0.1973 249.91);
+  --color-alert-success: oklch(0.7751 0.304 149.19);
+  --color-bg-site: light-dark(oklch(0.9574 0.0222 149.19), oklch(0.186 0.057 146.054));
+  --color-fpo: oklch(0.7103 0.3503 329.82);
+  --color-text-copy: light-dark(#000000, #ffffff);
+  --color-text-header: light-dark(#000000, #ffffff);
+  --duration-hover: 0.3s;
+  --font-family-default: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --z-index-alert: 5000;
+}

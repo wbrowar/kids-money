@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch ./server.ts",
+    "prisma:migrate:up": "prisma migrate deploy",
+    "prisma:studio": "npx prisma studio",
+    "start": "tsx ./server.ts"
+  },
+  "type": "module",
+  "dependencies": {
+    "@prisma/client": "7.7.0"
+  },
+  "devDependencies": {
+    "@prisma/adapter-better-sqlite3": "7.7.0",
+    "@types/cors": "2.8.6",
+    "@types/express": "5.0.6",
+    "better-sqlite3": "12.9.0",
+    "cors": "2.8.6",
+    "express": "5.2.1",
+    "jsdom": "29.0.1",
+    "prisma": "7.7.0",
+    "style-dictionary": "5.4.0",
+    "tsx": "4.1.0",
+    "typescript": "6.0.2",
+    "vitest": "4.1.4"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "kid": {
+    "avatar-border": {
+      "$type": "color",
+      "$value": "{color.favorite}"
+    }
+  }
+}

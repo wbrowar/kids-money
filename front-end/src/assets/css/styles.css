@@ -1,0 +1,17 @@
+@import './automated/variables.css';
+@import './automated/variables-kid.css';
+
+@import '@/layouts/km-layout.css';
+
+body {
+  color-scheme: light dark;
+  margin: 0;
+  background-color: var(--color-bg-site);
+  color: var(--color-text-copy);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-hover: 0.01s;
+  }
+}
