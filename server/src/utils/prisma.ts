@@ -1,5 +1,5 @@
 import { loadEnvFile } from 'node:process'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../../prisma/generated/client'
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 
 loadEnvFile()
@@ -19,8 +19,11 @@ loadEnvFile()
  * ```
  */
 
-const adapter = new PrismaBetterSqlite3({
-  url: process.env.DATABASE_URL,
-})
+const adapter = new PrismaBetterSqlite3(
+  {
+    url: process.env.DATABASE_URL,
+  },
+  { timestampFormat: 'unixepoch-ms' }
+)
 
 export const prisma = new PrismaClient({ adapter })

@@ -1,12 +1,15 @@
 import { html, LitElement, nothing } from 'lit'
 import { classMap } from 'lit/directives/class-map.js'
-import { Route } from 'types'
+import { Kid, Route, ServerRoute } from 'types'
 import { SignalWatcher, watch } from '@lit-labs/signals'
 import { UserLoggedInEvent } from '@/pages/km-page-login.ts'
 import { currentRoute, currentUser, currentUserIsAdmin, errorDialogMessage } from '@/utils/signals.ts'
 import { log } from '@/utils/console.ts'
+import { Db } from '@/utils/db.ts'
 
 export class KmLayout extends SignalWatcher(LitElement) {
+  #kids: Kid[] = []
+
   /**
    * =========================================================================
    * METHODS
@@ -21,6 +24,13 @@ export class KmLayout extends SignalWatcher(LitElement) {
     if (e.isGrownUp) {
       currentUserIsAdmin.set(true)
     }
+
+    log('Getting kids from API')
+    const kidsResponse = await Db.postRequest(ServerRoute.GetKids, {
+      includeAdjustments: true,
+      screenshotMode: false,
+    })
+    log('Kids fetched from API', kidsResponse)
 
     log('Redirecting logged in user to home page.')
     currentRoute.set(Route.Home)
@@ -47,9 +57,8 @@ export class KmLayout extends SignalWatcher(LitElement) {
       [`layout-route-${_route}`]: true,
     }
 
-    let pageContent = html`Uh Oh.....`
+    let pageContent = html`<p>Uh Oh.....</p>`
 
-    log('Rendering layout with route', _route, _route === Route.Home, Route.Home)
     if (_route === Route.Home) {
       pageContent = html`<km-page-home></km-page-home>`
     } else if (_route === Route.Login) {

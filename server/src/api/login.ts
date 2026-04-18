@@ -24,4 +24,6 @@ export async function login(req: Request, res: Response) {
       username: user.username,
     })
   )
+
+  await prisma.$disconnect()
 }

@@ -8,7 +8,7 @@ export interface Adjustment {
 }
 
 export interface Kid {
-    adjustments: Adjustment[]
+    adjustments?: Adjustment[]
     allowance: number;
     color: string;
     id: number;
@@ -32,6 +32,7 @@ export enum Route {
     Settings = 'settings',
 }
 export enum ServerRoute {
+    GetKids = 'get-kids',
     Login = 'login',
 }
 
