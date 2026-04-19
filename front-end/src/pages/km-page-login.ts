@@ -1,9 +1,9 @@
 import { html, LitElement } from 'lit'
 import { Db } from '@/utils/db.ts'
 import { LocalStorageItems, ServerRoute } from 'types'
-import { log } from '@/utils/console.ts'
+import { log, table } from '@/utils/console.ts'
 import { SignalWatcher } from '@lit-labs/signals'
-import { errorDialogMessage } from '@/utils/signals.ts'
+import { errorDialogMessage } from '@/constants/signals.ts'
 
 export class KmPageLogin extends SignalWatcher(LitElement) {
   /**
@@ -14,7 +14,7 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
   /**
    * Handle form submission.
    */
-  async submitForm(e: Event) {
+  private async submitForm(e: Event) {
     e.preventDefault()
 
     const formData = new FormData(e.target as HTMLFormElement)
@@ -25,6 +25,8 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
         username: formData.get('username'),
         password: formData.get('password'),
       })
+
+      table(response)
 
       this.dispatchEvent(new UserLoggedInEvent(response.username, response.grownUp ?? false))
 
@@ -55,9 +57,11 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
       log('Logged in user value found in local storage. Parsing user data.')
       const userSettings = JSON.parse(loggedIn)
 
+      table(userSettings)
+
       if (userSettings?.username) {
         customElements.whenDefined('km-layout').then(() => {
-          this.dispatchEvent(new UserLoggedInEvent(userSettings.username, userSettings?.isGrownUp ?? false))
+          this.dispatchEvent(new UserLoggedInEvent(userSettings.username, userSettings?.grownUp ?? false))
         })
       }
     }
@@ -83,13 +87,6 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
  * Event fired when a user is successfully logged in.
  *
  * Returns `isGrownUp` to indicate if the user has an admin role.
- *
- * Usage:
- * ```js
- * checkbox.addEventListener(LocalStorageItems.CurrentUser, (e) => {
- *   console.log(e.isGrownUp);
- * });
- * ```
  */
 export class UserLoggedInEvent extends Event {
   static readonly eventName = 'logged-in'

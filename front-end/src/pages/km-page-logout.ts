@@ -29,13 +29,6 @@ export class KmPageLogout extends SignalWatcher(LitElement) {
 
 /**
  * Event fired when a user is successfully logged out.
- *
- * Usage:
- * ```js
- * checkbox.addEventListener('logged-out', (e) => {
- *   console.log('user is logged out');
- * });
- * ```
  */
 export class UserLoggedOutEvent extends Event {
   static readonly eventName = 'logged-out'

@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "tsx watch ./server.ts",
     "prisma:migrate:up": "prisma migrate deploy",
-    "prisma:studio": "npx prisma studio",
+    "prisma:studio": "npx -p better-sqlite3 -p prisma prisma studio",
     "start": "tsx ./server.ts"
   },
   "type": "module",

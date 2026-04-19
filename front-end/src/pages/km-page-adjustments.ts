@@ -1,9 +1,9 @@
 import { html, LitElement } from 'lit'
-import { kids } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
+import { kids, selectedKidSlug } from '@/constants/signals.ts'
 import { Kid } from 'types'
 
-export class KmPageHome extends SignalWatcher(LitElement) {
+export class KmPageAdjustments extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
    * LIFECYCLE
@@ -14,18 +14,17 @@ export class KmPageHome extends SignalWatcher(LitElement) {
 
     if (kidsJson) {
       const kidsData: Kid[] = JSON.parse(kidsJson)
+      const kid = kidsData.filter((kid) => kid.slug === selectedKidSlug.get())[0]
 
-      const kidsCards = kidsData.map((kid) => {
-        return html`<kid-total-card
-          data-enable-link
-          data-name="${kid.name}"
-          data-photo-url="${kid.photoUrl}"
-          data-slug="${kid.slug}"
-          data-total="${kid.adjustments?.[0]?.totalToDate ?? 0}"
-        ></kid-total-card>`
-      })
+      const kidCards = html`<kid-total-card
+        data-enable-link
+        data-name="${kid.name}"
+        data-photo-url="${kid.photoUrl}"
+        data-slug="${kid.slug}"
+        data-total="${kid.adjustments?.[0]?.totalToDate ?? 0}"
+      ></kid-total-card>`
 
-      return html`${kidsCards}`
+      return html`${kidCards}`
     }
   }
   protected createRenderRoot() {
@@ -35,6 +34,6 @@ export class KmPageHome extends SignalWatcher(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'km-page-home': KmPageHome
+    'km-page-adjustments': KmPageAdjustments
   }
 }

@@ -3,11 +3,11 @@ import { prisma } from '@/utils/prisma.ts'
 import { Kid } from 'types'
 
 export async function getKids(req: Request, res: Response) {
+  console.log('getKids', 'includeAdjustments', req.body.includeAdjustments, 'screenshotMode', req.body.screenshotMode)
+
   let response: Kid[] = []
 
   const oneYearAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 1))
-
-  console.log('whatd atd is it', new Date(), oneYearAgo)
 
   let kids
 
@@ -31,7 +31,7 @@ export async function getKids(req: Request, res: Response) {
   }
   if (kids.length) {
     if (req.body?.screenshotMode) {
-      return kids.map((kid, index) => {
+      kids = kids.map((kid, index) => {
         kid.name = `Kid ${index + 1}`
         kid.photoUrl = 'https://i.pravatar.cc/300'
         return kid
