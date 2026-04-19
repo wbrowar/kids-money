@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit'
 import { SignalWatcher } from '@lit-labs/signals'
-import { kids, selectedKidSlug } from '@/constants/signals.ts'
+import { kids, selectedKidIndex } from '@/constants/signals.ts'
 import { Kid } from 'types'
 
 export class KmPageAdjustments extends SignalWatcher(LitElement) {
@@ -14,13 +14,12 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
 
     if (kidsJson) {
       const kidsData: Kid[] = JSON.parse(kidsJson)
-      const kid = kidsData.filter((kid) => kid.slug === selectedKidSlug.get())[0]
+      const kid = kidsData[selectedKidIndex.get()]
 
       const kidCards = html`<kid-total-card
-        data-enable-link
         data-name="${kid.name}"
         data-photo-url="${kid.photoUrl}"
-        data-slug="${kid.slug}"
+        data-kid-index="${selectedKidIndex.get()}"
         data-total="${kid.adjustments?.[0]?.totalToDate ?? 0}"
       ></kid-total-card>`
 

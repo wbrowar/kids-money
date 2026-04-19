@@ -48,6 +48,7 @@ export type AdjustmentMinAggregateOutputType = {
   dollarAdjustment: number | null
   percentAdjustment: number | null
   totalToDate: number | null
+  reason: string | null
   kidId: number | null
 }
 
@@ -57,6 +58,7 @@ export type AdjustmentMaxAggregateOutputType = {
   dollarAdjustment: number | null
   percentAdjustment: number | null
   totalToDate: number | null
+  reason: string | null
   kidId: number | null
 }
 
@@ -66,6 +68,7 @@ export type AdjustmentCountAggregateOutputType = {
   dollarAdjustment: number
   percentAdjustment: number
   totalToDate: number
+  reason: number
   kidId: number
   _all: number
 }
@@ -93,6 +96,7 @@ export type AdjustmentMinAggregateInputType = {
   dollarAdjustment?: true
   percentAdjustment?: true
   totalToDate?: true
+  reason?: true
   kidId?: true
 }
 
@@ -102,6 +106,7 @@ export type AdjustmentMaxAggregateInputType = {
   dollarAdjustment?: true
   percentAdjustment?: true
   totalToDate?: true
+  reason?: true
   kidId?: true
 }
 
@@ -111,6 +116,7 @@ export type AdjustmentCountAggregateInputType = {
   dollarAdjustment?: true
   percentAdjustment?: true
   totalToDate?: true
+  reason?: true
   kidId?: true
   _all?: true
 }
@@ -207,6 +213,7 @@ export type AdjustmentGroupByOutputType = {
   dollarAdjustment: number
   percentAdjustment: number
   totalToDate: number
+  reason: string
   kidId: number
   _count: AdjustmentCountAggregateOutputType | null
   _avg: AdjustmentAvgAggregateOutputType | null
@@ -239,6 +246,7 @@ export type AdjustmentWhereInput = {
   dollarAdjustment?: Prisma.FloatFilter<"Adjustment"> | number
   percentAdjustment?: Prisma.FloatFilter<"Adjustment"> | number
   totalToDate?: Prisma.FloatFilter<"Adjustment"> | number
+  reason?: Prisma.StringFilter<"Adjustment"> | string
   kidId?: Prisma.IntFilter<"Adjustment"> | number
   kid?: Prisma.XOR<Prisma.KidScalarRelationFilter, Prisma.KidWhereInput>
 }
@@ -249,6 +257,7 @@ export type AdjustmentOrderByWithRelationInput = {
   dollarAdjustment?: Prisma.SortOrder
   percentAdjustment?: Prisma.SortOrder
   totalToDate?: Prisma.SortOrder
+  reason?: Prisma.SortOrder
   kidId?: Prisma.SortOrder
   kid?: Prisma.KidOrderByWithRelationInput
 }
@@ -262,6 +271,7 @@ export type AdjustmentWhereUniqueInput = Prisma.AtLeast<{
   dollarAdjustment?: Prisma.FloatFilter<"Adjustment"> | number
   percentAdjustment?: Prisma.FloatFilter<"Adjustment"> | number
   totalToDate?: Prisma.FloatFilter<"Adjustment"> | number
+  reason?: Prisma.StringFilter<"Adjustment"> | string
   kidId?: Prisma.IntFilter<"Adjustment"> | number
   kid?: Prisma.XOR<Prisma.KidScalarRelationFilter, Prisma.KidWhereInput>
 }, "id">
@@ -272,6 +282,7 @@ export type AdjustmentOrderByWithAggregationInput = {
   dollarAdjustment?: Prisma.SortOrder
   percentAdjustment?: Prisma.SortOrder
   totalToDate?: Prisma.SortOrder
+  reason?: Prisma.SortOrder
   kidId?: Prisma.SortOrder
   _count?: Prisma.AdjustmentCountOrderByAggregateInput
   _avg?: Prisma.AdjustmentAvgOrderByAggregateInput
@@ -289,6 +300,7 @@ export type AdjustmentScalarWhereWithAggregatesInput = {
   dollarAdjustment?: Prisma.FloatWithAggregatesFilter<"Adjustment"> | number
   percentAdjustment?: Prisma.FloatWithAggregatesFilter<"Adjustment"> | number
   totalToDate?: Prisma.FloatWithAggregatesFilter<"Adjustment"> | number
+  reason?: Prisma.StringWithAggregatesFilter<"Adjustment"> | string
   kidId?: Prisma.IntWithAggregatesFilter<"Adjustment"> | number
 }
 
@@ -297,6 +309,7 @@ export type AdjustmentCreateInput = {
   dollarAdjustment?: number
   percentAdjustment?: number
   totalToDate: number
+  reason?: string
   kid: Prisma.KidCreateNestedOneWithoutAdjustmentsInput
 }
 
@@ -306,6 +319,7 @@ export type AdjustmentUncheckedCreateInput = {
   dollarAdjustment?: number
   percentAdjustment?: number
   totalToDate: number
+  reason?: string
   kidId: number
 }
 
@@ -314,6 +328,7 @@ export type AdjustmentUpdateInput = {
   dollarAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   percentAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   totalToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   kid?: Prisma.KidUpdateOneRequiredWithoutAdjustmentsNestedInput
 }
 
@@ -323,6 +338,7 @@ export type AdjustmentUncheckedUpdateInput = {
   dollarAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   percentAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   totalToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   kidId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -332,6 +348,7 @@ export type AdjustmentCreateManyInput = {
   dollarAdjustment?: number
   percentAdjustment?: number
   totalToDate: number
+  reason?: string
   kidId: number
 }
 
@@ -340,6 +357,7 @@ export type AdjustmentUpdateManyMutationInput = {
   dollarAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   percentAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   totalToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AdjustmentUncheckedUpdateManyInput = {
@@ -348,6 +366,7 @@ export type AdjustmentUncheckedUpdateManyInput = {
   dollarAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   percentAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   totalToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
   kidId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -357,6 +376,7 @@ export type AdjustmentCountOrderByAggregateInput = {
   dollarAdjustment?: Prisma.SortOrder
   percentAdjustment?: Prisma.SortOrder
   totalToDate?: Prisma.SortOrder
+  reason?: Prisma.SortOrder
   kidId?: Prisma.SortOrder
 }
 
@@ -374,6 +394,7 @@ export type AdjustmentMaxOrderByAggregateInput = {
   dollarAdjustment?: Prisma.SortOrder
   percentAdjustment?: Prisma.SortOrder
   totalToDate?: Prisma.SortOrder
+  reason?: Prisma.SortOrder
   kidId?: Prisma.SortOrder
 }
 
@@ -383,6 +404,7 @@ export type AdjustmentMinOrderByAggregateInput = {
   dollarAdjustment?: Prisma.SortOrder
   percentAdjustment?: Prisma.SortOrder
   totalToDate?: Prisma.SortOrder
+  reason?: Prisma.SortOrder
   kidId?: Prisma.SortOrder
 }
 
@@ -414,6 +436,10 @@ export type FloatFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type StringFieldUpdateOperationsInput = {
+  set?: string
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -471,6 +497,7 @@ export type AdjustmentCreateWithoutKidInput = {
   dollarAdjustment?: number
   percentAdjustment?: number
   totalToDate: number
+  reason?: string
 }
 
 export type AdjustmentUncheckedCreateWithoutKidInput = {
@@ -479,6 +506,7 @@ export type AdjustmentUncheckedCreateWithoutKidInput = {
   dollarAdjustment?: number
   percentAdjustment?: number
   totalToDate: number
+  reason?: string
 }
 
 export type AdjustmentCreateOrConnectWithoutKidInput = {
@@ -515,6 +543,7 @@ export type AdjustmentScalarWhereInput = {
   dollarAdjustment?: Prisma.FloatFilter<"Adjustment"> | number
   percentAdjustment?: Prisma.FloatFilter<"Adjustment"> | number
   totalToDate?: Prisma.FloatFilter<"Adjustment"> | number
+  reason?: Prisma.StringFilter<"Adjustment"> | string
   kidId?: Prisma.IntFilter<"Adjustment"> | number
 }
 
@@ -524,6 +553,7 @@ export type AdjustmentCreateManyKidInput = {
   dollarAdjustment?: number
   percentAdjustment?: number
   totalToDate: number
+  reason?: string
 }
 
 export type AdjustmentUpdateWithoutKidInput = {
@@ -531,6 +561,7 @@ export type AdjustmentUpdateWithoutKidInput = {
   dollarAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   percentAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   totalToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AdjustmentUncheckedUpdateWithoutKidInput = {
@@ -539,6 +570,7 @@ export type AdjustmentUncheckedUpdateWithoutKidInput = {
   dollarAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   percentAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   totalToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AdjustmentUncheckedUpdateManyWithoutKidInput = {
@@ -547,6 +579,7 @@ export type AdjustmentUncheckedUpdateManyWithoutKidInput = {
   dollarAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   percentAdjustment?: Prisma.FloatFieldUpdateOperationsInput | number
   totalToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  reason?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -557,6 +590,7 @@ export type AdjustmentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   dollarAdjustment?: boolean
   percentAdjustment?: boolean
   totalToDate?: boolean
+  reason?: boolean
   kidId?: boolean
   kid?: boolean | Prisma.KidDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["adjustment"]>
@@ -567,6 +601,7 @@ export type AdjustmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   dollarAdjustment?: boolean
   percentAdjustment?: boolean
   totalToDate?: boolean
+  reason?: boolean
   kidId?: boolean
   kid?: boolean | Prisma.KidDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["adjustment"]>
@@ -577,6 +612,7 @@ export type AdjustmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   dollarAdjustment?: boolean
   percentAdjustment?: boolean
   totalToDate?: boolean
+  reason?: boolean
   kidId?: boolean
   kid?: boolean | Prisma.KidDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["adjustment"]>
@@ -587,10 +623,11 @@ export type AdjustmentSelectScalar = {
   dollarAdjustment?: boolean
   percentAdjustment?: boolean
   totalToDate?: boolean
+  reason?: boolean
   kidId?: boolean
 }
 
-export type AdjustmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdDate" | "dollarAdjustment" | "percentAdjustment" | "totalToDate" | "kidId", ExtArgs["result"]["adjustment"]>
+export type AdjustmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdDate" | "dollarAdjustment" | "percentAdjustment" | "totalToDate" | "reason" | "kidId", ExtArgs["result"]["adjustment"]>
 export type AdjustmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kid?: boolean | Prisma.KidDefaultArgs<ExtArgs>
 }
@@ -612,6 +649,7 @@ export type $AdjustmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     dollarAdjustment: number
     percentAdjustment: number
     totalToDate: number
+    reason: string
     kidId: number
   }, ExtArgs["result"]["adjustment"]>
   composites: {}
@@ -1042,6 +1080,7 @@ export interface AdjustmentFieldRefs {
   readonly dollarAdjustment: Prisma.FieldRef<"Adjustment", 'Float'>
   readonly percentAdjustment: Prisma.FieldRef<"Adjustment", 'Float'>
   readonly totalToDate: Prisma.FieldRef<"Adjustment", 'Float'>
+  readonly reason: Prisma.FieldRef<"Adjustment", 'String'>
   readonly kidId: Prisma.FieldRef<"Adjustment", 'Int'>
 }
     

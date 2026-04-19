@@ -28,100 +28,94 @@ export type AggregateKid = {
 
 export type KidAvgAggregateOutputType = {
   id: number | null
-  allowance: number | null
+  savingForValue: number | null
   interest: number | null
 }
 
 export type KidSumAggregateOutputType = {
   id: number | null
-  allowance: number | null
+  savingForValue: number | null
   interest: number | null
 }
 
 export type KidMinAggregateOutputType = {
   id: number | null
   name: string | null
-  slug: string | null
   photoUrl: string | null
   color: string | null
   savingFor: string | null
-  savingForType: string | null
-  allowance: number | null
+  savingForValue: number | null
   interest: number | null
+  interestThresholds: string | null
 }
 
 export type KidMaxAggregateOutputType = {
   id: number | null
   name: string | null
-  slug: string | null
   photoUrl: string | null
   color: string | null
   savingFor: string | null
-  savingForType: string | null
-  allowance: number | null
+  savingForValue: number | null
   interest: number | null
+  interestThresholds: string | null
 }
 
 export type KidCountAggregateOutputType = {
   id: number
   name: number
-  slug: number
   photoUrl: number
   color: number
   savingFor: number
-  savingForType: number
-  allowance: number
+  savingForValue: number
   interest: number
+  interestThresholds: number
   _all: number
 }
 
 
 export type KidAvgAggregateInputType = {
   id?: true
-  allowance?: true
+  savingForValue?: true
   interest?: true
 }
 
 export type KidSumAggregateInputType = {
   id?: true
-  allowance?: true
+  savingForValue?: true
   interest?: true
 }
 
 export type KidMinAggregateInputType = {
   id?: true
   name?: true
-  slug?: true
   photoUrl?: true
   color?: true
   savingFor?: true
-  savingForType?: true
-  allowance?: true
+  savingForValue?: true
   interest?: true
+  interestThresholds?: true
 }
 
 export type KidMaxAggregateInputType = {
   id?: true
   name?: true
-  slug?: true
   photoUrl?: true
   color?: true
   savingFor?: true
-  savingForType?: true
-  allowance?: true
+  savingForValue?: true
   interest?: true
+  interestThresholds?: true
 }
 
 export type KidCountAggregateInputType = {
   id?: true
   name?: true
-  slug?: true
   photoUrl?: true
   color?: true
   savingFor?: true
-  savingForType?: true
-  allowance?: true
+  savingForValue?: true
   interest?: true
+  interestThresholds?: true
   _all?: true
 }
 
@@ -214,13 +208,12 @@ export type KidGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type KidGroupByOutputType = {
   id: number
   name: string
-  slug: string
   photoUrl: string
   color: string
   savingFor: string
-  savingForType: string
-  allowance: number
+  savingForValue: number
   interest: number
+  interestThresholds: string
   _count: KidCountAggregateOutputType | null
   _avg: KidAvgAggregateOutputType | null
   _sum: KidSumAggregateOutputType | null
@@ -249,32 +242,29 @@ export type KidWhereInput = {
   NOT?: Prisma.KidWhereInput | Prisma.KidWhereInput[]
   id?: Prisma.IntFilter<"Kid"> | number
   name?: Prisma.StringFilter<"Kid"> | string
-  slug?: Prisma.StringFilter<"Kid"> | string
   photoUrl?: Prisma.StringFilter<"Kid"> | string
   color?: Prisma.StringFilter<"Kid"> | string
   savingFor?: Prisma.StringFilter<"Kid"> | string
-  savingForType?: Prisma.StringFilter<"Kid"> | string
-  allowance?: Prisma.FloatFilter<"Kid"> | number
+  savingForValue?: Prisma.FloatFilter<"Kid"> | number
   interest?: Prisma.FloatFilter<"Kid"> | number
+  interestThresholds?: Prisma.StringFilter<"Kid"> | string
   adjustments?: Prisma.AdjustmentListRelationFilter
 }
 
 export type KidOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   color?: Prisma.SortOrder
   savingFor?: Prisma.SortOrder
-  savingForType?: Prisma.SortOrder
-  allowance?: Prisma.SortOrder
+  savingForValue?: Prisma.SortOrder
   interest?: Prisma.SortOrder
+  interestThresholds?: Prisma.SortOrder
   adjustments?: Prisma.AdjustmentOrderByRelationAggregateInput
 }
 
 export type KidWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  slug?: string
   AND?: Prisma.KidWhereInput | Prisma.KidWhereInput[]
   OR?: Prisma.KidWhereInput[]
   NOT?: Prisma.KidWhereInput | Prisma.KidWhereInput[]
@@ -282,22 +272,21 @@ export type KidWhereUniqueInput = Prisma.AtLeast<{
   photoUrl?: Prisma.StringFilter<"Kid"> | string
   color?: Prisma.StringFilter<"Kid"> | string
   savingFor?: Prisma.StringFilter<"Kid"> | string
-  savingForType?: Prisma.StringFilter<"Kid"> | string
-  allowance?: Prisma.FloatFilter<"Kid"> | number
+  savingForValue?: Prisma.FloatFilter<"Kid"> | number
   interest?: Prisma.FloatFilter<"Kid"> | number
+  interestThresholds?: Prisma.StringFilter<"Kid"> | string
   adjustments?: Prisma.AdjustmentListRelationFilter
-}, "id" | "slug">
+}, "id">
 
 export type KidOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   color?: Prisma.SortOrder
   savingFor?: Prisma.SortOrder
-  savingForType?: Prisma.SortOrder
-  allowance?: Prisma.SortOrder
+  savingForValue?: Prisma.SortOrder
   interest?: Prisma.SortOrder
+  interestThresholds?: Prisma.SortOrder
   _count?: Prisma.KidCountOrderByAggregateInput
   _avg?: Prisma.KidAvgOrderByAggregateInput
   _max?: Prisma.KidMaxOrderByAggregateInput
@@ -311,98 +300,90 @@ export type KidScalarWhereWithAggregatesInput = {
   NOT?: Prisma.KidScalarWhereWithAggregatesInput | Prisma.KidScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Kid"> | number
   name?: Prisma.StringWithAggregatesFilter<"Kid"> | string
-  slug?: Prisma.StringWithAggregatesFilter<"Kid"> | string
   photoUrl?: Prisma.StringWithAggregatesFilter<"Kid"> | string
   color?: Prisma.StringWithAggregatesFilter<"Kid"> | string
   savingFor?: Prisma.StringWithAggregatesFilter<"Kid"> | string
-  savingForType?: Prisma.StringWithAggregatesFilter<"Kid"> | string
-  allowance?: Prisma.FloatWithAggregatesFilter<"Kid"> | number
+  savingForValue?: Prisma.FloatWithAggregatesFilter<"Kid"> | number
   interest?: Prisma.FloatWithAggregatesFilter<"Kid"> | number
+  interestThresholds?: Prisma.StringWithAggregatesFilter<"Kid"> | string
 }
 
 export type KidCreateInput = {
   name: string
-  slug: string
   photoUrl?: string
   color?: string
   savingFor?: string
-  savingForType?: string
-  allowance?: number
+  savingForValue?: number
   interest?: number
+  interestThresholds?: string
   adjustments?: Prisma.AdjustmentCreateNestedManyWithoutKidInput
 }
 
 export type KidUncheckedCreateInput = {
   id?: number
   name: string
-  slug: string
   photoUrl?: string
   color?: string
   savingFor?: string
-  savingForType?: string
-  allowance?: number
+  savingForValue?: number
   interest?: number
+  interestThresholds?: string
   adjustments?: Prisma.AdjustmentUncheckedCreateNestedManyWithoutKidInput
 }
 
 export type KidUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
   savingFor?: Prisma.StringFieldUpdateOperationsInput | string
-  savingForType?: Prisma.StringFieldUpdateOperationsInput | string
-  allowance?: Prisma.FloatFieldUpdateOperationsInput | number
+  savingForValue?: Prisma.FloatFieldUpdateOperationsInput | number
   interest?: Prisma.FloatFieldUpdateOperationsInput | number
+  interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
   adjustments?: Prisma.AdjustmentUpdateManyWithoutKidNestedInput
 }
 
 export type KidUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
   savingFor?: Prisma.StringFieldUpdateOperationsInput | string
-  savingForType?: Prisma.StringFieldUpdateOperationsInput | string
-  allowance?: Prisma.FloatFieldUpdateOperationsInput | number
+  savingForValue?: Prisma.FloatFieldUpdateOperationsInput | number
   interest?: Prisma.FloatFieldUpdateOperationsInput | number
+  interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
   adjustments?: Prisma.AdjustmentUncheckedUpdateManyWithoutKidNestedInput
 }
 
 export type KidCreateManyInput = {
   id?: number
   name: string
-  slug: string
   photoUrl?: string
   color?: string
   savingFor?: string
-  savingForType?: string
-  allowance?: number
+  savingForValue?: number
   interest?: number
+  interestThresholds?: string
 }
 
 export type KidUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
   savingFor?: Prisma.StringFieldUpdateOperationsInput | string
-  savingForType?: Prisma.StringFieldUpdateOperationsInput | string
-  allowance?: Prisma.FloatFieldUpdateOperationsInput | number
+  savingForValue?: Prisma.FloatFieldUpdateOperationsInput | number
   interest?: Prisma.FloatFieldUpdateOperationsInput | number
+  interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type KidUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
   savingFor?: Prisma.StringFieldUpdateOperationsInput | string
-  savingForType?: Prisma.StringFieldUpdateOperationsInput | string
-  allowance?: Prisma.FloatFieldUpdateOperationsInput | number
+  savingForValue?: Prisma.FloatFieldUpdateOperationsInput | number
   interest?: Prisma.FloatFieldUpdateOperationsInput | number
+  interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type KidScalarRelationFilter = {
@@ -413,48 +394,45 @@ export type KidScalarRelationFilter = {
 export type KidCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   color?: Prisma.SortOrder
   savingFor?: Prisma.SortOrder
-  savingForType?: Prisma.SortOrder
-  allowance?: Prisma.SortOrder
+  savingForValue?: Prisma.SortOrder
   interest?: Prisma.SortOrder
+  interestThresholds?: Prisma.SortOrder
 }
 
 export type KidAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  allowance?: Prisma.SortOrder
+  savingForValue?: Prisma.SortOrder
   interest?: Prisma.SortOrder
 }
 
 export type KidMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   color?: Prisma.SortOrder
   savingFor?: Prisma.SortOrder
-  savingForType?: Prisma.SortOrder
-  allowance?: Prisma.SortOrder
+  savingForValue?: Prisma.SortOrder
   interest?: Prisma.SortOrder
+  interestThresholds?: Prisma.SortOrder
 }
 
 export type KidMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   color?: Prisma.SortOrder
   savingFor?: Prisma.SortOrder
-  savingForType?: Prisma.SortOrder
-  allowance?: Prisma.SortOrder
+  savingForValue?: Prisma.SortOrder
   interest?: Prisma.SortOrder
+  interestThresholds?: Prisma.SortOrder
 }
 
 export type KidSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  allowance?: Prisma.SortOrder
+  savingForValue?: Prisma.SortOrder
   interest?: Prisma.SortOrder
 }
 
@@ -472,31 +450,25 @@ export type KidUpdateOneRequiredWithoutAdjustmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.KidUpdateToOneWithWhereWithoutAdjustmentsInput, Prisma.KidUpdateWithoutAdjustmentsInput>, Prisma.KidUncheckedUpdateWithoutAdjustmentsInput>
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
 export type KidCreateWithoutAdjustmentsInput = {
   name: string
-  slug: string
   photoUrl?: string
   color?: string
   savingFor?: string
-  savingForType?: string
-  allowance?: number
+  savingForValue?: number
   interest?: number
+  interestThresholds?: string
 }
 
 export type KidUncheckedCreateWithoutAdjustmentsInput = {
   id?: number
   name: string
-  slug: string
   photoUrl?: string
   color?: string
   savingFor?: string
-  savingForType?: string
-  allowance?: number
+  savingForValue?: number
   interest?: number
+  interestThresholds?: string
 }
 
 export type KidCreateOrConnectWithoutAdjustmentsInput = {
@@ -517,25 +489,23 @@ export type KidUpdateToOneWithWhereWithoutAdjustmentsInput = {
 
 export type KidUpdateWithoutAdjustmentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
   savingFor?: Prisma.StringFieldUpdateOperationsInput | string
-  savingForType?: Prisma.StringFieldUpdateOperationsInput | string
-  allowance?: Prisma.FloatFieldUpdateOperationsInput | number
+  savingForValue?: Prisma.FloatFieldUpdateOperationsInput | number
   interest?: Prisma.FloatFieldUpdateOperationsInput | number
+  interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type KidUncheckedUpdateWithoutAdjustmentsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
   savingFor?: Prisma.StringFieldUpdateOperationsInput | string
-  savingForType?: Prisma.StringFieldUpdateOperationsInput | string
-  allowance?: Prisma.FloatFieldUpdateOperationsInput | number
+  savingForValue?: Prisma.FloatFieldUpdateOperationsInput | number
   interest?: Prisma.FloatFieldUpdateOperationsInput | number
+  interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -572,13 +542,12 @@ export type KidCountOutputTypeCountAdjustmentsArgs<ExtArgs extends runtime.Types
 export type KidSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  slug?: boolean
   photoUrl?: boolean
   color?: boolean
   savingFor?: boolean
-  savingForType?: boolean
-  allowance?: boolean
+  savingForValue?: boolean
   interest?: boolean
+  interestThresholds?: boolean
   adjustments?: boolean | Prisma.Kid$adjustmentsArgs<ExtArgs>
   _count?: boolean | Prisma.KidCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["kid"]>
@@ -586,40 +555,37 @@ export type KidSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type KidSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  slug?: boolean
   photoUrl?: boolean
   color?: boolean
   savingFor?: boolean
-  savingForType?: boolean
-  allowance?: boolean
+  savingForValue?: boolean
   interest?: boolean
+  interestThresholds?: boolean
 }, ExtArgs["result"]["kid"]>
 
 export type KidSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  slug?: boolean
   photoUrl?: boolean
   color?: boolean
   savingFor?: boolean
-  savingForType?: boolean
-  allowance?: boolean
+  savingForValue?: boolean
   interest?: boolean
+  interestThresholds?: boolean
 }, ExtArgs["result"]["kid"]>
 
 export type KidSelectScalar = {
   id?: boolean
   name?: boolean
-  slug?: boolean
   photoUrl?: boolean
   color?: boolean
   savingFor?: boolean
-  savingForType?: boolean
-  allowance?: boolean
+  savingForValue?: boolean
   interest?: boolean
+  interestThresholds?: boolean
 }
 
-export type KidOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "photoUrl" | "color" | "savingFor" | "savingForType" | "allowance" | "interest", ExtArgs["result"]["kid"]>
+export type KidOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "photoUrl" | "color" | "savingFor" | "savingForValue" | "interest" | "interestThresholds", ExtArgs["result"]["kid"]>
 export type KidInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   adjustments?: boolean | Prisma.Kid$adjustmentsArgs<ExtArgs>
   _count?: boolean | Prisma.KidCountOutputTypeDefaultArgs<ExtArgs>
@@ -635,13 +601,12 @@ export type $KidPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     name: string
-    slug: string
     photoUrl: string
     color: string
     savingFor: string
-    savingForType: string
-    allowance: number
+    savingForValue: number
     interest: number
+    interestThresholds: string
   }, ExtArgs["result"]["kid"]>
   composites: {}
 }
@@ -1068,13 +1033,12 @@ export interface Prisma__KidClient<T, Null = never, ExtArgs extends runtime.Type
 export interface KidFieldRefs {
   readonly id: Prisma.FieldRef<"Kid", 'Int'>
   readonly name: Prisma.FieldRef<"Kid", 'String'>
-  readonly slug: Prisma.FieldRef<"Kid", 'String'>
   readonly photoUrl: Prisma.FieldRef<"Kid", 'String'>
   readonly color: Prisma.FieldRef<"Kid", 'String'>
   readonly savingFor: Prisma.FieldRef<"Kid", 'String'>
-  readonly savingForType: Prisma.FieldRef<"Kid", 'String'>
-  readonly allowance: Prisma.FieldRef<"Kid", 'Float'>
+  readonly savingForValue: Prisma.FieldRef<"Kid", 'Float'>
   readonly interest: Prisma.FieldRef<"Kid", 'Float'>
+  readonly interestThresholds: Prisma.FieldRef<"Kid", 'String'>
 }
     
 

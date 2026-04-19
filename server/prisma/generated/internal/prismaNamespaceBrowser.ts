@@ -75,6 +75,7 @@ export const AdjustmentScalarFieldEnum = {
   dollarAdjustment: 'dollarAdjustment',
   percentAdjustment: 'percentAdjustment',
   totalToDate: 'totalToDate',
+  reason: 'reason',
   kidId: 'kidId'
 } as const
 
@@ -84,13 +85,12 @@ export type AdjustmentScalarFieldEnum = (typeof AdjustmentScalarFieldEnum)[keyof
 export const KidScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  slug: 'slug',
   photoUrl: 'photoUrl',
   color: 'color',
   savingFor: 'savingFor',
-  savingForType: 'savingForType',
-  allowance: 'allowance',
-  interest: 'interest'
+  savingForValue: 'savingForValue',
+  interest: 'interest',
+  interestThresholds: 'interestThresholds'
 } as const
 
 export type KidScalarFieldEnum = (typeof KidScalarFieldEnum)[keyof typeof KidScalarFieldEnum]

@@ -18,6 +18,7 @@ export interface Adjustment {
     id: number;
     kid: number;
     percentAdjustment: number;
+    reason: string;
     totalToDate: number;
 }
 
@@ -31,14 +32,13 @@ export type KidAdjustments = Record<typeof Kid['id'], Adjustment[]>
  */
 export interface Kid {
     adjustments?: Adjustment[]
-    allowance: number;
     color: string;
     id: number;
     interest: number;
     name: string;
     photoUrl?: string;
     savingFor?: string;
-    slug: string;
+    savingForValue?: number;
 }
 
 /**

@@ -16,21 +16,21 @@ model Adjustment {
   dollarAdjustment  Float    @default(0)
   percentAdjustment Float    @default(0)
   totalToDate       Float
+  reason            String   @default("")
   kid               Kid      @relation(fields: [kidId], references: [id])
   kidId             Int
 }
 
 model Kid {
-  id            Int          @id @default(autoincrement())
-  name          String
-  slug          String       @unique
-  photoUrl      String       @default("")
-  color         String       @default("#0026ff")
-  savingFor     String       @default("")
-  savingForType String       @default("text")
-  allowance     Float        @default(0)
-  interest      Float        @default(0)
-  adjustments   Adjustment[]
+  id                 Int          @id @default(autoincrement())
+  name               String
+  photoUrl           String       @default("")
+  color              String       @default("#0026ff")
+  savingFor          String       @default("")
+  savingForValue     Float        @default(0)
+  interest           Float        @default(0)
+  interestThresholds String       @default("")
+  adjustments        Adjustment[]
 }
 
 model User {

@@ -1,7 +1,7 @@
 import { css, html, LitElement, nothing } from 'lit'
 import { property } from 'lit/decorators.js'
 import { formatTotalForCurrency } from '@/utils/currency.ts'
-import { currentRoute, selectedCurrency, selectedKidSlug } from '@/constants/signals.ts'
+import { currentRoute, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 import { Route } from 'types'
 
@@ -62,8 +62,8 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
   /**
    * TODO
    */
-  @property({ attribute: 'data-slug' })
-  kidSlug = ''
+  @property({ attribute: 'data-kid-index' })
+  kidIndex = 0
 
   /**
    * TODO
@@ -80,7 +80,7 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
    * TODO
    */
   private async _onLinkClick() {
-    selectedKidSlug.set(this.kidSlug)
+    selectedKidIndex.set(this.kidIndex)
     currentRoute.set(Route.Adjustments)
   }
 
