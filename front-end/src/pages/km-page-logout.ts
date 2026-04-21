@@ -1,9 +1,16 @@
-import { html, LitElement } from 'lit'
+import { css, html, LitElement } from 'lit'
 import { LocalStorageItems } from 'types'
 import { log } from '@/utils/console.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 
 export class KmPageLogout extends SignalWatcher(LitElement) {
+  /**
+   * =========================================================================
+   * CSS
+   * =========================================================================
+   */
+  static styles = css``
+
   /**
    * =========================================================================
    * LIFECYCLE
@@ -21,9 +28,6 @@ export class KmPageLogout extends SignalWatcher(LitElement) {
   }
   protected render() {
     return html`<p>Logging out...</p>`
-  }
-  protected createRenderRoot() {
-    return this
   }
 }
 

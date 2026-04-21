@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit'
+import { css, html, LitElement } from 'lit'
 import { Db } from '@/utils/db.ts'
 import { LocalStorageItems, ServerRoute } from 'types'
 import { log, table } from '@/utils/console.ts'
@@ -6,6 +6,13 @@ import { SignalWatcher } from '@lit-labs/signals'
 import { errorDialogMessage } from '@/constants/signals.ts'
 
 export class KmPageLogin extends SignalWatcher(LitElement) {
+  /**
+   * =========================================================================
+   * CSS
+   * =========================================================================
+   */
+  static styles = css``
+
   /**
    * =========================================================================
    * METHODS
@@ -72,9 +79,6 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
       <input type="password" name="password" autocomplete="current-password" placeholder="Password" />
       <button type="submit">Log in</button>
     </form>`
-  }
-  protected createRenderRoot() {
-    return this
   }
 }
 

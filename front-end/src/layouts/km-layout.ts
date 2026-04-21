@@ -1,4 +1,4 @@
-import { html, LitElement, nothing } from 'lit'
+import { css, html, LitElement, nothing } from 'lit'
 import { classMap } from 'lit/directives/class-map.js'
 import { state } from 'lit/decorators.js'
 import { Currency, Kid, LocalStorageItems, Route, ServerRoute } from 'types'
@@ -20,6 +20,23 @@ import { currencyDetails } from '@/constants/currencies.ts'
 export class KmLayout extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
+   * CSS
+   * =========================================================================
+   */
+  static styles = css`
+    main {
+      height: 100dvh;
+      height: stretch;
+    }
+    nav {
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline-end: 0;
+    }
+  `
+
+  /**
+   * =========================================================================
    * STATE
    * =========================================================================
    */
@@ -36,6 +53,11 @@ export class KmLayout extends SignalWatcher(LitElement) {
    */
   /**
    * Changes route and user settings when a user is logged in.
+   *
+   * If in dev mode, redirects to the page specified in the query string.
+   *
+   * For example:
+   * `?redirect=settings`
    */
   private async _onUserLoggedIn(e: UserLoggedInEvent) {
     currentUser.set(e.username)
@@ -46,8 +68,15 @@ export class KmLayout extends SignalWatcher(LitElement) {
 
     this._fetchKidsData()
 
-    log('Redirecting logged in user to home page.')
-    currentRoute.set(Route.Home)
+    const searchParams = new URLSearchParams(window.location.search)
+    if (import.meta.env.DEV && searchParams.has('redirect')) {
+      const redirect = searchParams.get('redirect') as Route
+      log('Redirecting logged in user to page', redirect)
+      currentRoute.set(redirect)
+    } else {
+      log('Redirecting logged in user to home page.')
+      currentRoute.set(Route.Home)
+    }
   }
 
   /**
@@ -68,11 +97,21 @@ export class KmLayout extends SignalWatcher(LitElement) {
       screenshotMode: screenshotMode.get(),
     })
     this._kids = kidsData.map((kid: Kid) => {
-      return {
-        ...kid,
-        adjustments: kid.adjustments?.[0] ? [kid.adjustments[0]] : [],
+      const kidFormatted: Kid = {
+        adjustments: kid.adjustments ?? [],
+        color: kid.color,
+        id: kid.id,
+        interest: kid.interest,
+        interestThresholds: kid.interestThresholds ? kid.interestThresholds : undefined,
+        name: kid.name,
+        photoUrl: kid.photoUrl ? kid.photoUrl : undefined,
+        savingFor: kid.savingFor ? kid.savingFor : undefined,
+        savingForValue: kid.savingForValue,
       }
+
+      return kidFormatted
     })
+    log('Kids:')
     table(this._kids)
 
     kids.set(JSON.stringify(this._kids))
@@ -111,7 +150,7 @@ export class KmLayout extends SignalWatcher(LitElement) {
     let pageContent = html`<p>Uh Oh.....</p>`
 
     if (_route === Route.Adjustments) {
-      pageContent = html`<km-page-adjustments></km-page-adjustments>`
+      pageContent = html`<km-page-adjustments @adjustment-created="${this._fetchKidsData}"></km-page-adjustments>`
     } else if (_route === Route.Home) {
       pageContent = html`<km-page-home></km-page-home>`
     } else if (_route === Route.Login) {
@@ -119,7 +158,10 @@ export class KmLayout extends SignalWatcher(LitElement) {
     } else if (_route === Route.Logout) {
       pageContent = html`<km-page-logout @logged-out="${this._onUserLoggedOut}"></km-page-logout>`
     } else if (_route === Route.Settings) {
-      pageContent = html`<km-page-settings @screenshot-mode-input="${this._fetchKidsData}"></km-page-settings>`
+      pageContent = html`<km-page-settings
+        @kid-updated="${this._fetchKidsData}"
+        @screenshot-mode-input="${this._fetchKidsData}"
+      ></km-page-settings>`
     }
 
     const showMainMenu = [Route.Adjustments, Route.Home, Route.Settings].includes(currentRoute.get())
@@ -147,9 +189,6 @@ export class KmLayout extends SignalWatcher(LitElement) {
       ${mainMenuContent}
       <dialog ?open="${hasDialogError}">${watch(errorDialogMessage)}</dialog>
     `
-  }
-  protected createRenderRoot() {
-    return this
   }
 }
 

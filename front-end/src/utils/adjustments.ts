@@ -9,7 +9,8 @@
  * // 105
  * ```
  */
-export function addDollarAdjustmentToTotal (adjustment: number, total: number) {
+
+export function addDollarAdjustmentToTotal(adjustment: number, total: number) {
   return adjustment + total
 }
 
@@ -24,8 +25,8 @@ export function addDollarAdjustmentToTotal (adjustment: number, total: number) {
  * // 0.5
  * ```
  */
-export function dollarAdjustmentFromInterestPercentage (percentAdjustment: number, startingTotal: number) {
-  return (percentAdjustment * 0.01) * startingTotal
+export function dollarAdjustmentFromInterestPercentage(percentAdjustment: number, startingTotal: number) {
+  return percentAdjustment * 0.01 * startingTotal
 }
 
 /*
@@ -40,11 +41,33 @@ export function dollarAdjustmentFromInterestPercentage (percentAdjustment: numbe
  * // 116.1400082895346
  * ```
  */
-export function estimateInterestTotalOverTime (days: number, percentAdjustment: number, startingTotal: number) {
+export function estimateInterestTotalOverTime(
+  days: number,
+  percentAdjustment: number,
+  startingTotal: number,
+  interestThresholds: number[][] = []
+) {
   let total = startingTotal
 
   for (let i = 0; i < days; i++) {
-    total += dollarAdjustmentFromInterestPercentage(percentAdjustment, total)
+    total += dollarAdjustmentFromInterestPercentage(
+      interestFromInterestThresholds(total, percentAdjustment, interestThresholds),
+      total
+    )
   }
   return total
+}
+
+/**
+ * TODO
+ *
+ * @param total
+ * @param defaultInterest
+ * @param interestThresholds
+ */
+export function interestFromInterestThresholds(total: number, defaultInterest: number, interestThresholds: number[][]) {
+  const interestTuple: number[] = [...interestThresholds, [0, defaultInterest]].find(
+    ([threshold]) => total >= threshold
+  ) ?? [0, defaultInterest]
+  return interestTuple[1]
 }

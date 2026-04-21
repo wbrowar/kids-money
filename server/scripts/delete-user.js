@@ -1,25 +1,25 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../src/utils/prisma.ts'
 import { argv, exit } from 'process'
-
-const prisma = new PrismaClient()
 
 function parseArgv() {
   const args = {}
 
   argv.forEach((arg) => {
     if (arg.startsWith('-u=')) {
-      args.username = arg.split('=')[1];
+      args.username = arg.split('=')[1]
     }
   })
 
-  return args;
+  return args
 }
 
-async function main () {
+async function main() {
   const args = parseArgv()
 
   if (typeof args.username === 'undefined') {
-    console.error('Username argument missing. Add one using the `-u` argument:\n  node scripts/delete-user.mjs -u=my-username')
+    console.error(
+      'Username argument missing. Add one using the `-u` argument:\n  node scripts/delete-user.mjs -u=my-username'
+    )
     exit(1)
   }
 

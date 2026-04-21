@@ -1,39 +1,36 @@
-import { PrismaClient } from '@prisma/client'
+import {
+  dollarAdjustmentFromInterestPercentage,
+  interestFromInterestThresholds,
+} from '../../front-end/src/utils/adjustments.ts'
+import { prisma } from '../src/utils/prisma.ts'
 import { argv, exit } from 'process'
 
-const prisma = new PrismaClient()
-
 function parseArgv() {
-  const args = {
-    autoAdjust: []
-  }
+  const args = {}
 
   argv.forEach((arg) => {
-    if (arg.startsWith('-kid=')) {
-      args.kidSlug = arg.split('=')[1];
-    } else if (arg.startsWith('-dollar=')) {
-      args.dollarAdjustment = parseFloat(arg.split('=')[1]);
-    } else if (arg.startsWith('-interest=')) {
-      args.percentAdjustment = parseFloat(arg.split('=')[1]);
-    } else if (arg === '-allowance') {
-      args.autoAdjust.push('allowance')
-    } else if (arg === '-interest') {
-      args.autoAdjust.push('interest')
+    if (arg.startsWith('--kid=')) {
+      args.kidId = parseInt(arg.split('=')[1])
+    } else if (arg.startsWith('--dollar=')) {
+      args.adjustmentType = 'dollar'
+      args.dollarAdjustment = parseFloat(arg.split('=')[1])
+    } else if (arg.startsWith('--interest')) {
+      args.adjustmentType = 'interest'
+    } else if (arg.startsWith('--reason')) {
+      args.reason = arg.split('=')[1]
     }
   })
 
-  return args;
+  return args
 }
 
-async function main () {
+async function main() {
   const args = parseArgv()
 
-  if (typeof args.kidSlug === 'undefined') {
-    console.error('Kid argument missing. Add one using the `-kid` argument:\n  node scripts/add-adjustment.mjs -kid=kid-slug -interest')
-    exit(1)
-  }
-  if (parseArgv().autoAdjust.length > 1) {
-    console.error('Both -allowance and -interest were set. Please remove one or the other and try again.')
+  if (typeof args.kidId !== 'number') {
+    console.error(
+      'Kid argument missing. Add one using the `--kid` argument:\n  node scripts/add-adjustment.js --kid=1 --interest'
+    )
     exit(1)
   }
 
@@ -42,18 +39,18 @@ async function main () {
     include: {
       adjustments: {
         orderBy: {
-          id: 'desc'
+          id: 'desc',
         },
-        take: 1
-      }
+        take: 1,
+      },
     },
     where: {
-      slug: args.kidSlug,
+      id: args.kidId,
     },
   })
 
   if (!kid) {
-    console.error(`Kid with slug, ${args.kidSlug}, not found. Check the slug for the kid in Settings and try again.`)
+    console.error(`Kid with ID, ${args.kidId}, not found. Check the ID for the kid in Settings and try again.`)
     exit(1)
   }
 
@@ -63,38 +60,41 @@ async function main () {
 
   console.log(`Adding adjustment for kid: ${kid.name}`)
 
-  const updateData = {}
-
-  if (parseArgv().dollarAdjustment) {
-    updateData.dollarAdjustment = parseArgv().dollarAdjustment
-  } else if (parseArgv().autoAdjust.includes('allowance') && kid.allowance > 0) {
-    updateData.dollarAdjustment = kid.allowance
-  } else if (parseArgv().percentAdjustment) {
-    updateData.percentAdjustment = parseArgv().percentAdjustment
-  } else if (parseArgv().autoAdjust.includes('interest') && kid.interest > 0) {
-    updateData.percentAdjustment = kid.interest
+  let createParams = {}
+  if (args.adjustmentType === 'dollar') {
+    createParams = {
+      dollarAdjustment: args.dollarAdjustment,
+      reason: args.reason ?? '',
+      totalToDate: args.dollarAdjustment + previousAdjustment,
+    }
+  } else if (args.adjustmentType === 'interest') {
+    const interestPecentage = interestFromInterestThresholds(
+      previousAdjustment,
+      kid.interest,
+      JSON.parse(kid.interestThresholds ?? '[]')
+    )
+    const calculatedDollarAdjustment = dollarAdjustmentFromInterestPercentage(interestPecentage, previousAdjustment)
+    createParams = {
+      dollarAdjustment: calculatedDollarAdjustment,
+      percentAdjustment: interestPecentage,
+      totalToDate: calculatedDollarAdjustment + previousAdjustment,
+    }
   }
-
-  if (updateData.percentAdjustment) {
-    updateData.dollarAdjustment = (updateData.percentAdjustment * 0.01) * previousAdjustment
-  }
-
-  updateData.totalToDate = updateData.dollarAdjustment + previousAdjustment
 
   const user = await prisma.kid.update({
     data: {
       adjustments: {
         // @ts-ignore
-        create: updateData
-      }
+        create: createParams,
+      },
     },
     where: {
-      id: kid.id
-    }
+      id: kid.id,
+    },
   })
 
   console.log(`Adjustment added for ${kid.name}:`)
-  console.log(updateData)
+  console.log(createParams)
 }
 
 main()

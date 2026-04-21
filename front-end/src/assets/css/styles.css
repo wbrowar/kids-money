@@ -1,12 +1,11 @@
 @import './automated/variables.css';
 @import './automated/variables-kid.css';
 
-@import '@/layouts/km-layout.css';
-
 body {
   color-scheme: light dark;
   margin: 0;
   background-color: var(--color-bg-site);
+  font-family: var(--font-family-default);
   color: var(--color-text-copy);
 }
 

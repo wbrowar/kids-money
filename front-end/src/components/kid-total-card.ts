@@ -1,9 +1,9 @@
 import { css, html, LitElement, nothing } from 'lit'
 import { property } from 'lit/decorators.js'
 import { formatTotalForCurrency } from '@/utils/currency.ts'
-import { currentRoute, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
+import { currentRoute, kids, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
-import { Route } from 'types'
+import { Kid, Route } from 'types'
 
 export class KidTotalCard extends SignalWatcher(LitElement) {
   /**
@@ -44,32 +44,14 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
   /**
    * TODO
    */
-  @property({ attribute: 'data-total', type: Number })
-  adjustmentsTotal = 0
-
-  /**
-   * TODO
-   */
   @property({ attribute: 'data-enable-link', type: Boolean })
   enableLink = false
 
   /**
    * TODO
    */
-  @property({ attribute: 'data-name' })
-  kidName = ''
-
-  /**
-   * TODO
-   */
   @property({ attribute: 'data-kid-index' })
   kidIndex = 0
-
-  /**
-   * TODO
-   */
-  @property({ attribute: 'data-photo-url' })
-  kidPhotoUrl = ''
 
   /**
    * =========================================================================
@@ -90,15 +72,23 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   protected render() {
-    return html`
-      <div class="container">
-        <img src="${this.kidPhotoUrl}" alt="Avatar image for ${this.kidName}" width="150" height="150" />
-        <h1>${this.kidName}</h1>
-        <span>${formatTotalForCurrency(this.adjustmentsTotal, selectedCurrency.get())}</span>
-        ${this.enableLink ? html`<button class="kid-link" @click="${this._onLinkClick}"></button>` : nothing}
-        <currency-selector></currency-selector>
-      </div>
-    `
+    const kidsJson = kids.get()
+
+    if (kidsJson) {
+      const kidsData: Kid[] = JSON.parse(kidsJson)
+      const kid = kidsData[this.kidIndex]
+      const kidTotalValue = kid.adjustments?.[0]?.totalToDate ?? 0
+
+      return html`
+        <div class="container">
+          <img src="${kid.photoUrl}" alt="Avatar image for ${kid.name}" width="150" height="150" />
+          <h1>${kid.name}</h1>
+          <span>${formatTotalForCurrency(kidTotalValue, selectedCurrency.get())}</span>
+          ${this.enableLink ? html`<button class="kid-link" @click="${this._onLinkClick}"></button>` : nothing}
+          <currency-selector></currency-selector>
+        </div>
+      `
+    }
   }
 }
 

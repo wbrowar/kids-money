@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { prisma } from '@/utils/prisma.ts'
-import { DbError } from '@/utils/error.ts'
+import { DbError } from '@/utils/db-response.ts'
 
 export async function login(req: Request, res: Response) {
   if (!(req.body.username && req.body.password)) {

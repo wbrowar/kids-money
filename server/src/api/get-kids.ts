@@ -31,7 +31,7 @@ export async function getKids(req: Request, res: Response) {
   }
   if (kids.length) {
     if (req.body?.screenshotMode) {
-      kids = kids.map((kid, index) => {
+      kids = kids.map((kid: Kid, index: number) => {
         kid.name = `Kid ${index + 1}`
         kid.photoUrl = 'https://i.pravatar.cc/300'
         return kid

@@ -26,9 +26,10 @@
     /* Paths */
     "paths": {
       "@/*": ["./src/*"],
-      "types": ["../types/index.d.ts"]
+      "front-end/*": ["../front-end/*"],
+      "types": ["../types/index.ts"]
     }
   },
-  "include": ["server.ts", "src/**/*.ts", "types/**/*.d.ts"],
+  "include": ["server.ts", "src/**/*.ts", "../types/**/*.ts"],
   "exclude": ["node_modules", "src/**/*.browser.ts", "src/**/*.spec.ts"]
 }

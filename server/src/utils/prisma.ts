@@ -1,8 +1,9 @@
 import { loadEnvFile } from 'node:process'
-import { PrismaClient } from '../../prisma/generated/client'
+import { PrismaClient } from '../../prisma/generated/client.ts'
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
+import { fileURLToPath } from 'node:url'
 
-loadEnvFile()
+loadEnvFile(fileURLToPath(new URL('../../.env', import.meta.url)))
 
 /*
  * Shared PrismaClient to be used in /server/api endpoints and /scripts node files.

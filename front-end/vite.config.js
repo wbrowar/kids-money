@@ -1,14 +1,14 @@
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite'
 
-import {fileURLToPath, URL} from 'url';
-import {playwright} from '@vitest/browser-playwright';
+import { fileURLToPath, URL } from 'url'
+import { playwright } from '@vitest/browser-playwright'
 
 export default defineConfig(async ({ command }) => {
   return {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
-        'types': fileURLToPath(new URL('../types/index.d.ts', import.meta.url)),
+        types: fileURLToPath(new URL('../types/index.ts', import.meta.url)),
       },
     },
     test: {
@@ -38,5 +38,5 @@ export default defineConfig(async ({ command }) => {
         },
       ],
     },
-  };
-});
+  }
+})

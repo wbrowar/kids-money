@@ -7,7 +7,18 @@ export class FormInput extends LitElement {
    * =========================================================================
    */
   static styles = css`
+    :host {
+      display: grid;
+      gap: 0.3rem;
+    }
     ::slotted(label) {
+      display: flex;
+      gap: 0.3rem;
+      align-items: center;
+      font-size: var(--font-size-sm);
+    }
+    ::slotted(select) {
+      font-size: var(--font-size-sm);
     }
   `
 

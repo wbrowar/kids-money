@@ -7,10 +7,12 @@ import { CurrencySelector } from '@/components/currency-selector.ts'
 import { FormInput } from '@/components/form-input.ts'
 import { KmPageSettings } from '@/pages/km-page-settings.ts'
 import { KmPageAdjustments } from '@/pages/km-page-adjustments.ts'
+import { KidEditor } from '@/components/kid-editor.ts'
 
 export const customElementNames = [
   'currency-selector',
   'form-input',
+  'kid-editor',
   'kid-total-card',
   'km-layout',
   'km-page-adjustments',
@@ -52,6 +54,9 @@ export function defineCustomElements(list: KmCustomElements[]) {
           break
         case 'form-input':
           customElements.define(element, FormInput)
+          break
+        case 'kid-editor':
+          customElements.define(element, KidEditor)
           break
         case 'kid-total-card':
           customElements.define(element, KidTotalCard)

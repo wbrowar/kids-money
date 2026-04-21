@@ -4,7 +4,7 @@
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2025", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
 
     /* Types */
@@ -26,9 +26,9 @@
     /* Paths */
     "paths": {
       "@/*": ["./src/*"],
-      "types": ["../types/index.d.ts"],
+      "types": ["../types/index.ts"],
     }
   },
-  "include": ["index.html", "src/**/*.ts", "types/**/*.d.ts"],
+  "include": ["index.html", "src/**/*.ts", "../types/**/*.ts"],
   "exclude": ["node_modules", "src/**/*.browser.ts", "src/**/*.spec.ts"]
 }
