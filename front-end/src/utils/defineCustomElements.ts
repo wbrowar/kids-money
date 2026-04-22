@@ -8,6 +8,7 @@ import { FormInput } from '@/components/form-input.ts'
 import { KmPageSettings } from '@/pages/km-page-settings.ts'
 import { KmPageAdjustments } from '@/pages/km-page-adjustments.ts'
 import { KidEditor } from '@/components/kid-editor.ts'
+import { SettingChip } from '@/components/setting-chip.ts'
 
 export const customElementNames = [
   'currency-selector',
@@ -20,6 +21,7 @@ export const customElementNames = [
   'km-page-login',
   'km-page-logout',
   'km-page-settings',
+  'setting-chip',
 ] as const
 
 /**
@@ -78,6 +80,9 @@ export function defineCustomElements(list: KmCustomElements[]) {
           break
         case 'km-page-settings':
           customElements.define(element, KmPageSettings)
+          break
+        case 'setting-chip':
+          customElements.define(element, SettingChip)
           break
       }
 

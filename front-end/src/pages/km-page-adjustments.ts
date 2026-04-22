@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit'
+import { css, html, LitElement, unsafeCSS } from 'lit'
 import { SignalWatcher } from '@lit-labs/signals'
 import { query, state } from 'lit/decorators.js'
 import { kids, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
@@ -7,6 +7,8 @@ import { dollarAdjustmentFromInterestPercentage, estimateInterestTotalOverTime }
 import { formatTotalForCurrency } from '@/utils/currency.ts'
 import { log } from '@/utils/console.ts'
 import { Db } from '@/utils/db.ts'
+import { classMap } from 'lit/directives/class-map.js'
+import variableKids from '@/assets/css/automated/variables-kid.css?inline' with { type: 'css' }
 
 export class KmPageAdjustments extends SignalWatcher(LitElement) {
   /**
@@ -14,7 +16,107 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
    * CSS
    * =========================================================================
    */
-  static styles = css``
+  static styles = css`
+    :host {
+      container-name: page;
+      container-type: inline-size;
+      display: block;
+    }
+    .container {
+      ${unsafeCSS(variableKids)}
+      display: grid;
+      grid-template-areas:
+        'kidcard'
+        'adjustmentform'
+        'interestpreview'
+        'adjustmentstable';
+      grid-template-columns: 1fr;
+      gap: 40px;
+
+      @container (width > 1000px) {
+        & {
+          grid-template-areas:
+            'kidcard .'
+            'adjustmentform .'
+            'interestpreview .'
+            'adjustmentstable adjustmentstable';
+          grid-template-columns: clamp(200px, 40vw, 600px) 1fr;
+        }
+      }
+    }
+    .kid-card {
+      grid-area: kidcard;
+    }
+    .adjustment-form {
+      grid-area: adjustmentform;
+    }
+    .interest-preview {
+      container-name: interest-preview;
+      container-type: inline-size;
+      grid-area: interestpreview;
+
+      ul {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        margin: 0;
+        padding: 0;
+        background-color: var(--kid-color-bg-light);
+        background-image: var(--kid-color-bg-gradient);
+        border: 2px solid var(--kid-color-border);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--box-shadow-element);
+        color: var(--kid-color-favorite);
+
+        li {
+          anchor-scope: --interst-value;
+          list-style: none;
+          padding-block: 1.5em;
+
+          &:first-child {
+            background-color: color-mix(in oklch, var(--kid-color-bg-light) 90%, var(--kid-color-favorite));
+            border-radius: var(--border-radius-md) 0 var(--border-radius-md) 0;
+
+            span:first-child {
+              font-weight: var(--font-weight-semibold);
+            }
+
+            @container (width > 500px) {
+              & {
+                border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+              }
+            }
+          }
+          span:first-child {
+            display: block;
+            text-align: center;
+            font-size: var(--font-size-lg);
+          }
+          span:nth-child(2) {
+            anchor-name: --interst-value;
+            display: block;
+            text-align: center;
+            font-size: var(--font-size-sm);
+          }
+          span:nth-child(3) {
+            position: absolute;
+            position-area: center block-end;
+            position-anchor: --interst-value;
+            font-size: var(--font-size-xs);
+            color: color-mix(in oklch, currentColor 40%, transparent);
+          }
+        }
+
+        @container (width > 500px) {
+          & {
+            grid-template-columns: repeat(4, 1fr);
+          }
+        }
+      }
+    }
+    .adjustments-table {
+      grid-area: adjustmentstable;
+    }
+  `
 
   @query('#dollar-adjustment')
   _dollarAdjustmentInput!: HTMLInputElement
@@ -109,17 +211,20 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
       const kid = kidsData[selectedKidIndex.get()]
       const kidTotalValue = kid.adjustments?.[0]?.totalToDate ?? 0
 
-      const kidCards = html`<kid-total-card data-kid-index="${selectedKidIndex.get()}"></kid-total-card>`
+      const containerClasses = {
+        container: true,
+      }
 
-      const savingForCard = html`
-        <div class="saving-for">
-          <meter value="${kidTotalValue}" max="${kid.savingForValue}"></meter>
-          <span>${kid.savingFor}</span>
-        </div>
-      `
+      const kidCard = html`<div class="kid-card">
+        <kid-total-card data-kid-index="${selectedKidIndex.get()}"></kid-total-card>
+      </div>`
 
       const reasonPlaceholder = ['🤖', '🏀', '🎸', '📷', '🦩', '🏎️', '🦄']
-      const adjustmentForm = html`<form autocomplete="off" @submit="${(e: SubmitEvent) => e.preventDefault()}">
+      const adjustmentForm = html`<form
+        class="adjustment-form"
+        autocomplete="off"
+        @submit="${(e: SubmitEvent) => e.preventDefault()}"
+      >
         <input
           id="dollar-adjustment"
           name="dollar-adjustment"
@@ -138,17 +243,23 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
         <button class="subtract-button" @click="${() => this._createAdjustment('subtract', kid.id)}">-</button>
       </form>`
 
-      const interestPreview = html`<div>
+      const interestPreview = html`<div class="interest-preview">
         <ul>
           <li>
-            Per day:
-            ${formatTotalForCurrency(
-              dollarAdjustmentFromInterestPercentage(kid.interest, kidTotalValue),
-              selectedCurrency.get()
-            )}
+            <span
+              >${formatTotalForCurrency(
+                dollarAdjustmentFromInterestPercentage(kid.interest, kidTotalValue),
+                selectedCurrency.get()
+              )}</span
+            >
+            <span>Per day</span>
           </li>
           ${this._getInterestPreviews([7, 30, 365], kid, selectedCurrency.get()).map(
-            (preview) => html`<li>${preview.label}: ${preview.total} (${preview.direction + preview.difference})</li>`
+            (preview) =>
+              html`<li>
+                <span>${preview.total}</span><span>${preview.label}</span
+                ><span>${preview.direction + preview.difference}</span>
+              </li>`
           )}
         </ul>
       </div>`
@@ -183,7 +294,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
       })
 
       const adjustmentsTable = html`
-        <table>
+        <table class="adjustments-table">
           <thead>
             <tr>
               <td>Change</td>
@@ -198,7 +309,11 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
         </table>
       `
 
-      return html`${kidCards}${savingForCard}${adjustmentForm}${interestPreview}${adjustmentsTable}`
+      return html`
+        <article class="${classMap(containerClasses)}" style="--color-favorite: ${kid.color};">
+          ${kidCard}${adjustmentForm}${interestPreview}${adjustmentsTable}
+        </article>
+      `
     }
   }
 }

@@ -1,9 +1,11 @@
-import { css, html, LitElement, nothing } from 'lit'
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit'
 import { property } from 'lit/decorators.js'
 import { formatTotalForCurrency } from '@/utils/currency.ts'
 import { currentRoute, kids, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 import { Kid, Route } from 'types'
+import { classMap } from 'lit/directives/class-map.js'
+import variableKids from '@/assets/css/automated/variables-kid.css?inline' with { type: 'css' }
 
 export class KidTotalCard extends SignalWatcher(LitElement) {
   /**
@@ -13,25 +15,105 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
    */
   static styles = css`
     :host {
-      container-name: kid-total-card;
-      container-type: inline-size;
-      position: relative;
+      display: contents;
     }
-
     img {
       display: block;
       max-width: 100%;
-      border-radius: 50%;
+      height: auto;
+    }
+    .container {
+      ${unsafeCSS(variableKids)}
+      container-name: kid-total-card;
+      container-type: inline-size;
+      display: grid;
+      grid-template-columns: max-content 1fr max-content;
+      grid-template-rows: calc(max-content - 20px) max-content max-content;
+      gap: 10px 40px;
+      padding: 11px;
+      position: relative;
+      border-radius: var(--border-radius-lg);
+      background-color: var(--kid-color-favorite);
+      box-shadow: var(--kid-box-shadow-card);
+    }
+    .bg {
+      grid-column: 1 / 4;
+      grid-row: 1 / 3;
+      background-color: var(--kid-color-bg-light);
+      background-image: var(--kid-color-bg-gradient);
+      border-radius: var(--border-radius-md);
+    }
+    .avatar {
+      display: block;
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
+      //transform: translateX(20px) translateY(-40px);
+      transform: translateX(20%) translateY(-15%) scale(1.2);
+
+      img {
+        border-radius: 50%;
+        aspect-ratio: 1;
+        border: 5px solid var(--kid-color-border);
+        width: clamp(90px, 20cqw, 150px);
+      }
+    }
+    .info {
+      display: grid;
+      grid-column: 2 / 4;
+      grid-row: 1 / 2;
+      grid-template-rows: 1fr;
+      justify-content: stretch;
+      align-items: center;
+      gap: 0.5rem;
+      padding-inline: 8px;
+      position: relative;
+    }
+    .total {
+      text-align: center;
+      text-box: trim-both cap alphabetic;
+      font-size: var(--font-size-2xl);
+      font-size: clamp(var(--font-size-xl), 11cqw, var(--font-size-2xl));
+      color: var(--kid-color-favorite);
+    }
+    .saving-for {
+      display: grid;
+      grid-column: 1 / 4;
+      grid-row: 2 / 3;
+      grid-template-columns: 1fr max-content;
+      gap: 0.5rem;
+      padding: 9px;
+      color: var(--kid-color-text-on-bg-light);
+
+      meter {
+        width: 100%;
+      }
+    }
+    h1 {
+      grid-column: 1 / 3;
+      grid-row: 3 / 4;
+      align-self: center;
+      margin: 0;
+      padding-block: 13px;
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-semibold);
+      text-box: trim-both cap alphabetic;
+      color: var(--kid-color-text-on-favorite);
     }
     .kid-link {
       appearance: none;
       display: block;
       position: absolute;
       inset: 0;
-      background-color: rgb(255 0 0 / 0.62);
+      background: transparent;
+      border: none;
       cursor: pointer;
     }
-    currency-selector {
+    .actions {
+      display: flex;
+      grid-column: 3 / 4;
+      grid-row: 3 / 4;
+      gap: 3px;
+      align-self: center;
       position: relative;
     }
   `
@@ -79,13 +161,45 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
       const kid = kidsData[this.kidIndex]
       const kidTotalValue = kid.adjustments?.[0]?.totalToDate ?? 0
 
+      const containerClasses = {
+        container: true,
+        'child-card': this.enableLink,
+      }
+
+      const saveForThesholds = {
+        low: kid.savingForValue * 0.2,
+        high: kid.savingForValue * 0.4,
+        optimum: kid.savingForValue * 0.7,
+      }
+      const savingFor = html`
+        <div class="saving-for">
+          <meter
+            value="${kidTotalValue}"
+            min="0"
+            low="${saveForThesholds.low}"
+            high="${saveForThesholds.high}"
+            optimum="${saveForThesholds.optimum}"
+            max="${kid.savingForValue}"
+          ></meter>
+          <span>${kid.savingFor}</span>
+        </div>
+      `
+
       return html`
-        <div class="container">
-          <img src="${kid.photoUrl}" alt="Avatar image for ${kid.name}" width="150" height="150" />
+        <div class="${classMap(containerClasses)}" style="--color-favorite: ${kid.color};">
+          <div class="bg" aria-hidden="true"></div>
+          <div class="avatar">
+            <img src="${kid.photoUrl}" alt="Avatar image for ${kid.name}" width="400" height="400" />
+          </div>
+          ${savingFor}
           <h1>${kid.name}</h1>
-          <span>${formatTotalForCurrency(kidTotalValue, selectedCurrency.get())}</span>
+          <div class="info">
+            <span class="total">${formatTotalForCurrency(kidTotalValue, selectedCurrency.get())}</span>
+          </div>
           ${this.enableLink ? html`<button class="kid-link" @click="${this._onLinkClick}"></button>` : nothing}
-          <currency-selector></currency-selector>
+          <div class="actions">
+            <currency-selector></currency-selector>
+          </div>
         </div>
       `
     }

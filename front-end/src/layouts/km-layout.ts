@@ -24,14 +24,27 @@ export class KmLayout extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   static styles = css`
+    :host {
+      container-name: layout;
+      container-type: inline-size;
+      display: block;
+      padding: 80px clamp(15px, 7vw, 80px);
+    }
     main {
-      height: 100dvh;
       height: stretch;
     }
     nav {
-      position: fixed;
-      inset-block-start: 0;
-      inset-inline-end: 0;
+      position: absolute;
+      inset-block-start: 20px;
+      inset-inline-end: 20px;
+
+      ul {
+        display: flex;
+        gap: 1rem;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
     }
   `
 
@@ -143,7 +156,7 @@ export class KmLayout extends SignalWatcher(LitElement) {
     const _route = currentRoute.get()
 
     const containerClasses = {
-      'layout-content': true,
+      container: true,
       [`layout-route-${_route}`]: true,
     }
 

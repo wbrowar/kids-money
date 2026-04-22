@@ -2,6 +2,13 @@
  * Do not edit directly, this file was auto-generated.
  */
 
-.kid {
-  --kid-avatar-border: var(--color-favorite, oklch(0.7751 0.304 149.19));
+& {
+  --kid-color-bg-light: color-mix(in oklch, var(--color-favorite, oklch(0.7751 0.304 149.19)) 10%, white);
+  --kid-color-border: color-mix(in oklch, var(--color-favorite, oklch(0.7751 0.304 149.19)) 40%, transparent);
+  --kid-color-favorite: var(--color-favorite, oklch(0.7751 0.304 149.19));
+  --kid-color-text-on-favorite: color-mix(in oklch, var(--color-favorite, oklch(0.7751 0.304 149.19)) 16%, contrast-color(var(--color-favorite, oklch(0.7751 0.304 149.19))));
+  --kid-color-text-on-bg-light: color-mix(in oklch, var(--color-favorite, oklch(0.7751 0.304 149.19)) 16%, contrast-color(var(--kid-color-bg-light, color-mix(in oklch, oklch(0.7751 0.304 149.19) 10%, white))));
+  --kid-box-shadow-card: 0 10px 20px color-mix(in oklch, var(--color-favorite, oklch(0.7751 0.304 149.19)) 50%, transparent), 0 5px 10px color-mix(in oklch, var(--color-favorite, oklch(0.7751 0.304 149.19)) 50%, transparent);
+  --kid-box-shadow-element: 0 5px 24px color-mix(in oklch, var(--color-favorite, oklch(0.7751 0.304 149.19)) 10%, transparent), 0 4px 5px color-mix(in oklch, var(--color-favorite, oklch(0.7751 0.304 149.19)) 40%, transparent);
+  --kid-color-bg-gradient: linear-gradient(color-mix(in oklch, var(--kid-color-bg-light, color-mix(in oklch, oklch(0.7751 0.304 149.19) 10%, white)) 90%, var(--color-favorite, oklch(0.7751 0.304 149.19))), var(--kid-color-bg-light, color-mix(in oklch, oklch(0.7751 0.304 149.19) 10%, white)));
 }

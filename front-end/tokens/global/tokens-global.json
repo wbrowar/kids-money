@@ -1,4 +1,28 @@
 {
+  "border": {
+    "radius": {
+      "sm": {
+        "$type": "dimension",
+        "$value": "4px"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "10px"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "20px"
+      }
+    }
+  },
+  "box-shadow": {
+    "card": {
+      "$value": "0 10px 20px color-mix(in oklch, {base.color.black} 50%, transparent), 0 5px 10px color-mix(in oklch, {base.color.black} 50%, transparent)"
+    },
+    "element": {
+      "$value": "0 5px 24px color-mix(in oklch, {base.color.black} 10%, transparent), 0 4px 5px color-mix(in oklch, {base.color.black} 20%, transparent)"
+    }
+  },
   "color": {
     "$type": "color",
     "alert": {
@@ -52,6 +76,18 @@
       },
       "md": {
         "$value": "1rem"
+      },
+      "lg": {
+        "$value": "1.3rem"
+      },
+      "xl": {
+        "$value": "2rem"
+      },
+      "2xl": {
+        "$value": "4rem"
+      },
+      "3xl": {
+        "$value": "6rem"
       }
     },
     "weight": {

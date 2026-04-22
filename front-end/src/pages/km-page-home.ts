@@ -9,7 +9,31 @@ export class KmPageHome extends SignalWatcher(LitElement) {
    * CSS
    * =========================================================================
    */
-  static styles = css``
+  static styles = css`
+    :host {
+      container-name: page;
+      container-type: inline-size;
+      display: block;
+    }
+    article {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+    .kids {
+      display: grid;
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
+
+      @container (width > 1000px) {
+        & {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    }
+  `
 
   /**
    * =========================================================================
@@ -23,10 +47,10 @@ export class KmPageHome extends SignalWatcher(LitElement) {
       const kidsData: Kid[] = JSON.parse(kidsJson)
 
       const kidsCards = kidsData.map((_kid, index) => {
-        return html`<kid-total-card data-enable-link data-kid-index="${index}"></kid-total-card>`
+        return html` <kid-total-card data-enable-link data-kid-index="${index}"></kid-total-card> `
       })
 
-      return html`${kidsCards}`
+      return html` <article><section class="kids">${kidsCards}</section></article> `
     }
   }
 }

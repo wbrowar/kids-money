@@ -1,10 +1,7 @@
 import { css, html, LitElement } from 'lit'
-import { selectedCurrency } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
-import { currencyDetails } from '@/constants/currencies.ts'
-import { Currency, LocalStorageItems } from 'types'
 
-export class CurrencySelector extends SignalWatcher(LitElement) {
+export class SettingChip extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
    * CSS
@@ -18,7 +15,7 @@ export class CurrencySelector extends SignalWatcher(LitElement) {
       padding: 5px;
       background-color: color-mix(in oklch, var(--kid-color-text-on-favorite) 3%, transparent);
       border: 1px solid var(--kid-color-text-on-favorite);
-      border-radius: var(--border-radius-sm);
+      border-radius: 4px;
       font-size: var(--font-size-xs);
       text-box: trim-both cap alphabetic;
       color: var(--kid-color-text-on-favorite);
@@ -42,7 +39,7 @@ export class CurrencySelector extends SignalWatcher(LitElement) {
         light-dark(rgb(0 0 0 / 0.2), rgb(255 255 255 / 0.2))
       );
       border: 1px solid var(--kid-color-favorite);
-      border-radius: var(--border-radius-lg);
+      border-radius: 16px;
       box-shadow: var(--kid-box-shadow-element);
       backdrop-filter: blur(13px);
       color: var(--kid-color-text-on-favorite);
@@ -51,45 +48,21 @@ export class CurrencySelector extends SignalWatcher(LitElement) {
 
   /**
    * =========================================================================
-   * METHODS
-   * =========================================================================
-   */
-  /**
-   * TODO
-   */
-  async onCurrencyInput(e: Event) {
-    const currency = (e.target as HTMLSelectElement)?.value as Currency
-    selectedCurrency.set(currency)
-    localStorage.setItem(LocalStorageItems.SelectedCurrency, currency)
-  }
-
-  /**
-   * =========================================================================
    * LIFECYCLE
    * =========================================================================
    */
   protected render() {
     return html`
-      <setting-chip>
-        <span slot="label">${selectedCurrency.get()}</span>
-
-        <form-input>
-          <label for="currency">Change Currency</label>
-          <select id="currency" @input="${this.onCurrencyInput}">
-            ${Object.entries(currencyDetails).map(([key, value]) => {
-              return html`<option value="${key}" ?selected="${key === selectedCurrency.get()}">
-                <strong>${value.symbol}</strong>${value.title}
-              </option>`
-            })}
-          </select>
-        </form-input>
-      </setting-chip>
+      <button class="display" popovertarget="settings"><slot name="label"></slot></button>
+      <div id="settings" popover>
+        <slot></slot>
+      </div>
     `
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'currency-selector': CurrencySelector
+    'setting-chip': SettingChip
   }
 }

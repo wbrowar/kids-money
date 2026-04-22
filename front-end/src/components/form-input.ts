@@ -9,7 +9,7 @@ export class FormInput extends LitElement {
   static styles = css`
     :host {
       display: grid;
-      gap: 0.3rem;
+      gap: 0.4rem;
     }
     ::slotted(label) {
       display: flex;

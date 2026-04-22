@@ -237,7 +237,7 @@ export class KidEditor extends SignalWatcher(LitElement) {
                 >
                   <form-input>
                     <label for="savingFor">Saving For</label>
-                    <input id="savingFor" name="savingFor" type="text" />
+                    <input id="savingFor" name="savingFor" maxlength="25" type="text" />
                   </form-input>
                   <p>dddd</p>
                 </div>

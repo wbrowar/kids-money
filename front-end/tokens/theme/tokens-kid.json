@@ -1,8 +1,37 @@
 {
   "kid": {
-    "avatar-border": {
+    "color": {
       "$type": "color",
-      "$value": "{color.favorite}"
+      "bg": {
+        "light": {
+          "$value": "color-mix(in oklch, {color.favorite} 10%, white)"
+        },
+        "gradient": {
+          "$value": "linear-gradient(color-mix(in oklch, {kid.color.bg.light} 90%, {color.favorite}), {kid.color.bg.light})"
+        }
+      },
+      "border": {
+        "$value": "color-mix(in oklch, {color.favorite} 40%, transparent)"
+      },
+      "favorite": {
+        "$value": "{color.favorite}"
+      },
+      "text": {
+        "on-favorite": {
+          "$value": "color-mix(in oklch, {color.favorite} 16%, contrast-color({color.favorite}))"
+        },
+        "on-bg-light": {
+          "$value": "color-mix(in oklch, {color.favorite} 16%, contrast-color({kid.color.bg.light}))"
+        }
+      }
+    },
+    "box-shadow": {
+      "card": {
+        "$value": "0 10px 20px color-mix(in oklch, {color.favorite} 50%, transparent), 0 5px 10px color-mix(in oklch, {color.favorite} 50%, transparent)"
+      },
+      "element": {
+        "$value": "0 5px 24px color-mix(in oklch, {color.favorite} 10%, transparent), 0 4px 5px color-mix(in oklch, {color.favorite} 40%, transparent)"
+      }
     }
   }
 }
