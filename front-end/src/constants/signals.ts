@@ -1,5 +1,5 @@
 import { signal } from '@lit-labs/signals'
-import { Currency, Route } from 'types'
+import { Currency, Route } from '@types'
 
 export const currentRoute = signal(Route.Login)
 export const currentUser = signal('')

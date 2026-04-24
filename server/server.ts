@@ -1,11 +1,13 @@
 import cors from 'cors'
 import express from 'express'
 import { loadEnvFile } from 'node:process'
-import { login } from '@/api/login'
+import { login } from '@/api/login.ts'
 import { getKids } from '@/api/get-kids.ts'
 import { getUsers } from '@/api/get-users.ts'
 import { createUpdateKid } from '@/api/create-update-kid.ts'
 import { createAdjustment } from '@/api/create-adjustment.ts'
+import { removeKid } from '@/api/remove-kid.ts'
+import { ServerRoute } from '@/constants/constants.ts'
 
 loadEnvFile()
 
@@ -19,11 +21,12 @@ app.use(
   })
 )
 
-app.post(`/create-adjustment`, createAdjustment)
-app.post(`/create-update-kid`, createUpdateKid)
-app.post(`/get-kids`, getKids)
-app.post('/get-users', getUsers)
-app.post('/login', login)
+app.post(ServerRoute.CreateAdjustment, createAdjustment)
+app.post(ServerRoute.CreateUpdateKid, createUpdateKid)
+app.post(ServerRoute.GetKids, getKids)
+app.post(ServerRoute.GetUsers, getUsers)
+app.post(ServerRoute.Login, login)
+app.post(ServerRoute.RemoveKid, removeKid)
 
 app.listen(port, () => {
   console.log(`Kids Money listening on port ${port}`)

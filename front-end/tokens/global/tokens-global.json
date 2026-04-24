@@ -3,7 +3,7 @@
     "radius": {
       "sm": {
         "$type": "dimension",
-        "$value": "4px"
+        "$value": "5px"
       },
       "md": {
         "$type": "dimension",
@@ -17,10 +17,10 @@
   },
   "box-shadow": {
     "card": {
-      "$value": "0 10px 20px color-mix(in oklch, {base.color.black} 50%, transparent), 0 5px 10px color-mix(in oklch, {base.color.black} 50%, transparent)"
+      "$value": "0 10px 20px color-mix(in oklch, {base.color.black} 20%, transparent), 0 1px 5px color-mix(in oklch, {base.color.black} 30%, transparent)"
     },
     "element": {
-      "$value": "0 5px 24px color-mix(in oklch, {base.color.black} 10%, transparent), 0 4px 5px color-mix(in oklch, {base.color.black} 20%, transparent)"
+      "$value": "0 9px 16px color-mix(in oklch, {base.color.black} 10%, transparent), 0 1px 5px color-mix(in oklch, {base.color.black} 20%, transparent)"
     }
   },
   "color": {
@@ -37,12 +37,26 @@
       }
     },
     "bg": {
+      "settings-card": {
+        "$value": "light-dark({base.color.white}, {base.color.black})"
+      },
       "site": {
         "$value": "light-dark({base.color.green-light}, {base.color.green-dark})"
       }
     },
+    "direction": {
+      "add": {
+        "$value": "{base.color.direction.add}"
+      },
+      "subtract": {
+        "$value": "{base.color.direction.subtract}"
+      }
+    },
     "fpo": {
       "$value": "{base.color.fpo}"
+    },
+    "primary": {
+      "$value": "{base.color.green}"
     },
     "text": {
       "copy": {

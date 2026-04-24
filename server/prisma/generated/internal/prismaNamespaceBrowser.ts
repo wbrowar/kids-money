@@ -100,7 +100,8 @@ export const UserScalarFieldEnum = {
   id: 'id',
   grownUp: 'grownUp',
   username: 'username',
-  password: 'password'
+  password: 'password',
+  kidId: 'kidId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -112,4 +113,12 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

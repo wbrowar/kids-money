@@ -1,54 +1,10 @@
-import { css, html, LitElement } from 'lit'
+import { html, LitElement } from 'lit'
 import { selectedCurrency } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 import { currencyDetails } from '@/constants/currencies.ts'
-import { Currency, LocalStorageItems } from 'types'
+import { Currency, LocalStorageItems } from '@types'
 
 export class CurrencySelector extends SignalWatcher(LitElement) {
-  /**
-   * =========================================================================
-   * CSS
-   * =========================================================================
-   */
-  static styles = css`
-    .display {
-      anchor-name: --display;
-      appearance: none;
-      display: inline-block;
-      padding: 5px;
-      background-color: color-mix(in oklch, var(--kid-color-text-on-favorite) 3%, transparent);
-      border: 1px solid var(--kid-color-text-on-favorite);
-      border-radius: var(--border-radius-sm);
-      font-size: var(--font-size-xs);
-      text-box: trim-both cap alphabetic;
-      color: var(--kid-color-text-on-favorite);
-      cursor: pointer;
-
-      &:hover {
-        border-color: color-mix(in oklch, var(--kid-color-text-on-favorite) 60%, transparent);
-        color: color-mix(in oklch, var(--kid-color-text-on-favorite) 60%, transparent);
-      }
-    }
-    #settings {
-      position-anchor: --display;
-      position: fixed;
-      position-area: block-end;
-      position-try-fallbacks: block-start;
-      margin-block: 3px;
-      padding: 14px;
-      background-color: color-mix(
-        in oklch,
-        var(--kid-color-favorite) 70%,
-        light-dark(rgb(0 0 0 / 0.2), rgb(255 255 255 / 0.2))
-      );
-      border: 1px solid var(--kid-color-favorite);
-      border-radius: var(--border-radius-lg);
-      box-shadow: var(--kid-box-shadow-element);
-      backdrop-filter: blur(13px);
-      color: var(--kid-color-text-on-favorite);
-    }
-  `
-
   /**
    * =========================================================================
    * METHODS

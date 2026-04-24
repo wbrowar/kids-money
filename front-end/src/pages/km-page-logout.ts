@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit'
-import { LocalStorageItems } from 'types'
+import { LocalStorageItems } from '@types'
 import { log } from '@/utils/console.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 

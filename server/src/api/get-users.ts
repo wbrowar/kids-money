@@ -1,17 +1,18 @@
 import { Request, Response } from 'express'
 import { prisma } from '@/utils/prisma.ts'
-import { User } from 'types'
+import { User } from '../../../types/index.d.ts'
 
-type UserWithoutId = Omit<User, 'id'>
+type UserWithoutId = Pick<User, 'grownUp' | 'kidId' | 'username'>
 
 export async function getUsers(_req: Request, res: Response) {
   let response: UserWithoutId[] = []
 
-  const users = await prisma.user.findMany()
+  const users = (await prisma.user.findMany()) as UserWithoutId[]
   if (users) {
     response = users.map((user: UserWithoutId) => {
       return {
         grownUp: user.grownUp,
+        kidId: user.kidId || undefined,
         username: user.username,
       }
     })

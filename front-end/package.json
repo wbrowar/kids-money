@@ -4,6 +4,7 @@
     "build": "tsc && vite build",
     "coverage": "vitest run --coverage",
     "dev": "vite",
+    "preview": "vite preview",
     "prisma:migrate:up": "prisma migrate deploy",
     "prisma:studio": "npx prisma studio",
     "start": "node ../server/server.js",

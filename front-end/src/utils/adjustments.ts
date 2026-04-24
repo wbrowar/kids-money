@@ -1,3 +1,5 @@
+import { InterestThresholds } from '@types'
+
 /*
  * Adds a dollar amount number to a total number.
  *
@@ -9,7 +11,6 @@
  * // 105
  * ```
  */
-
 export function addDollarAdjustmentToTotal(adjustment: number, total: number) {
   return adjustment + total
 }
@@ -45,7 +46,7 @@ export function estimateInterestTotalOverTime(
   days: number,
   percentAdjustment: number,
   startingTotal: number,
-  interestThresholds: number[][] = []
+  interestThresholds: InterestThresholds = []
 ) {
   let total = startingTotal
 
@@ -65,7 +66,11 @@ export function estimateInterestTotalOverTime(
  * @param defaultInterest
  * @param interestThresholds
  */
-export function interestFromInterestThresholds(total: number, defaultInterest: number, interestThresholds: number[][]) {
+export function interestFromInterestThresholds(
+  total: number,
+  defaultInterest: number,
+  interestThresholds: InterestThresholds
+) {
   const interestTuple: number[] = [...interestThresholds, [0, defaultInterest]].find(
     ([threshold]) => total >= threshold
   ) ?? [0, defaultInterest]

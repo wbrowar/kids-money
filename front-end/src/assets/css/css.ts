@@ -1,15 +1,6 @@
-import { css } from 'lit'
+import { css, unsafeCSS } from 'lit'
+import variableKidsCss from '@/assets/css/automated/variables-kid.css?raw' with { type: 'css' }
 
-export const kidCardGrid = css`
-  & {
-    grid-template-columns: max-content 1fr max-content;
-    grid-template-rows: calc(max-content - 20px) max-content max-content;
-    gap: 10px 40px;
-
-    @container (width > 1000px) {
-      & {
-        grid-template-columns: repeat(2, max-content 1fr max-content);
-      }
-    }
-  }
+export const variableKids = css`
+  ${unsafeCSS(variableKidsCss)}
 `

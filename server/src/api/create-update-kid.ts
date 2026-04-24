@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { prisma } from '@/utils/prisma.ts'
 import { DbError, DbMessage } from '@/utils/db-response.ts'
-import { Kid } from 'types'
+import { Kid } from '../../../types/index.d.ts'
 
 export async function createUpdateKid(req: Request, res: Response) {
   console.log('createUpdateKid', req.body)

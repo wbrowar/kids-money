@@ -1,23 +1,23 @@
-import {ServerRoute} from "types";
+import { ServerRoute } from '@server/constants/constants.ts'
 
 class DbHandler {
-  #apiUrl = import.meta.env.VITE_PUBLIC_API_URL;
+  #apiUrl = import.meta.env.VITE_PUBLIC_API_URL
 
   /**
    * =========================================================================
    * PRIVATE METHODS
    * =========================================================================
    */
-  private formatUri(uri: ServerRoute) {
+  private formatUri(uri: keyof typeof ServerRoute) {
     return this.#apiUrl + uri
   }
 
   private async getResponseJson(response: Response) {
-    const json = await response.json();
+    const json = await response.json()
     if (!response.ok) {
-      throw new Error(json.error ?? 'Failed to fetch data');
+      throw new Error(json.error ?? 'Failed to fetch data')
     }
-    return json;
+    return json
   }
 
   /**
@@ -25,12 +25,12 @@ class DbHandler {
    * PUBLIC METHODS
    * =========================================================================
    */
-  async getJson(uri: ServerRoute) {
+  async getJson(uri: keyof typeof ServerRoute) {
     const response = await window.fetch(this.formatUri(uri))
     return await this.getResponseJson(response)
   }
 
-  async postRequest(uri: ServerRoute, data: object) {
+  async postRequest(uri: keyof typeof ServerRoute, data: object) {
     const response = await window.fetch(this.formatUri(uri), {
       method: 'POST',
       headers: {
@@ -42,4 +42,4 @@ class DbHandler {
   }
 }
 
-export const Db = new DbHandler();
+export const Db = new DbHandler()

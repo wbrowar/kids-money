@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2025",
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "module": "ESNext",
@@ -26,9 +26,11 @@
     /* Paths */
     "paths": {
       "@/*": ["./src/*"],
-      "types": ["../types/index.ts"],
+      "@server/*": ["../server/src/*"],
+      "@types": ["../types/index.d.ts"]
     }
   },
-  "include": ["index.html", "src/**/*.ts", "../types/**/*.ts"],
+  "include": ["index.html", "src/**/*.ts",
+    "../server/src/**/*", "../types/**/*.ts"],
   "exclude": ["node_modules", "src/**/*.browser.ts", "src/**/*.spec.ts"]
 }

@@ -1,7 +1,7 @@
 import { css, html, LitElement, nothing } from 'lit'
 import { classMap } from 'lit/directives/class-map.js'
 import { state } from 'lit/decorators.js'
-import { Currency, Kid, LocalStorageItems, Route, ServerRoute } from 'types'
+import { Currency, Kid, LocalStorageItems, Route } from '@types'
 import { SignalWatcher, watch } from '@lit-labs/signals'
 import { UserLoggedInEvent } from '@/pages/km-page-login.ts'
 import {
@@ -16,6 +16,7 @@ import {
 import { log, table } from '@/utils/console.ts'
 import { Db } from '@/utils/db.ts'
 import { currencyDetails } from '@/constants/currencies.ts'
+import { ServerRoute } from '@server/constants/constants.ts'
 
 export class KmLayout extends SignalWatcher(LitElement) {
   /**
@@ -28,7 +29,7 @@ export class KmLayout extends SignalWatcher(LitElement) {
       container-name: layout;
       container-type: inline-size;
       display: block;
-      padding: 80px clamp(15px, 7vw, 80px);
+      padding: 80px clamp(15px, 4vw, 80px);
     }
     main {
       height: stretch;
@@ -163,7 +164,10 @@ export class KmLayout extends SignalWatcher(LitElement) {
     let pageContent = html`<p>Uh Oh.....</p>`
 
     if (_route === Route.Adjustments) {
-      pageContent = html`<km-page-adjustments @adjustment-created="${this._fetchKidsData}"></km-page-adjustments>`
+      pageContent = html`<km-page-adjustments
+        @adjustment-created="${this._fetchKidsData}"
+        @kid-updated="${this._fetchKidsData}"
+      ></km-page-adjustments>`
     } else if (_route === Route.Home) {
       pageContent = html`<km-page-home></km-page-home>`
     } else if (_route === Route.Login) {

@@ -1,10 +1,11 @@
 import { css, html, LitElement, nothing } from 'lit'
 import { SignalWatcher } from '@lit-labs/signals'
 import { kids, screenshotMode } from '@/constants/signals.ts'
-import { Kid, LocalStorageItems, ServerRoute, User } from 'types'
+import { Kid, LocalStorageItems, User } from '@types'
 import { log, table } from '@/utils/console.ts'
 import { state } from 'lit/decorators.js'
 import { Db } from '@/utils/db.ts'
+import { ServerRoute } from '@server/constants/constants.ts'
 
 export class KmPageSettings extends SignalWatcher(LitElement) {
   /**
@@ -12,7 +13,29 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
    * CSS
    * =========================================================================
    */
-  static styles = css``
+  static styles = css`
+    :host {
+      color: var(--color-text-copy);
+    }
+    :heading {
+      color: var(--color-text-header);
+    }
+    h2 {
+      margin-top: 3rem;
+    }
+    .kids {
+      display: flex;
+      flex-flow: row wrap;
+      justify-items: start;
+      gap: 1.5rem;
+    }
+    .users {
+      display: flex;
+      flex-flow: row wrap;
+      justify-items: start;
+      gap: 1.5rem;
+    }
+  `
 
   /**
    * =========================================================================
@@ -61,33 +84,36 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
     if (kidsJson) {
       const kidsData: Kid[] = JSON.parse(kidsJson)
 
-      kidsEditors = kidsData.map((kid) => {
-        return html`<kid-editor data-kid="${JSON.stringify(kid)}"></kid-editor>`
+      kidsEditors = kidsData.map((_kid, index) => {
+        return html`<kid-editor data-kid-index="${index}"></kid-editor>`
       })
     }
 
     return html`
       <h1>Settings</h1>
       <h2>Kids</h2>
-      ${kidsEditors ?? nothing}
+      ${kidsEditors ? html`<div class="kids">${kidsEditors}</div>` : nothing}
 
       <h2>Users</h2>
-      ${this._users.map(
-        (user) => html`
-          <div>
-            <h3>${user.username}</h3>
-            ${user.grownUp ? html`<span>Admin</span>` : html`<span>Non-Admin</span>`}
-          </div>
-        `
-      )}
+      <div class="users">
+        ${this._users.map(
+          (user) => html`
+            <div>
+              <h3>${user.username}</h3>
+              ${user.grownUp ? html`<span>Admin</span>` : html`<span>Non-Admin</span>`}
+            </div>
+          `
+        )}
+      </div>
 
-      <h2>Debugging</h2>
-      <form-input>
-        <label>
-          <input type="checkbox" switch ?checked="${screenshotMode.get()}" @input="${this._onScreenshotModeInput}" />
-          Enable Screenshot Mode</label
-        >
-      </form-input>
+        <h2>Debugging</h2>
+        <form-input>
+          <label>
+            <input type="checkbox" switch ?checked="${screenshotMode.get()}" @input="${this._onScreenshotModeInput}" />
+            Enable Screenshot Mode</label
+          >
+        </form-input>
+      </div>
     `
   }
 }

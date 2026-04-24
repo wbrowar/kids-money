@@ -18,7 +18,7 @@ StyleDictionary.registerFilter({
 })
 
 /**
- * Configuration shared across all themes
+ * Configuration constants across all themes
  */
 const config = {
   log: {

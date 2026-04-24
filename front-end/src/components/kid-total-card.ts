@@ -1,11 +1,11 @@
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit'
+import { css, html, LitElement, nothing } from 'lit'
 import { property } from 'lit/decorators.js'
 import { formatTotalForCurrency } from '@/utils/currency.ts'
 import { currentRoute, kids, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
-import { Kid, Route } from 'types'
+import { Kid, Route } from '@types'
 import { classMap } from 'lit/directives/class-map.js'
-import variableKids from '@/assets/css/automated/variables-kid.css?inline' with { type: 'css' }
+import { variableKids } from '@/assets/css/css.ts'
 
 export class KidTotalCard extends SignalWatcher(LitElement) {
   /**
@@ -23,7 +23,7 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
       height: auto;
     }
     .container {
-      ${unsafeCSS(variableKids)}
+      ${variableKids}
       container-name: kid-total-card;
       container-type: inline-size;
       display: grid;
@@ -54,7 +54,7 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
         border-radius: 50%;
         aspect-ratio: 1;
         border: 5px solid var(--kid-color-border);
-        width: clamp(90px, 20cqw, 150px);
+        width: clamp(60px, 20cqw, 150px);
       }
     }
     .info {
@@ -80,12 +80,19 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
       grid-column: 1 / 4;
       grid-row: 2 / 3;
       grid-template-columns: 1fr max-content;
+      align-items: center;
       gap: 0.5rem;
       padding: 9px;
       color: var(--kid-color-text-on-bg-light);
 
       meter {
         width: 100%;
+        &::-webkit-meter-bar {
+          background-color: color-mix(var(--kid-color-favorite) 15%, transparent);
+        }
+      }
+      .emoji {
+        font-size: var(--font-size-lg);
       }
     }
     h1 {
@@ -181,7 +188,9 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
             optimum="${saveForThesholds.optimum}"
             max="${kid.savingForValue}"
           ></meter>
-          <span>${kid.savingFor}</span>
+          ${kid.savingFor
+            ? html`<span class="${kid.savingFor.length <= 3 ? 'emoji' : ''}">${kid.savingFor}</span>`
+            : nothing}
         </div>
       `
 

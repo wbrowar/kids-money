@@ -1,6 +1,6 @@
 import { selectedCurrency } from '@/constants/signals.ts'
 import { currencyDetails } from '@/constants/currencies.ts'
-import { Currency } from 'types'
+import { Currency } from '@types'
 
 export function convertCurrencyToUsd(amount: number) {
   if (amount === 0) {

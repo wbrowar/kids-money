@@ -1,6 +1,9 @@
 import { Request, Response } from 'express'
 import { prisma } from '@/utils/prisma.ts'
-import { dollarAdjustmentFromInterestPercentage, interestFromInterestThresholds } from 'front-end/src/utils/adjustments'
+import {
+  dollarAdjustmentFromInterestPercentage,
+  interestFromInterestThresholds,
+} from '@front-end/src/utils/adjustments.ts'
 import { DbMessage } from '@/utils/db-response.ts'
 
 export async function createAdjustment(req: Request, res: Response) {

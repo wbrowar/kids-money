@@ -3,6 +3,10 @@
     "color": {
       "$type": "color",
       "black": { "$value": "rgb(0 0 0)" },
+      "direction": {
+        "add": { "$value": "oklch(0.5985 0.2343 149.19)" },
+        "subtract": { "$value": "oklch(0.5632 0.2565 23.82)" }
+      },
       "fpo": { "$value": "oklch(0.7103 0.3503 329.82)" },
       "green": { "$value": "oklch(0.7751 0.304 149.19)" },
       "green-dark": { "$value": "oklch(0.186 0.057 146.054)" },
@@ -13,6 +17,14 @@
         "success": { "$value": "oklch(0.7751 0.304 149.19)" }
       },
       "white": { "$value": "rgb(255 255 255)" }
+    },
+    "component": {
+      "setting-chip": {
+        "color": {
+          "$type": "color",
+          "$value": ""
+        }
+      }
     },
     "size": {
       "$type": "dimension",

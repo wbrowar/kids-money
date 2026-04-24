@@ -5,10 +5,14 @@ import { playwright } from '@vitest/browser-playwright'
 
 export default defineConfig(async ({ command }) => {
   return {
+    build: {
+      cssMinify: false,
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
-        types: fileURLToPath(new URL('../types/index.ts', import.meta.url)),
+        '@server': fileURLToPath(new URL('../server/src', import.meta.url)),
+        '@types': fileURLToPath(new URL('../types/index.d.ts', import.meta.url)),
       },
     },
     test: {

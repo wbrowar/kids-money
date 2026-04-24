@@ -31,6 +31,7 @@ model Kid {
   interest           Float        @default(0)
   interestThresholds String       @default("")
   adjustments        Adjustment[]
+  users              User?
 }
 
 model User {
@@ -38,4 +39,6 @@ model User {
   grownUp  Boolean @default(false)
   username String  @unique
   password String
+  kid      Kid?    @relation(fields: [kidId], references: [id])
+  kidId    Int?    @unique
 }

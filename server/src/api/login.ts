@@ -21,6 +21,7 @@ export async function login(req: Request, res: Response) {
   res.send(
     JSON.stringify({
       grownUp: user.grownUp,
+      kidId: user.kidId || undefined,
       username: user.username,
     })
   )

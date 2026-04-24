@@ -1,8 +1,9 @@
 import { describe, expect, test } from 'vitest'
 import {
   addDollarAdjustmentToTotal,
-  dollarAdjustmentFromInterestPercentage, estimateInterestTotalOverTime
-} from './adjustments'
+  dollarAdjustmentFromInterestPercentage,
+  estimateInterestTotalOverTime,
+} from './adjustments.ts'
 
 describe('Adjustments', () => {
   test('dollar adjustment adds dollar amount to total', () => {
@@ -20,7 +21,7 @@ describe('Adjustments', () => {
       { days: 1, expect: 100.5 },
       { days: 7, expect: 103.55293969407344 },
       { days: 30, expect: 116.1400082895346 },
-      { days: 365, expect: 617.4652783431255 }
+      { days: 365, expect: 617.4652783431255 },
     ]
 
     for (const row of dataset) {

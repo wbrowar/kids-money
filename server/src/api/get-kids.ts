@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { prisma } from '@/utils/prisma.ts'
-import { Kid } from 'types'
+import { Kid } from '../../../types/index.d.ts'
 
 export async function getKids(req: Request, res: Response) {
   console.log('getKids', 'includeAdjustments', req.body.includeAdjustments, 'screenshotMode', req.body.screenshotMode)
@@ -33,7 +33,7 @@ export async function getKids(req: Request, res: Response) {
     if (req.body?.screenshotMode) {
       kids = kids.map((kid: Kid, index: number) => {
         kid.name = `Kid ${index + 1}`
-        kid.photoUrl = 'https://i.pravatar.cc/300'
+        kid.photoUrl = `https://i.pravatar.cc/30${index}`
         return kid
       })
     }

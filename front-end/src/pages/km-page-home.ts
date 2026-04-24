@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit'
 import { kids } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
-import { Kid } from 'types'
+import { Kid } from '@types'
 
 export class KmPageHome extends SignalWatcher(LitElement) {
   /**

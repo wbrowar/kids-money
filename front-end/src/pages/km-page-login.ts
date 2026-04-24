@@ -1,9 +1,10 @@
 import { css, html, LitElement } from 'lit'
 import { Db } from '@/utils/db.ts'
-import { LocalStorageItems, ServerRoute } from 'types'
+import { LocalStorageItems } from '@types'
 import { log, table } from '@/utils/console.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 import { errorDialogMessage } from '@/constants/signals.ts'
+import { ServerRoute } from '@server/constants/constants.ts'
 
 export class KmPageLogin extends SignalWatcher(LitElement) {
   /**
@@ -35,11 +36,11 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
 
       table(response)
 
-      this.dispatchEvent(new UserLoggedInEvent(response.username, response.grownUp ?? false))
+      this.dispatchEvent(new UserLoggedInEvent(response.username, response.grownUp ?? false, response.kidId))
 
       localStorage.setItem(
         LocalStorageItems.CurrentUser,
-        JSON.stringify({ username: response.username, grownUp: response.grownUp ?? false })
+        JSON.stringify({ username: response.username, grownUp: response.grownUp ?? false, kidId: response.kidId })
       )
     } catch (error) {
       if (error instanceof Error) {
@@ -68,7 +69,9 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
 
       if (userSettings?.username) {
         customElements.whenDefined('km-layout').then(() => {
-          this.dispatchEvent(new UserLoggedInEvent(userSettings.username, userSettings?.grownUp ?? false))
+          this.dispatchEvent(
+            new UserLoggedInEvent(userSettings.username, userSettings?.grownUp ?? false, userSettings?.kidId)
+          )
         })
       }
     }
@@ -96,13 +99,15 @@ export class UserLoggedInEvent extends Event {
   static readonly eventName = 'logged-in'
 
   readonly username: string = ''
+  readonly kidId: number | undefined = undefined
   readonly isGrownUp: boolean = false
 
-  constructor(username: string, isGrownUp: boolean) {
+  constructor(username: string, isGrownUp: boolean, kidId: number | undefined) {
     super(UserLoggedInEvent.eventName, { bubbles: true, composed: true })
 
     this.username = username
     this.isGrownUp = isGrownUp
+    this.kidId = kidId
   }
 }
 

@@ -9,7 +9,7 @@
  * dir('My object', myObject)
  * ```
  */
-export function dir (...args: any[]) {
+export function dir(...args: any[]) {
   logger('dir', args)
 }
 
@@ -24,7 +24,7 @@ export function dir (...args: any[]) {
  * error('An error occurred here.')
  * ```
  */
-export function error (...args: any[]) {
+export function error(...args: any[]) {
   logger('error', args)
 }
 
@@ -39,7 +39,7 @@ export function error (...args: any[]) {
  * log('These are things I’d like to log', itemOne, itemTwo)
  * ```
  */
-export function log (...args: any[]) {
+export function log(...args: any[]) {
   logger('log', args)
 }
 
@@ -54,7 +54,7 @@ export function log (...args: any[]) {
  * table(itemOne, itemTwo)
  * ```
  */
-export function table (...args: any[]) {
+export function table(...args: any[]) {
   logger('table', args)
 }
 
@@ -69,7 +69,7 @@ export function table (...args: any[]) {
  * warn('Something isn’t right here, but it’s not bad enough to show an error')
  * ```
  */
-export function warn (...args: any[]) {
+export function warn(...args: any[]) {
   logger('warn', args)
 }
 
@@ -84,40 +84,39 @@ export function warn (...args: any[]) {
  * logger('log', itemsToLog)
  * ```
  */
-function logger (type: 'dir' | 'error' | 'log' | 'table' | 'warn', args: any[]) {
+function logger(type: 'dir' | 'error' | 'log' | 'table' | 'warn', args: any[]) {
   const spirit = '💰'
 
-  // TODO figure out how to check for `nuxt.config.dev`
-  // if (appConfig.dev) {
-  for (let i = 0; i < args.length; i++) {
-    const spacer = i > 0 ? '◉ ' : ''
-    switch (type) {
-      case 'dir':
-        if (typeof args[i] === 'string') {
+  if (import.meta.env.DEV) {
+    for (let i = 0; i < args.length; i++) {
+      const spacer = i > 0 ? '◉ ' : ''
+      switch (type) {
+        case 'dir':
+          if (typeof args[i] === 'string') {
+            // eslint-disable-next-line no-console
+            console.dir(spacer + spirit + ' ' + args[i])
+          } else {
+            // eslint-disable-next-line no-console
+            console.dir(args[i])
+          }
+          break
+        case 'error':
           // eslint-disable-next-line no-console
-          console.dir(spacer + spirit + ' ' + args[i])
-        } else {
+          console.error(spacer + spirit, args[i])
+          break
+        case 'log':
           // eslint-disable-next-line no-console
-          console.dir(args[i])
-        }
-        break
-      case 'error':
-        // eslint-disable-next-line no-console
-        console.error(spacer + spirit, args[i])
-        break
-      case 'log':
-        // eslint-disable-next-line no-console
-        console.log(spacer + spirit, args[i])
-        break
-      case 'table':
-        // eslint-disable-next-line no-console
-        console.table(args[i])
-        break
-      case 'warn':
-        // eslint-disable-next-line no-console
-        console.warn(spacer + spirit, args[i])
-        break
+          console.log(spacer + spirit, args[i])
+          break
+        case 'table':
+          // eslint-disable-next-line no-console
+          console.table(args[i])
+          break
+        case 'warn':
+          // eslint-disable-next-line no-console
+          console.warn(spacer + spirit, args[i])
+          break
+      }
     }
   }
-// }
 }

@@ -1,5 +1,8 @@
-import { css, html, LitElement } from 'lit'
+import { css, html, LitElement, nothing } from 'lit'
 import { SignalWatcher } from '@lit-labs/signals'
+import { property } from 'lit/decorators.js'
+import { classMap } from 'lit/directives/class-map.js'
+import { log } from '@/utils/console.ts'
 
 export class SettingChip extends SignalWatcher(LitElement) {
   /**
@@ -11,19 +14,26 @@ export class SettingChip extends SignalWatcher(LitElement) {
     .display {
       anchor-name: --display;
       appearance: none;
-      display: inline-block;
-      padding: 5px;
-      background-color: color-mix(in oklch, var(--kid-color-text-on-favorite) 3%, transparent);
-      border: 1px solid var(--kid-color-text-on-favorite);
-      border-radius: 4px;
-      font-size: var(--font-size-xs);
-      text-box: trim-both cap alphabetic;
-      color: var(--kid-color-text-on-favorite);
+      background-color: transparent;
+      border: none;
+      transition: opacity var(--duration-hover) ease-out;
       cursor: pointer;
 
+      &:not(.unstyled) {
+        display: inline-block;
+        padding: 5px;
+        background-color: color-mix(
+          var(--component-setting-chip-color, var(--kid-color-text-on-favorite)) 3%,
+          transparent
+        );
+        border: 1px solid var(--component-setting-chip-color, var(--kid-color-text-on-favorite));
+        border-radius: 4px;
+        font-size: var(--font-size-xs);
+        text-box: trim-both cap alphabetic;
+        color: var(--component-setting-chip-color, var(--kid-color-text-on-favorite));
+      }
       &:hover {
-        border-color: color-mix(in oklch, var(--kid-color-text-on-favorite) 60%, transparent);
-        color: color-mix(in oklch, var(--kid-color-text-on-favorite) 60%, transparent);
+        opacity: 0.5;
       }
     }
     #settings {
@@ -32,19 +42,36 @@ export class SettingChip extends SignalWatcher(LitElement) {
       position-area: block-end;
       position-try-fallbacks: block-start;
       margin-block: 3px;
-      padding: 14px;
-      background-color: color-mix(
-        in oklch,
-        var(--kid-color-favorite) 70%,
-        light-dark(rgb(0 0 0 / 0.2), rgb(255 255 255 / 0.2))
-      );
-      border: 1px solid var(--kid-color-favorite);
-      border-radius: 16px;
-      box-shadow: var(--kid-box-shadow-element);
+      padding: 18px;
+      background-color: color-mix(var(--kid-color-bg-light, light-dark(black, white)) 70%, transparent);
+      border: 1px solid var(--kid-color-favorite, light-dark(black, white));
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--kid-box-shadow-element, var(--box-shadow-element));
       backdrop-filter: blur(13px);
-      color: var(--kid-color-text-on-favorite);
+      color: var(--kid-color-text-on-bg-light, light-dark(white, black));
+
+      &::backdrop {
+        backdrop-filter: saturate(90%) brightness(70%);
+      }
     }
   `
+
+  /**
+   * =========================================================================
+   * PROPS
+   * =========================================================================
+   */
+  /**
+   * TODO
+   */
+  @property({ attribute: 'data-disabled', type: Boolean })
+  disabled = false
+
+  /**
+   * TODO
+   */
+  @property({ attribute: 'data-unstyled', type: Boolean })
+  unstyled = false
 
   /**
    * =========================================================================
@@ -52,12 +79,37 @@ export class SettingChip extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   protected render() {
+    const buttonClasses = {
+      display: true,
+      unstyled: this.unstyled,
+    }
+
+    log('disabled', this.disabled)
+
+    if (this.disabled) {
+      return html`<slot name="label"></slot>`
+    }
+
     return html`
-      <button class="display" popovertarget="settings"><slot name="label"></slot></button>
-      <div id="settings" popover>
+      <button class="${classMap(buttonClasses)}" popovertarget="settings"><slot name="label"></slot></button>
+      <div
+        id="settings"
+        popover
+        part="popover"
+        @toggle="${(e: ToggleEvent) =>
+          e.newState === 'closed' ? this.dispatchEvent(new SettingChipClosedEvent()) : nothing}"
+      >
         <slot></slot>
       </div>
     `
+  }
+}
+
+export class SettingChipClosedEvent extends Event {
+  static readonly eventName = 'closed'
+
+  constructor() {
+    super(SettingChipClosedEvent.eventName, { bubbles: true, composed: true })
   }
 }
 

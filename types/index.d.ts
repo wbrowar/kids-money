@@ -22,10 +22,7 @@ export interface Adjustment {
     totalToDate: number;
 }
 
-export enum AdjustmentType {
-    Dollar = 'dollar',
-    Interest = 'interest',
-}
+export type AdjustmentType = 'dollar' | 'interest';
 
 /**
  * Tracked changes in a kid’s value of their savings. This includes the dollar amount that changed and the current total after the change was added in.
@@ -36,6 +33,11 @@ export interface AdjustmentDto {
     kidId: number;
     reason: string;
 }
+
+/**
+ * TODO
+ */
+export type InterestThresholds = number[][]
 
 /**
  * A lookup table of kids and their adjustments.
@@ -86,22 +88,6 @@ export enum Route {
 }
 
 /**
- * A list of server endpoints used through the application.
- */
-export enum ServerRoute {
-    /* Create a new adjustment. */
-    CreateAdjustment = 'create-adjustment',
-    /* Create a new kid or update an existing one. */
-    CreateUpdateKid = 'create-update-kid',
-    /* Gets kid settings and all adjustments made in the past calendar year. */
-    GetKids = 'get-kids',
-    /* Gets all usernames and grownUp status of all users. */
-    GetUsers = 'get-users',
-    /* Uses a username and password to log the user in. */
-    Login = 'login',
-}
-
-/**
  * Represents a user of the application.
  */
 export interface User {
@@ -109,6 +95,8 @@ export interface User {
     grownUp: boolean;
     /* The internal ID of the user stored in the database. */
     id: number;
+    /* TODO */
+    kidId?: number;
     /* The username of the user, as used to log into the application. */
     username: string;
 }

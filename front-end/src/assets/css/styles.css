@@ -1,6 +1,10 @@
 @import './automated/variables.css';
-/*@import './automated/variables-kid.css';*/
 
+html {
+  --color-favorite: attr(data-color-favorite type(<color>), var(--color-primary));
+  scrollbar-color: var(--color-favorite, var(--color-primary)) transparent;
+  scrollbar-width: thin;
+}
 body {
   color-scheme: light dark;
   margin: 0;

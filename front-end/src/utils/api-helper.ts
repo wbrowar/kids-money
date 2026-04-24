@@ -1,4 +1,4 @@
-import { Kid } from 'types'
+import { Kid } from '@types'
 
 export function prepareKidForSave(id: number, newProperties: Partial<Kid>) {
   // Convert number properties to number type

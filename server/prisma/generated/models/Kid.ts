@@ -249,6 +249,7 @@ export type KidWhereInput = {
   interest?: Prisma.FloatFilter<"Kid"> | number
   interestThresholds?: Prisma.StringFilter<"Kid"> | string
   adjustments?: Prisma.AdjustmentListRelationFilter
+  users?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type KidOrderByWithRelationInput = {
@@ -261,6 +262,7 @@ export type KidOrderByWithRelationInput = {
   interest?: Prisma.SortOrder
   interestThresholds?: Prisma.SortOrder
   adjustments?: Prisma.AdjustmentOrderByRelationAggregateInput
+  users?: Prisma.UserOrderByWithRelationInput
 }
 
 export type KidWhereUniqueInput = Prisma.AtLeast<{
@@ -276,6 +278,7 @@ export type KidWhereUniqueInput = Prisma.AtLeast<{
   interest?: Prisma.FloatFilter<"Kid"> | number
   interestThresholds?: Prisma.StringFilter<"Kid"> | string
   adjustments?: Prisma.AdjustmentListRelationFilter
+  users?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type KidOrderByWithAggregationInput = {
@@ -317,6 +320,7 @@ export type KidCreateInput = {
   interest?: number
   interestThresholds?: string
   adjustments?: Prisma.AdjustmentCreateNestedManyWithoutKidInput
+  users?: Prisma.UserCreateNestedOneWithoutKidInput
 }
 
 export type KidUncheckedCreateInput = {
@@ -329,6 +333,7 @@ export type KidUncheckedCreateInput = {
   interest?: number
   interestThresholds?: string
   adjustments?: Prisma.AdjustmentUncheckedCreateNestedManyWithoutKidInput
+  users?: Prisma.UserUncheckedCreateNestedOneWithoutKidInput
 }
 
 export type KidUpdateInput = {
@@ -340,6 +345,7 @@ export type KidUpdateInput = {
   interest?: Prisma.FloatFieldUpdateOperationsInput | number
   interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
   adjustments?: Prisma.AdjustmentUpdateManyWithoutKidNestedInput
+  users?: Prisma.UserUpdateOneWithoutKidNestedInput
 }
 
 export type KidUncheckedUpdateInput = {
@@ -352,6 +358,7 @@ export type KidUncheckedUpdateInput = {
   interest?: Prisma.FloatFieldUpdateOperationsInput | number
   interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
   adjustments?: Prisma.AdjustmentUncheckedUpdateManyWithoutKidNestedInput
+  users?: Prisma.UserUncheckedUpdateOneWithoutKidNestedInput
 }
 
 export type KidCreateManyInput = {
@@ -436,6 +443,11 @@ export type KidSumOrderByAggregateInput = {
   interest?: Prisma.SortOrder
 }
 
+export type KidNullableScalarRelationFilter = {
+  is?: Prisma.KidWhereInput | null
+  isNot?: Prisma.KidWhereInput | null
+}
+
 export type KidCreateNestedOneWithoutAdjustmentsInput = {
   create?: Prisma.XOR<Prisma.KidCreateWithoutAdjustmentsInput, Prisma.KidUncheckedCreateWithoutAdjustmentsInput>
   connectOrCreate?: Prisma.KidCreateOrConnectWithoutAdjustmentsInput
@@ -450,6 +462,22 @@ export type KidUpdateOneRequiredWithoutAdjustmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.KidUpdateToOneWithWhereWithoutAdjustmentsInput, Prisma.KidUpdateWithoutAdjustmentsInput>, Prisma.KidUncheckedUpdateWithoutAdjustmentsInput>
 }
 
+export type KidCreateNestedOneWithoutUsersInput = {
+  create?: Prisma.XOR<Prisma.KidCreateWithoutUsersInput, Prisma.KidUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.KidCreateOrConnectWithoutUsersInput
+  connect?: Prisma.KidWhereUniqueInput
+}
+
+export type KidUpdateOneWithoutUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.KidCreateWithoutUsersInput, Prisma.KidUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.KidCreateOrConnectWithoutUsersInput
+  upsert?: Prisma.KidUpsertWithoutUsersInput
+  disconnect?: Prisma.KidWhereInput | boolean
+  delete?: Prisma.KidWhereInput | boolean
+  connect?: Prisma.KidWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KidUpdateToOneWithWhereWithoutUsersInput, Prisma.KidUpdateWithoutUsersInput>, Prisma.KidUncheckedUpdateWithoutUsersInput>
+}
+
 export type KidCreateWithoutAdjustmentsInput = {
   name: string
   photoUrl?: string
@@ -458,6 +486,7 @@ export type KidCreateWithoutAdjustmentsInput = {
   savingForValue?: number
   interest?: number
   interestThresholds?: string
+  users?: Prisma.UserCreateNestedOneWithoutKidInput
 }
 
 export type KidUncheckedCreateWithoutAdjustmentsInput = {
@@ -469,6 +498,7 @@ export type KidUncheckedCreateWithoutAdjustmentsInput = {
   savingForValue?: number
   interest?: number
   interestThresholds?: string
+  users?: Prisma.UserUncheckedCreateNestedOneWithoutKidInput
 }
 
 export type KidCreateOrConnectWithoutAdjustmentsInput = {
@@ -495,6 +525,7 @@ export type KidUpdateWithoutAdjustmentsInput = {
   savingForValue?: Prisma.FloatFieldUpdateOperationsInput | number
   interest?: Prisma.FloatFieldUpdateOperationsInput | number
   interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
+  users?: Prisma.UserUpdateOneWithoutKidNestedInput
 }
 
 export type KidUncheckedUpdateWithoutAdjustmentsInput = {
@@ -506,6 +537,69 @@ export type KidUncheckedUpdateWithoutAdjustmentsInput = {
   savingForValue?: Prisma.FloatFieldUpdateOperationsInput | number
   interest?: Prisma.FloatFieldUpdateOperationsInput | number
   interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
+  users?: Prisma.UserUncheckedUpdateOneWithoutKidNestedInput
+}
+
+export type KidCreateWithoutUsersInput = {
+  name: string
+  photoUrl?: string
+  color?: string
+  savingFor?: string
+  savingForValue?: number
+  interest?: number
+  interestThresholds?: string
+  adjustments?: Prisma.AdjustmentCreateNestedManyWithoutKidInput
+}
+
+export type KidUncheckedCreateWithoutUsersInput = {
+  id?: number
+  name: string
+  photoUrl?: string
+  color?: string
+  savingFor?: string
+  savingForValue?: number
+  interest?: number
+  interestThresholds?: string
+  adjustments?: Prisma.AdjustmentUncheckedCreateNestedManyWithoutKidInput
+}
+
+export type KidCreateOrConnectWithoutUsersInput = {
+  where: Prisma.KidWhereUniqueInput
+  create: Prisma.XOR<Prisma.KidCreateWithoutUsersInput, Prisma.KidUncheckedCreateWithoutUsersInput>
+}
+
+export type KidUpsertWithoutUsersInput = {
+  update: Prisma.XOR<Prisma.KidUpdateWithoutUsersInput, Prisma.KidUncheckedUpdateWithoutUsersInput>
+  create: Prisma.XOR<Prisma.KidCreateWithoutUsersInput, Prisma.KidUncheckedCreateWithoutUsersInput>
+  where?: Prisma.KidWhereInput
+}
+
+export type KidUpdateToOneWithWhereWithoutUsersInput = {
+  where?: Prisma.KidWhereInput
+  data: Prisma.XOR<Prisma.KidUpdateWithoutUsersInput, Prisma.KidUncheckedUpdateWithoutUsersInput>
+}
+
+export type KidUpdateWithoutUsersInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  savingFor?: Prisma.StringFieldUpdateOperationsInput | string
+  savingForValue?: Prisma.FloatFieldUpdateOperationsInput | number
+  interest?: Prisma.FloatFieldUpdateOperationsInput | number
+  interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
+  adjustments?: Prisma.AdjustmentUpdateManyWithoutKidNestedInput
+}
+
+export type KidUncheckedUpdateWithoutUsersInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  photoUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  savingFor?: Prisma.StringFieldUpdateOperationsInput | string
+  savingForValue?: Prisma.FloatFieldUpdateOperationsInput | number
+  interest?: Prisma.FloatFieldUpdateOperationsInput | number
+  interestThresholds?: Prisma.StringFieldUpdateOperationsInput | string
+  adjustments?: Prisma.AdjustmentUncheckedUpdateManyWithoutKidNestedInput
 }
 
 
@@ -549,6 +643,7 @@ export type KidSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   interest?: boolean
   interestThresholds?: boolean
   adjustments?: boolean | Prisma.Kid$adjustmentsArgs<ExtArgs>
+  users?: boolean | Prisma.Kid$usersArgs<ExtArgs>
   _count?: boolean | Prisma.KidCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["kid"]>
 
@@ -588,6 +683,7 @@ export type KidSelectScalar = {
 export type KidOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "photoUrl" | "color" | "savingFor" | "savingForValue" | "interest" | "interestThresholds", ExtArgs["result"]["kid"]>
 export type KidInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   adjustments?: boolean | Prisma.Kid$adjustmentsArgs<ExtArgs>
+  users?: boolean | Prisma.Kid$usersArgs<ExtArgs>
   _count?: boolean | Prisma.KidCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type KidIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -597,6 +693,7 @@ export type $KidPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   name: "Kid"
   objects: {
     adjustments: Prisma.$AdjustmentPayload<ExtArgs>[]
+    users: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1002,6 +1099,7 @@ readonly fields: KidFieldRefs;
 export interface Prisma__KidClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   adjustments<T extends Prisma.Kid$adjustmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Kid$adjustmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdjustmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  users<T extends Prisma.Kid$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Kid$usersArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1451,6 +1549,25 @@ export type Kid$adjustmentsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.AdjustmentScalarFieldEnum | Prisma.AdjustmentScalarFieldEnum[]
+}
+
+/**
+ * Kid.users
+ */
+export type Kid$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**
