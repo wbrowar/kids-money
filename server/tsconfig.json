@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+
+    /* Types */
+    "types": ["node"],
+
+    /* Bundler mode */
+    "moduleResolution": "nodenext",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Paths */
+    "paths": {
+      "@/*": ["./src/*"],
+      "@front-end/*": ["../front-end/*"],
+      "@types": ["../types/index.d.ts"]
+    }
+  },
+  "include": ["server.ts", "src/**/*.ts", "../front-end/**/*",
+    "./src/constants/**/*", "../types/**/*.ts"],
+  "exclude": ["node_modules", "src/**/*.browser.ts", "src/**/*.spec.ts"]
+}

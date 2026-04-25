@@ -1,0 +1,14 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+& {
+  --kid-color-bg-light: color-mix(var(--color-favorite, oklch(0.7751 0.304 149.19)) 10%, light-dark(rgb(255 255 255), rgb(40 40 40)));
+  --kid-color-border: color-mix(var(--color-favorite, oklch(0.7751 0.304 149.19)) 40%, transparent);
+  --kid-color-favorite: var(--color-favorite, oklch(0.7751 0.304 149.19));
+  --kid-color-text-on-favorite: color-mix(var(--color-favorite, oklch(0.7751 0.304 149.19)) 16%, contrast-color(var(--color-favorite, oklch(0.7751 0.304 149.19))));
+  --kid-color-text-on-bg-light: color-mix(var(--color-favorite, oklch(0.7751 0.304 149.19)) 16%, contrast-color(var(--kid-color-bg-light, color-mix(oklch(0.7751 0.304 149.19) 10%, light-dark(rgb(255 255 255), rgb(40 40 40))))));
+  --kid-box-shadow-card: 0 10px 20px color-mix(var(--color-favorite, oklch(0.7751 0.304 149.19)) 50%, transparent), 0 5px 10px color-mix(var(--color-favorite, oklch(0.7751 0.304 149.19)) 50%, transparent);
+  --kid-box-shadow-element: 0 5px 24px color-mix(var(--color-favorite, oklch(0.7751 0.304 149.19)) 10%, transparent), 0 4px 5px color-mix(var(--color-favorite, oklch(0.7751 0.304 149.19)) 40%, transparent);
+  --kid-color-bg-gradient: linear-gradient(color-mix(var(--kid-color-bg-light, color-mix(oklch(0.7751 0.304 149.19) 10%, light-dark(rgb(255 255 255), rgb(40 40 40)))) 90%, var(--color-favorite, oklch(0.7751 0.304 149.19))), var(--kid-color-bg-light, color-mix(oklch(0.7751 0.304 149.19) 10%, light-dark(rgb(255 255 255), rgb(40 40 40)))));
+}

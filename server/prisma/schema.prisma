@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Adjustment {
+  id                Int      @id @default(autoincrement())
+  createdDate       DateTime @default(now())
+  dollarAdjustment  Float    @default(0)
+  percentAdjustment Float    @default(0)
+  totalToDate       Float
+  reason            String   @default("")
+  kid               Kid      @relation(fields: [kidId], references: [id])
+  kidId             Int
+}
+
+model Kid {
+  id                 Int          @id @default(autoincrement())
+  name               String
+  photoUrl           String       @default("")
+  color              String       @default("#0026ff")
+  savingFor          String       @default("")
+  savingForValue     Float        @default(0)
+  interest           Float        @default(0)
+  interestThresholds String       @default("")
+  adjustments        Adjustment[]
+  users              User?
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  grownUp  Boolean @default(false)
+  username String  @unique
+  password String
+  kid      Kid?    @relation(fields: [kidId], references: [id])
+  kidId    Int?    @unique
+}

@@ -1,0 +1,157 @@
+{
+  "border": {
+    "radius": {
+      "sm": {
+        "$type": "dimension",
+        "$value": "5px"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "10px"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "20px"
+      }
+    }
+  },
+  "box-shadow": {
+    "card": {
+      "$value": "0 10px 20px color-mix(in oklch, {base.color.black} 20%, transparent), 0 1px 5px color-mix(in oklch, {base.color.black} 30%, transparent)"
+    },
+    "element": {
+      "$value": "0 9px 16px color-mix(in oklch, {base.color.black} 10%, transparent), 0 1px 5px color-mix(in oklch, {base.color.black} 20%, transparent)"
+    }
+  },
+  "color": {
+    "$type": "color",
+    "alert": {
+      "error": {
+        "$value": "{base.color.status.error}"
+      },
+      "info": {
+        "$value": "{base.color.status.info}"
+      },
+      "success": {
+        "$value": "{base.color.status.success}"
+      }
+    },
+    "bg": {
+      "nav": {
+        "$value": "{base.color.green}"
+      },
+      "settings-card": {
+        "$value": "light-dark({base.color.white}, {base.color.black})"
+      },
+      "site": {
+        "$value": "light-dark({base.color.green-light}, {base.color.green-dark})"
+      }
+    },
+    "direction": {
+      "add": {
+        "$value": "{base.color.direction.add}"
+      },
+      "subtract": {
+        "$value": "{base.color.direction.subtract}"
+      }
+    },
+    "fpo": {
+      "$value": "{base.color.fpo}"
+    },
+    "primary": {
+      "$value": "{base.color.green}"
+    },
+    "text": {
+      "copy": {
+        "$value": "light-dark({base.color.green-dark}, {base.color.green-light})"
+      },
+      "header": {
+        "$value": "light-dark({base.color.green-dark}, {base.color.green-light})"
+      },
+      "nav": {
+        "$value": "color-mix({base.color.green} 30%, light-dark({base.color.green-dark}, {base.color.green-light}))"
+      },
+      "nav-on-bar": {
+        "$value": "{base.color.green-light}"
+      }
+    }
+  },
+  "component": {
+    "setting-chip": {
+      "color": {
+        "$type": "color",
+        "$value": "initial"
+      },
+      "popover-bg": {
+        "$type": "color",
+        "$value": "light-dark({base.color.green-light}, {base.color.green-dark})"
+      },
+      "popover-color": {
+        "$type": "color",
+        "$value": "{base.color.green}"
+      }
+    },
+    "svg-icon": {
+      "size": {
+        "$type": "dimension",
+        "$value": "20px"
+      }
+    }
+  },
+  "duration": {
+    "$type": "duration",
+    "hover": {
+      "$value": "0.3s"
+    }
+  },
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "default": {
+        "$value": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'"
+      }
+    },
+    "size": {
+      "$type": "fontSize",
+      "xs": {
+        "$value": "0.75rem"
+      },
+      "sm": {
+        "$value": "0.875rem"
+      },
+      "md": {
+        "$value": "1rem"
+      },
+      "lg": {
+        "$value": "1.3rem"
+      },
+      "xl": {
+        "$value": "2rem"
+      },
+      "2xl": {
+        "$value": "4rem"
+      },
+      "3xl": {
+        "$value": "6rem"
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "normal": {
+        "$value": 400
+      },
+      "semibold": {
+        "$value": 600
+      },
+      "bold": {
+        "$value": 700
+      }
+    }
+  },
+  "z-index": {
+    "$type": "number",
+    "alert": {
+      "$value": 5000
+    }
+  }
+}

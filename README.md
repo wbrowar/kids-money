@@ -128,18 +128,44 @@ As an example, here’s how you could host this project on a Laravel Forge-provi
 5. [Update `pm2` to the most recent version](https://pm2.keymetrics.io/docs/usage/update-pm2/) (or at least a version the works with `.mjs` files)
 6. When updating the app, run these commands (from the root directory where you moved these files) to build and update everything:
    ```bash
+   cd <path-to-parent>/front-end
+   
    . ~/.nvm/nvm.sh use
    
    npm ci
    
-   npm run prisma:migrate:up
-   
    npm run build
+   
+   cd <path-to-parent>/server
+   
+   npm ci
+   
+   npm run prisma:migrate:up
    
    pm2 start
    ```
 7. Once you’ve got Nuxt 3 built and `pm2` started you can run the `scripts/create-user.mjs` script and set up your admin user and log into the app to configure everything in Settings.
 8. If you want to enable automatic allowance or interest adjustments, you can create a cron job using Forge’s Scheduler (replacing the node version and directory name to match your server):
    ```bash
-   /home/forge/.nvm/versions/node/v16.18.1/bin/node /home/forge/REPLACE_WITH_SITE_DIRECTORY_NAME/scripts/add-adjustment.mjs -kid=kid-slug -interest
+   /home/forge/.nvm/versions/node/v16.18.1/bin/node /home/forge/REPLACE_WITH_SITE_DIRECTORY_NAME/server/scripts/add-adjustment.mjs -kid=kid-slug -interest
    ```
+
+TODO: Add instructions for setting up pm2 `ecosystem.config.js` file:
+
+```javascript
+module.exports = {
+  apps: [
+    {
+      name: 'KidsMoney',
+      exec_mode: 'cluster',
+      instances: 'max',
+      script: 'npm run start',
+      env: {
+        "DATABASE_URL": "file:/home/forge/REPLACE_WITH_SITE_DIRECTORY_NAME/server/prisma/db/kids-money.db",
+		"CORS_ORIGIN": "http://localhost:5173",
+		"SERVER_PORT": "3000",
+      }
+    }
+  ]
+}
+```

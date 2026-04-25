@@ -1,11 +1,8 @@
-# Nuxt Defaults
+# Defaults
 node_modules
 *.log*
-.nuxt
-.nitro
-.cache
-.output
-.env
+front-end/.env
+server/.env
 coverage
 dist
 
@@ -17,4 +14,8 @@ dist
 
 # Local Development
 ecosystem.config.js
-prisma/db
+server/prisma/backups
+server/prisma/db
+
+# TEMP
+front-end/REFERENCE
