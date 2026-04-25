@@ -1,5 +1,5 @@
 import { css, html, LitElement, nothing } from 'lit'
-import { property, state } from 'lit/decorators.js'
+import { property, query, state } from 'lit/decorators.js'
 import { SignalWatcher } from '@lit-labs/signals'
 import { Kid } from '@types'
 import { log } from '@/utils/console.ts'
@@ -31,7 +31,6 @@ export class KidEditor extends SignalWatcher(LitElement) {
       ${variableKids}
       --component-setting-chip-color: var(--kid-color-favorite);
       display: grid;
-      grid-template-columns: repeat(2, max-content);
       gap: 15px;
       padding: 25px;
       background-color: var(--kid-color-bg-light);
@@ -48,13 +47,14 @@ export class KidEditor extends SignalWatcher(LitElement) {
 
         h3 {
           margin: 0;
-          text-align: end;
+
+          @container (width > 600px) {
+            & {
+              text-align: end;
+            }
+          }
         }
         setting-chip {
-          &::part(popover) {
-            max-width: 300px;
-          }
-
           input,
           button {
             box-sizing: border-box;
@@ -65,6 +65,12 @@ export class KidEditor extends SignalWatcher(LitElement) {
           p {
             text-wrap: pretty;
           }
+        }
+      }
+
+      @container (width > 600px) {
+        & {
+          grid-template-columns: repeat(2, max-content);
         }
       }
     }
@@ -120,6 +126,9 @@ export class KidEditor extends SignalWatcher(LitElement) {
       background-color: var(--color-fpo);
     }
   `
+
+  @query('#removeKidInput')
+  _removeKidInput!: HTMLInputElement
 
   /**
    * =========================================================================
@@ -183,7 +192,7 @@ export class KidEditor extends SignalWatcher(LitElement) {
   }
 
   private async _removeKid() {
-    if (!this._isSaving) {
+    if (!this._isSaving && parseInt(this._removeKidInput.value) === this._kidId) {
       try {
         this._isSaving = true
         const saved = await Db.postRequest(ServerRoute.RemoveKid, { id: this._kidId })
@@ -331,14 +340,22 @@ export class KidEditor extends SignalWatcher(LitElement) {
               </setting-chip>
             </div>
 
+            <div class="editor-field">
+              <h3>ID</h3>
+              <span>${kid.id}</span>
+            </div>
+
             <div class="editor-field" style="--kid-color-favorite: var(--color-alert-error);">
               <h3>Remove Kid</h3>
               <setting-chip>
                 <span slot="label">Remove Kid</span>
-                <div>
+
+                <form-input>
                   <p>Are you sure you want to remove this kid and all of the associated data?</p>
+                  <label for="removeKidInput">Type the ID of the kid and hit REMOVE</label>
+                  <input id="removeKidInput" name="removeKidInput" type="text" placeholder="67" />
                   <button @click="${this._removeKid}">REMOVE</button>
-                </div>
+                </form-input>
               </setting-chip>
             </div>
           </form>

@@ -5,7 +5,7 @@ function parseArgv() {
   const args = {}
 
   argv.forEach((arg) => {
-    if (arg.startsWith('-u=')) {
+    if (arg.startsWith('--u=')) {
       args.username = arg.split('=')[1]
     }
   })

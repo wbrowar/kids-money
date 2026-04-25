@@ -1,5 +1,8 @@
 @import './automated/variables.css';
 
+html, body {
+  height: stretch;
+}
 html {
   --color-favorite: attr(data-color-favorite type(<color>), var(--color-primary));
   scrollbar-color: var(--color-favorite, var(--color-primary)) transparent;

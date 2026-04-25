@@ -9,7 +9,7 @@
       },
       "fpo": { "$value": "oklch(0.7103 0.3503 329.82)" },
       "green": { "$value": "oklch(0.7751 0.304 149.19)" },
-      "green-dark": { "$value": "oklch(0.186 0.057 146.054)" },
+      "green-dark": { "$value": "oklch(0.1221 0.0493 146.054)" },
       "green-light": { "$value": "oklch(0.9574 0.0222 149.19)" },
       "status": {
         "error": { "$value": "oklch(0.6456 0.2911 24.36)" },
@@ -17,14 +17,6 @@
         "success": { "$value": "oklch(0.7751 0.304 149.19)" }
       },
       "white": { "$value": "rgb(255 255 255)" }
-    },
-    "component": {
-      "setting-chip": {
-        "color": {
-          "$type": "color",
-          "$value": ""
-        }
-      }
     },
     "size": {
       "$type": "dimension",

@@ -37,6 +37,9 @@
       }
     },
     "bg": {
+      "nav": {
+        "$value": "{base.color.green}"
+      },
       "settings-card": {
         "$value": "light-dark({base.color.white}, {base.color.black})"
       },
@@ -60,10 +63,38 @@
     },
     "text": {
       "copy": {
-        "$value": "light-dark({base.color.black}, {base.color.white})"
+        "$value": "light-dark({base.color.green-dark}, {base.color.green-light})"
       },
       "header": {
-        "$value": "light-dark({base.color.black}, {base.color.white})"
+        "$value": "light-dark({base.color.green-dark}, {base.color.green-light})"
+      },
+      "nav": {
+        "$value": "color-mix({base.color.green} 30%, light-dark({base.color.green-dark}, {base.color.green-light}))"
+      },
+      "nav-on-bar": {
+        "$value": "{base.color.green-light}"
+      }
+    }
+  },
+  "component": {
+    "setting-chip": {
+      "color": {
+        "$type": "color",
+        "$value": "initial"
+      },
+      "popover-bg": {
+        "$type": "color",
+        "$value": "light-dark({base.color.green-light}, {base.color.green-dark})"
+      },
+      "popover-color": {
+        "$type": "color",
+        "$value": "{base.color.green}"
+      }
+    },
+    "svg-icon": {
+      "size": {
+        "$type": "dimension",
+        "$value": "20px"
       }
     }
   },

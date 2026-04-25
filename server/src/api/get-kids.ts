@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { prisma } from '@/utils/prisma.ts'
-import { Kid } from '../../../types/index.d.ts'
+import { Kid } from '@types'
 
 export async function getKids(req: Request, res: Response) {
   console.log('getKids', 'includeAdjustments', req.body.includeAdjustments, 'screenshotMode', req.body.screenshotMode)

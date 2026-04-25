@@ -23,14 +23,14 @@ export class SettingChip extends SignalWatcher(LitElement) {
         display: inline-block;
         padding: 5px;
         background-color: color-mix(
-          var(--component-setting-chip-color, var(--kid-color-text-on-favorite)) 3%,
+          var(--component-setting-chip-color, var(--kid-color-text-on-favorite, currentColor)) 3%,
           transparent
         );
-        border: 1px solid var(--component-setting-chip-color, var(--kid-color-text-on-favorite));
+        border: 1px solid var(--component-setting-chip-color, var(--kid-color-text-on-favorite, currentColor));
         border-radius: 4px;
         font-size: var(--font-size-xs);
         text-box: trim-both cap alphabetic;
-        color: var(--component-setting-chip-color, var(--kid-color-text-on-favorite));
+        color: var(--component-setting-chip-color, var(--kid-color-text-on-favorite, currentColor));
       }
       &:hover {
         opacity: 0.5;
@@ -41,14 +41,15 @@ export class SettingChip extends SignalWatcher(LitElement) {
       position: fixed;
       position-area: block-end;
       position-try-fallbacks: block-start;
-      margin-block: 3px;
+      margin: 3px;
       padding: 18px;
-      background-color: color-mix(var(--kid-color-bg-light, light-dark(black, white)) 70%, transparent);
-      border: 1px solid var(--kid-color-favorite, light-dark(black, white));
+      max-width: 300px;
+      background-color: color-mix(var(--kid-color-bg-light, var(--component-setting-chip-popover-bg)) 70%, transparent);
+      border: 1px solid var(--kid-color-favorite, var(--component-setting-chip-popover-color));
       border-radius: var(--border-radius-md);
       box-shadow: var(--kid-box-shadow-element, var(--box-shadow-element));
       backdrop-filter: blur(13px);
-      color: var(--kid-color-text-on-bg-light, light-dark(white, black));
+      color: var(--kid-color-text-on-bg-light, contrast-color(var(--component-setting-chip-popover-bg)));
 
       &::backdrop {
         backdrop-filter: saturate(90%) brightness(70%);

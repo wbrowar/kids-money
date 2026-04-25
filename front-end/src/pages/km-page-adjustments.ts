@@ -1,8 +1,8 @@
 import { css, html, LitElement, nothing } from 'lit'
 import { SignalWatcher } from '@lit-labs/signals'
 import { query, state } from 'lit/decorators.js'
-import { currentUserIsAdmin, kids, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
-import { AdjustmentDto, AdjustmentType, Currency, Kid } from '@types'
+import { currentUserIsAdmin, currentUserKidId, kids, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
+import { AdjustmentDto, AdjustmentType, Kid } from '@types'
 import { dollarAdjustmentFromInterestPercentage, estimateInterestTotalOverTime } from '@/utils/adjustments.ts'
 import { formatTotalForCurrency } from '@/utils/currency.ts'
 import { log } from '@/utils/console.ts'
@@ -13,6 +13,7 @@ import { KidUpdated } from '@/components/kid-editor.ts'
 import { savingForGoalEstimate } from '@/utils/save-for.ts'
 import { variableKids } from '@/assets/css/css.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
+import { Currency } from '@/constants/currencies.ts'
 
 export class KmPageAdjustments extends SignalWatcher(LitElement) {
   /**
@@ -31,7 +32,6 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
       display: grid;
       grid-template-areas:
         'kidcard'
-        'adjustmentform'
         'interestpreview'
         'savingfor'
         'adjustmentscontrols'
@@ -39,15 +39,33 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
       grid-template-columns: 1fr;
       gap: 20px 40px;
 
+      &.admin {
+        grid-template-areas:
+          'kidcard'
+          'adjustmentform'
+          'interestpreview'
+          'savingfor'
+          'adjustmentscontrols'
+          'adjustmentstable';
+      }
+
       @container (width > 1000px) {
         & {
           grid-template-areas:
             'kidcard savingfor'
-            'adjustmentform savingfor'
             'interestpreview savingfor'
             '. adjustmentscontrols'
             'adjustmentstable adjustmentstable';
           grid-template-columns: clamp(200px, 40vw, 600px) 1fr;
+
+          &.admin {
+            grid-template-areas:
+              'kidcard savingfor'
+              'adjustmentform savingfor'
+              'interestpreview savingfor'
+              '. adjustmentscontrols'
+              'adjustmentstable adjustmentstable';
+          }
         }
       }
       @container (width > 1700px) {
@@ -55,10 +73,18 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
           grid-template-areas:
             'kidcard savingfor .'
             'interestpreview savingfor .'
-            'interestpreview adjustmentform .'
             '. . adjustmentscontrols'
             'adjustmentstable adjustmentstable adjustmentstable';
           grid-template-columns: clamp(200px, 40vw, 600px) clamp(200px, 40vw, 600px) 1fr;
+
+          &.admin {
+            grid-template-areas:
+              'kidcard savingfor .'
+              'interestpreview savingfor .'
+              'interestpreview adjustmentform .'
+              '. . adjustmentscontrols'
+              'adjustmentstable adjustmentstable adjustmentstable';
+          }
         }
       }
     }
@@ -466,7 +492,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
   /**
    * TODO
    */
-  private _getInterestPreviews(days: number[], kid: Kid, currency: Currency) {
+  private _getInterestPreviews(days: number[], kid: Kid, currency: keyof typeof Currency) {
     return days.map((day) => {
       const labels: Record<number, string> = {
         7: '1 week',
@@ -535,7 +561,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
     if (kidsJson) {
       const kidsData: Kid[] = JSON.parse(kidsJson)
       const kid = kidsData[selectedKidIndex.get()]
-      const userCanEdit = currentUserIsAdmin.get()
+      const userCanEdit = currentUserIsAdmin.get() || currentUserKidId.get() === kid.id
       document.documentElement.setAttribute('data-color-favorite', kid.color)
 
       if (kid) {
@@ -543,6 +569,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
 
         const containerClasses = {
           container: true,
+          admin: currentUserIsAdmin.get(),
         }
 
         const kidCard = html`<div class="kid-card">
@@ -568,10 +595,10 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
                 placeholder="${reasonPlaceholder[Math.floor(Math.random() * reasonPlaceholder.length)]}"
               />
               <button class="add-button" @click="${() => this._createAdjustment('add', kid?.id ?? -1)}">
-                <span>+</span>
+                <svg-icon name="add"></svg-icon>
               </button>
               <button class="subtract-button" @click="${() => this._createAdjustment('subtract', kid?.id ?? -1)}">
-                <span>−</span>
+                <svg-icon name="subtract"></svg-icon>
               </button>
             </form>`
           : html`<div class="adjustment-form"><!-- Oh, hello non-admin. --></div>`
@@ -749,7 +776,9 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
 
         return html`
           <article class="${classMap(containerClasses)}" style="--color-favorite: ${kid.color};">
-            ${kidCard}${adjustmentForm}${interestPreview}${savingFor}${adjustmentsControls}${adjustmentsTable}
+            ${kidCard}${currentUserIsAdmin.get()
+              ? adjustmentForm
+              : nothing}${interestPreview}${savingFor}${adjustmentsControls}${adjustmentsTable}
           </article>
         `
       }

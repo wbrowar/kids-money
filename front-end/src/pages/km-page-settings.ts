@@ -1,11 +1,13 @@
-import { css, html, LitElement, nothing } from 'lit'
+import { css, html, HTMLTemplateResult, LitElement, nothing } from 'lit'
 import { SignalWatcher } from '@lit-labs/signals'
-import { kids, screenshotMode } from '@/constants/signals.ts'
-import { Kid, LocalStorageItems, User } from '@types'
+import { currentRoute, currentUserIsAdmin, kids, screenshotMode } from '@/constants/signals.ts'
+import { Kid, User, UserDto } from '@types'
 import { log, table } from '@/utils/console.ts'
 import { state } from 'lit/decorators.js'
 import { Db } from '@/utils/db.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
+import { LocalStorageItems } from '@/constants/local-storage.ts'
+import { Route } from '@/constants/router.ts'
 
 export class KmPageSettings extends SignalWatcher(LitElement) {
   /**
@@ -43,6 +45,12 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
+   * TODO
+   */
+  @state()
+  private _isSaving = false
+
+  /**
    * The list of users stored in the database.
    */
   @state()
@@ -53,6 +61,36 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
    * METHODS
    * =========================================================================
    */
+  /**
+   * TODO
+   */
+  private async _getUsers() {
+    log('Getting users from API')
+    this._users = await Db.postRequest(ServerRoute.GetUsers, {})
+    log('Users:')
+    table(this._users)
+  }
+
+  /**
+   * TODO
+   */
+  private async _onUserKidIdInput(e: InputEvent, username: string) {
+    const inputValue = (e.target as HTMLSelectElement)?.value
+    log('Linking user to kid', inputValue, username)
+    if (!this._isSaving) {
+      this._isSaving = true
+
+      const saved = await Db.postRequest(ServerRoute.UpdateUser, {
+        kidId: inputValue === '__none__' ? null : parseInt(inputValue),
+        username,
+      } as UserDto)
+      if (saved.success) {
+        log('User updated')
+        this._getUsers()
+      }
+      this._isSaving = false
+    }
+  }
   /**
    * TODO
    */
@@ -72,20 +110,22 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
   async connectedCallback() {
     super.connectedCallback()
 
-    log('Getting users from API')
-    this._users = await Db.postRequest(ServerRoute.GetUsers, {})
-    log('Users:')
-    table(this._users)
+    if (!currentUserIsAdmin.get()) {
+      currentRoute.set(Route.Home)
+    }
+    this._getUsers()
   }
   protected render() {
     const kidsJson = kids.get()
+    let kidLookup: Record<number, Kid> = {}
 
-    let kidsEditors
+    const kidsEditors: HTMLTemplateResult[] = []
     if (kidsJson) {
       const kidsData: Kid[] = JSON.parse(kidsJson)
 
-      kidsEditors = kidsData.map((_kid, index) => {
-        return html`<kid-editor data-kid-index="${index}"></kid-editor>`
+      kidsData.forEach((kid, index) => {
+        kidsEditors.push(html`<kid-editor data-kid-index="${index}"></kid-editor>`)
+        kidLookup[kid.id] = kid
       })
     }
 
@@ -96,17 +136,31 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
 
       <h2>Users</h2>
       <div class="users">
-        ${this._users.map(
-          (user) => html`
-            <div>
-              <h3>${user.username}</h3>
-              ${user.grownUp ? html`<span>Admin</span>` : html`<span>Non-Admin</span>`}
+        ${this._users.map((user, index) => {
+          const relatedKid = user.kidId ? kidLookup[user.kidId] : undefined
+          return html`
+            <div style="--component-setting-chip-color: ${relatedKid ? relatedKid.color : 'currentColor'}">
+              <h3>${screenshotMode.get() ? `user${index}` : user.username}</h3>
+              <setting-chip>
+                <span slot="label">${user.grownUp ? 'Admin' : relatedKid ? relatedKid.name : `Non-Admin`}</span>
+                ${user.grownUp
+                  ? html`<p>As an admin, this user can add adjustments and set settings for all kids.</p>`
+                  : html` <label for="currency">Link user to kid</label>
+                      <select id="currency" @input="${(e: InputEvent) => this._onUserKidIdInput(e, user.username)}">
+                        <option value="__none__">${relatedKid ? 'Unlink kid' : 'Select a kid'}</option>
+                        ${Object.entries(kidLookup).map(([key, value]) => {
+                          return html`<option value="${key}" ?selected="${key === user.kidId?.toString()}">
+                            ${value.name}
+                          </option>`
+                        })}
+                      </select>`}
+              </setting-chip>
             </div>
           `
-        )}
+        })}
       </div>
 
-        <h2>Debugging</h2>
+        <h2>Misc</h2>
         <form-input>
           <label>
             <input type="checkbox" switch ?checked="${screenshotMode.get()}" @input="${this._onScreenshotModeInput}" />

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { prisma } from '@/utils/prisma.ts'
-import { User } from '../../../types/index.d.ts'
+import { User } from '@types'
 
 type UserWithoutId = Pick<User, 'grownUp' | 'kidId' | 'username'>
 

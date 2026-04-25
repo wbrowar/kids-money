@@ -8,6 +8,7 @@ import { createUpdateKid } from '@/api/create-update-kid.ts'
 import { createAdjustment } from '@/api/create-adjustment.ts'
 import { removeKid } from '@/api/remove-kid.ts'
 import { ServerRoute } from '@/constants/constants.ts'
+import { updateUser } from '@/api/update-user.ts'
 
 loadEnvFile()
 
@@ -27,6 +28,7 @@ app.post(ServerRoute.GetKids, getKids)
 app.post(ServerRoute.GetUsers, getUsers)
 app.post(ServerRoute.Login, login)
 app.post(ServerRoute.RemoveKid, removeKid)
+app.post(ServerRoute.UpdateUser, updateUser)
 
 app.listen(port, () => {
   console.log(`Kids Money listening on port ${port}`)

@@ -1,15 +1,4 @@
 /**
- * Currency codes used to convert from USD to selected currency.
- */
-export enum Currency {
-    Euro = 'EUR',
-    JapaneseYen = 'JPY',
-    MalaysianRinggit = 'MYR',
-    SingaporeDollar = 'SGD',
-    UnitedStatesDollar = 'USD',
-}
-
-/**
  * Tracked changes in a kid’s value of their savings. This includes the dollar amount that changed and the current total after the change was added in.
  */
 export interface Adjustment {
@@ -25,14 +14,17 @@ export interface Adjustment {
 export type AdjustmentType = 'dollar' | 'interest';
 
 /**
- * Tracked changes in a kid’s value of their savings. This includes the dollar amount that changed and the current total after the change was added in.
+ * TODO
  */
-export interface AdjustmentDto {
+export interface AdjustmentDto extends Pick<Adjustment, 'dollarAdjustment', 'reason'> {
     adjustmentType: AdjustmentType;
-    dollarAdjustment: number;
     kidId: number;
-    reason: string;
 }
+
+/**
+ * TODO
+ */
+type IconName = (typeof iconNames)[number];
 
 /**
  * TODO
@@ -60,34 +52,6 @@ export interface Kid {
 }
 
 /**
- * Keys for items stored in local storage.
- */
-export enum LocalStorageItems {
-    /* Stores the username and grownUp status of the logged-in user. */
-    CurrentUser = 'current-user',
-    /* Stores the latest value of the screenshot mode setting. */
-    ScreenshotMode = 'screenshot-mode',
-    /* Stores the key of the selected currency. */
-    SelectedCurrency = 'selected-currency',
-}
-
-/**
- * A list of all routes available in the application.
- */
-export enum Route {
-    /* Displays all adjustments and related data for selected kid. */
-    Adjustments = 'adjustments',
-    /* Displays a list of all kids and a dashboard of combined data. */
-    Home = 'home',
-    /* The login page for the application. */
-    Login = 'login',
-    /* Logs the user out of the application. */
-    Logout = 'logout',
-    /* Allows admins to create and remove kids and adjust settings for the application. */
-    Settings = 'settings',
-}
-
-/**
  * Represents a user of the application.
  */
 export interface User {
@@ -100,3 +64,8 @@ export interface User {
     /* The username of the user, as used to log into the application. */
     username: string;
 }
+
+/**
+ * TODO
+ */
+export type UserDto = Pick<User, 'kidId', 'username'>

@@ -3,9 +3,10 @@ import { property } from 'lit/decorators.js'
 import { formatTotalForCurrency } from '@/utils/currency.ts'
 import { currentRoute, kids, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
-import { Kid, Route } from '@types'
+import { Kid } from '@types'
 import { classMap } from 'lit/directives/class-map.js'
 import { variableKids } from '@/assets/css/css.ts'
+import { Route } from '@/constants/router.ts'
 
 export class KidTotalCard extends SignalWatcher(LitElement) {
   /**

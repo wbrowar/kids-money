@@ -1,8 +1,8 @@
 import { html, LitElement } from 'lit'
 import { selectedCurrency } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
-import { currencyDetails } from '@/constants/currencies.ts'
-import { Currency, LocalStorageItems } from '@types'
+import { Currency, currencyDetails } from '@/constants/currencies.ts'
+import { LocalStorageItems } from '@/constants/local-storage.ts'
 
 export class CurrencySelector extends SignalWatcher(LitElement) {
   /**
@@ -13,8 +13,8 @@ export class CurrencySelector extends SignalWatcher(LitElement) {
   /**
    * TODO
    */
-  async onCurrencyInput(e: Event) {
-    const currency = (e.target as HTMLSelectElement)?.value as Currency
+  async _onCurrencyInput(e: Event) {
+    const currency = (e.target as HTMLSelectElement)?.value as keyof typeof Currency
     selectedCurrency.set(currency)
     localStorage.setItem(LocalStorageItems.SelectedCurrency, currency)
   }
@@ -31,7 +31,7 @@ export class CurrencySelector extends SignalWatcher(LitElement) {
 
         <form-input>
           <label for="currency">Change Currency</label>
-          <select id="currency" @input="${this.onCurrencyInput}">
+          <select id="currency" @input="${this._onCurrencyInput}">
             ${Object.entries(currencyDetails).map(([key, value]) => {
               return html`<option value="${key}" ?selected="${key === selectedCurrency.get()}">
                 <strong>${value.symbol}</strong>${value.title}

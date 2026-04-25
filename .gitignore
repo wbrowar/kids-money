@@ -14,6 +14,7 @@ dist
 
 # Local Development
 ecosystem.config.js
+server/prisma/backups
 server/prisma/db
 
 # TEMP

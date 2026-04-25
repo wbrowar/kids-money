@@ -5,13 +5,13 @@ function parseArgv() {
   const args = {}
 
   argv.forEach((arg) => {
-    if (arg.startsWith('-u=')) {
+    if (arg.startsWith('--u=')) {
       args.username = arg.split('=')[1]
-    } else if (arg.startsWith('-p=')) {
+    } else if (arg.startsWith('--p=')) {
       args.password = arg.split('=')[1]
-    } else if (arg.startsWith('-admin=')) {
+    } else if (arg.startsWith('--admin=')) {
       args.grownUp = arg.split('=')[1] === 'true'
-    } else if (arg === '-admin') {
+    } else if (arg === '--admin') {
       args.grownUp = true
     }
   })

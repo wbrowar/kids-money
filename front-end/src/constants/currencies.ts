@@ -1,4 +1,13 @@
-import { Currency } from '@types'
+/**
+ * Currency codes used to convert from USD to selected currency.
+ */
+export const Currency: Record<string, string> = {
+  Euro: 'EUR',
+  JapaneseYen: 'JPY',
+  MalaysianRinggit: 'MYR',
+  SingaporeDollar: 'SGD',
+  UnitedStatesDollar: 'USD',
+}
 
 export const currencyDetails = {
   [Currency.Euro]: {

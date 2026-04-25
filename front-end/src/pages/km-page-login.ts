@@ -1,10 +1,10 @@
 import { css, html, LitElement } from 'lit'
 import { Db } from '@/utils/db.ts'
-import { LocalStorageItems } from '@types'
 import { log, table } from '@/utils/console.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 import { errorDialogMessage } from '@/constants/signals.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
+import { LocalStorageItems } from '@/constants/local-storage.ts'
 
 export class KmPageLogin extends SignalWatcher(LitElement) {
   /**
@@ -12,7 +12,41 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
    * CSS
    * =========================================================================
    */
-  static styles = css``
+  static styles = css`
+    :host {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      height: stretch;
+    }
+    svg-icon {
+      color: var(--color-bg-nav);
+    }
+    form {
+      display: grid;
+      grid-template-columns: auto auto max-content;
+      grid-template-rows: 40px;
+      gap: 5px;
+      color: var(--color-text-nav);
+
+      input {
+        display: block;
+        padding-inline: 1rem;
+        border: 1px solid var(--color-bg-nav);
+        border-radius: var(--border-radius-sm);
+      }
+      button {
+        display: block;
+        padding-inline: 1rem;
+        background-color: color-mix(var(--color-bg-nav) 70%, transparent);
+        border: 1px solid var(--color-bg-nav);
+        border-radius: var(--border-radius-sm);
+        color: var(--color-text-nav-on-bar);
+        cursor: pointer;
+      }
+    }
+  `
 
   /**
    * =========================================================================
@@ -77,11 +111,12 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
     }
   }
   protected render() {
-    return html`<form id="login" @submit="${this.submitForm}">
-      <input type="text" name="username" autocomplete="username" placeholder="Username" />
-      <input type="password" name="password" autocomplete="current-password" placeholder="Password" />
-      <button type="submit">Log in</button>
-    </form>`
+    return html`<svg-icon name="logo"></svg-icon>
+      <form id="login" @submit="${this.submitForm}">
+        <input type="text" name="username" autocomplete="username" placeholder="Username" />
+        <input type="password" name="password" autocomplete="current-password" placeholder="Password" />
+        <button type="submit">Log in</button>
+      </form>`
   }
 }
 

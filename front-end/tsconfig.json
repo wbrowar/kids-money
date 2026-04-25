@@ -30,7 +30,6 @@
       "@types": ["../types/index.d.ts"]
     }
   },
-  "include": ["index.html", "src/**/*.ts",
-    "../server/src/**/*", "../types/**/*.ts"],
+  "include": ["index.html", "src/**/*.ts", "../types/**/*.ts"],
   "exclude": ["node_modules", "src/**/*.browser.ts", "src/**/*.spec.ts"]
 }
