@@ -2,6 +2,7 @@ import { argv, exit } from 'process'
 import { copyFile, mkdir, readdir, stat } from 'node:fs/promises'
 import { statSync, unlink } from 'node:fs'
 import { join } from 'node:path'
+import process from 'node:process'
 
 function parseArgv() {
   const args = {}
@@ -16,6 +17,8 @@ function parseArgv() {
 }
 
 async function main() {
+  process.chdir(import.meta.dirname)
+
   const args = parseArgv()
 
   const limit = args.limit ?? 14
