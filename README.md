@@ -129,8 +129,8 @@ As an example, here’s how you could host this project on a Laravel Forge-provi
 6. When updating the app, run these commands (from the root directory where you moved these files) to build and update everything:
    ```bash
    cd <path-to-parent>/front-end
-   
-   . ~/.nvm/nvm.sh use
+
+   nvm use
    
    npm ci
    
@@ -138,7 +138,11 @@ As an example, here’s how you could host this project on a Laravel Forge-provi
    
    cd <path-to-parent>/server
    
+   nvm use
+   
    npm ci
+   
+   npm run prisma:generate
    
    npm run prisma:migrate:up
    
