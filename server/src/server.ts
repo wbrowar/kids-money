@@ -20,7 +20,7 @@ const corsOrigin = process.env.CORS_ORIGIN ?? ''
 app.use(express.json())
 app.use(
   cors({
-    origin: corsOrigin,
+    origin: [corsOrigin, `${corsOrigin}/`],
   })
 )
 
