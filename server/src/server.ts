@@ -15,13 +15,21 @@ loadEnvFile()
 
 const app = express()
 const port = process.env.SERVER_PORT
+const corsOrigin = process.env.CORS_ORIGIN ?? ''
 
 app.use(express.json())
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: corsOrigin,
   })
 )
+app.use(function (_req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', corsOrigin)
+
+  // Pass to next layer of middleware
+  next()
+})
 
 app.get(ServerRoute.Ping, ping)
 app.post(ServerRoute.CreateAdjustment, createAdjustment)
