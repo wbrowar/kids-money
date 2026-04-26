@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "tsx src/server.ts --watch",
+    "dev": "tsx watch src/server.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate:up": "prisma migrate deploy",
     "prisma:studio": "npx -p better-sqlite3 -p prisma prisma studio",
