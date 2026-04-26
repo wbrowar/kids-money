@@ -13,6 +13,6 @@ dist
 .idea
 
 # Local Development
-server/ecosystem.config.js
+server/ecosystem.config.cjs
 server/prisma/backups
 server/prisma/db
