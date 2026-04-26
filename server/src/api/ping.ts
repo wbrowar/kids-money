@@ -3,5 +3,5 @@ import { DbMessage } from '@/utils/db-response.ts'
 
 export async function ping(req: Request, res: Response) {
   const response = new DbMessage(`pong ${req.get('origin') ?? 'referrer not set'}`)
-  res.send(JSON.stringify(response))
+  res.status(200).send(JSON.stringify(response))
 }
