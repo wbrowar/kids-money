@@ -5,7 +5,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate:up": "prisma migrate deploy",
     "prisma:studio": "npx -p better-sqlite3 -p prisma prisma studio",
-    "start": "tsx src/server.ts --env-file=.env"
+    "start": "node -v && tsx src/server.ts --env-file=.env"
   },
   "type": "module",
   "dependencies": {
