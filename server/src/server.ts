@@ -9,6 +9,7 @@ import { createAdjustment } from '@/api/create-adjustment.ts'
 import { removeKid } from '@/api/remove-kid.ts'
 import { ServerRoute } from '@/constants/constants.ts'
 import { updateUser } from '@/api/update-user.ts'
+import { ping } from '@/api/ping.ts'
 
 loadEnvFile()
 
@@ -22,6 +23,7 @@ app.use(
   })
 )
 
+app.get(ServerRoute.Ping, ping)
 app.post(ServerRoute.CreateAdjustment, createAdjustment)
 app.post(ServerRoute.CreateUpdateKid, createUpdateKid)
 app.post(ServerRoute.GetKids, getKids)

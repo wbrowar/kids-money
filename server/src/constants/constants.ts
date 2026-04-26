@@ -13,6 +13,8 @@ export const ServerRoute: Record<string, string> = {
   /* Uses a username and password to log the user in. */
   Login: '/login',
   /* TODO */
+  Ping: '/ping',
+  /* TODO */
   RemoveKid: '/remove-kid',
   /* TODO */
   UpdateUser: '/update-user',

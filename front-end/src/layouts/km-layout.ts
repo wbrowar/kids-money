@@ -205,8 +205,11 @@ export class KmLayout extends SignalWatcher(LitElement) {
    * LIFECYCLE
    * =========================================================================
    */
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback()
+
+    const ping = await Db.getJson(ServerRoute.Ping)
+    log('ping', ping)
 
     /**
      * Retrieve information saved in local storage and update global state.
