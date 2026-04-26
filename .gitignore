@@ -13,9 +13,6 @@ dist
 .idea
 
 # Local Development
-ecosystem.config.js
+server/ecosystem.config.js
 server/prisma/backups
 server/prisma/db
-
-# TEMP
-front-end/REFERENCE
