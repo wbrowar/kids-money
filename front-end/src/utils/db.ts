@@ -26,7 +26,11 @@ class DbHandler {
    * =========================================================================
    */
   async getJson(uri: keyof typeof ServerRoute) {
-    const response = await window.fetch(this.formatUri(uri))
+    const response = await window.fetch(this.formatUri(uri), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
     return await this.getResponseJson(response)
   }
 
