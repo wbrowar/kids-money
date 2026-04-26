@@ -15,13 +15,14 @@ loadEnvFile()
 
 const app = express()
 const port = process.env.SERVER_PORT
-const corsOrigin = process.env.CORS_ORIGIN ?? ''
+// const corsOrigin = process.env.CORS_ORIGIN ?? ''
 
 app.use(express.json())
 app.use(
-  cors({
-    origin: [corsOrigin, `${corsOrigin}/`],
-  })
+  // cors({
+  //   origin: [corsOrigin, `${corsOrigin}/`],
+  // })
+  cors()
 )
 
 app.get(ServerRoute.Ping, ping)
