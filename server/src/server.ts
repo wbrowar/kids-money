@@ -23,13 +23,6 @@ app.use(
     origin: corsOrigin,
   })
 )
-app.use(function (_req, res, next) {
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', corsOrigin)
-
-  // Pass to next layer of middleware
-  next()
-})
 
 app.get(ServerRoute.Ping, ping)
 app.post(ServerRoute.CreateAdjustment, createAdjustment)
