@@ -30,17 +30,18 @@ class DbHandler {
       headers: {
         'Content-Type': 'application/json',
       },
+      method: 'GET',
     })
     return await this.getResponseJson(response)
   }
 
   async postRequest(uri: keyof typeof ServerRoute, data: object) {
     const response = await window.fetch(this.formatUri(uri), {
-      method: 'POST',
+      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      method: 'POST',
     })
     return await this.getResponseJson(response)
   }
