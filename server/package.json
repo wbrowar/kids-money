@@ -1,11 +1,11 @@
 {
   "private": true,
   "scripts": {
-    "dev": "tsx ./server.ts",
+    "dev": "tsx src/server.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate:up": "prisma migrate deploy",
     "prisma:studio": "npx -p better-sqlite3 -p prisma prisma studio",
-    "start": "tsx ./server.ts"
+    "start": "tsx src/server.ts --experimental-strip-types"
   },
   "type": "module",
   "dependencies": {

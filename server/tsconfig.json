@@ -24,13 +24,14 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Paths */
+    "rootDir": "./src/",
+    "outFile": "./dist/server.js",
     "paths": {
       "@/*": ["./src/*"],
       "@front-end/*": ["../front-end/*"],
       "@types": ["../types/index.d.ts"]
     }
   },
-  "include": ["server.ts", "src/**/*.ts", "../front-end/**/*",
-    "./src/constants/**/*", "../types/**/*.ts"],
+  "include": ["src/server.ts", "src/**/*.ts", "../front-end/**/*", "./src/constants/**/*", "../types/**/*.ts"],
   "exclude": ["node_modules", "src/**/*.browser.ts", "src/**/*.spec.ts"]
 }
