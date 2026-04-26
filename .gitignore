@@ -16,3 +16,4 @@ dist
 server/ecosystem.config.cjs
 server/prisma/backups
 server/prisma/db
+server/prisma/generated
