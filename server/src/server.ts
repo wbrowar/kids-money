@@ -20,7 +20,9 @@ const corsOrigin = process.env.CORS_ORIGIN ?? ''
 app.use(express.json())
 app.use((_req, res, next) => {
   /* Remove header from NGINX */
-  res.removeHeader('access-control-allow-origin')
+  if (res.hasHeader('access-control-allow-origin')) {
+    res.removeHeader('access-control-allow-origin')
+  }
 
   next()
 })
@@ -31,8 +33,6 @@ if (corsOrigin) {
       origin: corsOrigin,
     })
   )
-} else {
-  app.use(cors())
 }
 
 app.get(ServerRoute.Ping, ping)
