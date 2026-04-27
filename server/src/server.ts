@@ -29,6 +29,13 @@ if (corsOrigin) {
   app.use(cors())
 }
 
+app.use((_req, res, next) => {
+  /* Remove header from NGINX */
+  res.removeHeader('access-control-allow-origin')
+
+  next()
+})
+
 app.get(ServerRoute.Ping, ping)
 app.post(ServerRoute.CreateAdjustment, createAdjustment)
 app.post(ServerRoute.CreateUpdateKid, createUpdateKid)
