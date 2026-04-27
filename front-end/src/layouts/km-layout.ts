@@ -92,6 +92,7 @@ export class KmLayout extends SignalWatcher(LitElement) {
           --nav-button-color: var(--color-text-nav-on-bar);
           --nav-ul-gap: 0;
           position: fixed;
+          padding: env(safe-area-inset-bottom, 0) 20px;
           inset: 0;
           inset-block-start: auto;
           background-color: color-mix(var(--color-bg-nav) 70%, transparent);
