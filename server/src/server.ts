@@ -18,13 +18,14 @@ const port = process.env.SERVER_PORT
 const corsOrigin = process.env.CORS_ORIGIN ?? ''
 
 app.use(express.json())
-app.use(
-  cors({
-    methods: ['GET', 'OPTIONS', 'POST'],
-    optionsSuccessStatus: 200,
-    origin: [corsOrigin, `${corsOrigin}/`],
-  })
-)
+
+if (corsOrigin) {
+  app.use(
+    cors({
+      origin: corsOrigin,
+    })
+  )
+}
 
 app.get(ServerRoute.Ping, ping)
 app.post(ServerRoute.CreateAdjustment, createAdjustment)
