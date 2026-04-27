@@ -25,6 +25,8 @@ if (corsOrigin) {
       origin: corsOrigin,
     })
   )
+} else {
+  app.use(cors())
 }
 
 app.get(ServerRoute.Ping, ping)
