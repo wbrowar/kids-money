@@ -18,22 +18,19 @@ const port = process.env.SERVER_PORT
 const corsOrigin = process.env.CORS_ORIGIN ?? ''
 
 app.use(express.json())
+app.use(
+  cors({
+    origin: false,
+  })
+)
 app.use((_req, res, next) => {
   /* Remove header from NGINX */
-  if (res.hasHeader('access-control-allow-origin')) {
-    res.removeHeader('access-control-allow-origin')
+  if (!res.hasHeader('access-control-allow-origin')) {
+    res.setHeader('access-control-allow-origin', corsOrigin)
   }
 
   next()
 })
-
-if (corsOrigin) {
-  app.use(
-    cors({
-      origin: corsOrigin,
-    })
-  )
-}
 
 app.get(ServerRoute.Ping, ping)
 app.post(ServerRoute.CreateAdjustment, createAdjustment)
