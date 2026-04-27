@@ -1,4 +1,4 @@
-import { InterestThresholds } from '@types'
+import type { InterestThresholds } from '@types'
 
 /*
  * Adds a dollar amount number to a total number.
