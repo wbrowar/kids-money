@@ -127,6 +127,11 @@ export class KidEditor extends SignalWatcher(LitElement) {
     }
   `
 
+  /**
+   * =========================================================================
+   * REFS
+   * =========================================================================
+   */
   @query('#removeKidInput')
   _removeKidInput!: HTMLInputElement
 

@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit'
+import { css, html, LitElement, nothing } from 'lit'
 import { kids } from '@/constants/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 import { Kid } from '@types'
@@ -50,8 +50,17 @@ export class KmPageHome extends SignalWatcher(LitElement) {
         return html` <kid-total-card data-enable-link data-kid-index="${index}"></kid-total-card> `
       })
 
-      return html` <article><section class="kids">${kidsCards}</section></article> `
+      const chart = html`<chart-adjustments-monthly></chart-adjustments-monthly>`
+
+      return html`
+        <article>
+          <section class="kids">${kidsCards}</section>
+          <section class="chart">${chart}</section>
+        </article>
+      `
     }
+
+    return nothing
   }
 }
 

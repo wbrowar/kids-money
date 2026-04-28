@@ -13,7 +13,7 @@ import { KidUpdated } from '@/components/kid-editor.ts'
 import { savingForGoalEstimate } from '@/utils/save-for.ts'
 import { variableKids } from '@/assets/css/css.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
-import { Currency } from '@/constants/currencies.ts'
+import { Currency, currencyDetails } from '@/constants/currencies.ts'
 
 export class KmPageAdjustments extends SignalWatcher(LitElement) {
   /**
@@ -35,7 +35,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
         'interestpreview'
         'savingfor'
         'adjustmentscontrols'
-        'adjustmentstable';
+        'adjustmentstable'
+        'chart';
       grid-template-columns: 1fr;
       gap: 20px 40px;
 
@@ -46,7 +47,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
           'interestpreview'
           'savingfor'
           'adjustmentscontrols'
-          'adjustmentstable';
+          'adjustmentstable'
+          'chart';
       }
 
       @container (width > 1000px) {
@@ -55,7 +57,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
             'kidcard savingfor'
             'interestpreview savingfor'
             '. adjustmentscontrols'
-            'adjustmentstable adjustmentstable';
+            'adjustmentstable adjustmentstable'
+            'chart chart';
           grid-template-columns: clamp(200px, 40vw, 600px) 1fr;
 
           &.admin {
@@ -64,7 +67,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
               'adjustmentform savingfor'
               'interestpreview savingfor'
               '. adjustmentscontrols'
-              'adjustmentstable adjustmentstable';
+              'adjustmentstable adjustmentstable'
+              'chart chart';
           }
         }
       }
@@ -74,7 +78,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
             'kidcard savingfor .'
             'interestpreview savingfor .'
             '. . adjustmentscontrols'
-            'adjustmentstable adjustmentstable adjustmentstable';
+            'adjustmentstable adjustmentstable adjustmentstable'
+            'chart chart chart';
           grid-template-columns: clamp(200px, 40vw, 600px) clamp(200px, 40vw, 600px) 1fr;
 
           &.admin {
@@ -83,7 +88,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
               'interestpreview savingfor .'
               'interestpreview adjustmentform .'
               '. . adjustmentscontrols'
-              'adjustmentstable adjustmentstable adjustmentstable';
+              'adjustmentstable adjustmentstable adjustmentstable'
+              'chart chart chart';
           }
         }
       }
@@ -420,8 +426,16 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
         }
       }
     }
+    .chart {
+      grid-area: chart;
+    }
   `
 
+  /**
+   * =========================================================================
+   * REFS
+   * =========================================================================
+   */
   @query('#dollar-adjustment')
   _dollarAdjustmentInput!: HTMLInputElement
 
@@ -591,6 +605,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
                 type="text"
                 id="reason"
                 name="reason"
+                name="reason"
                 maxlength="10"
                 placeholder="${reasonPlaceholder[Math.floor(Math.random() * reasonPlaceholder.length)]}"
               />
@@ -675,13 +690,13 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
                 class="${this._adjustmentsDaysLimit === 30 ? 'active' : ''}"
                 @click="${() => (this._adjustmentsDaysLimit = 30)}"
               >
-                30 Days
+                30 Day
               </button>
               <button
                 class="${this._adjustmentsDaysLimit === 60 ? 'active' : ''}"
                 @click="${() => (this._adjustmentsDaysLimit = 60)}"
               >
-                60 Days
+                60 Day
               </button>
               <button
                 class="${this._adjustmentsDaysLimit === -1 ? 'active' : ''}"
@@ -701,13 +716,13 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
                 class="${this._adjustmentsType === 'dollar' ? 'active' : ''}"
                 @click="${() => (this._adjustmentsType = 'dollar')}"
               >
-                Dollar
+                ${currencyDetails[selectedCurrency.get()].symbol}
               </button>
               <button
                 class="${this._adjustmentsType === 'interest' ? 'active' : ''}"
                 @click="${() => (this._adjustmentsType = 'interest')}"
               >
-                Interest
+                %
               </button>
             </div>
           </div>
@@ -774,11 +789,17 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
           </table>
         `
 
+        const chart = html`<chart-adjustments
+          class="chart"
+          data-adjustments="${JSON.stringify(filteredAdjustmentsByType)}"
+          data-kid-index="${selectedKidIndex.get()}"
+        ></chart-adjustments>`
+
         return html`
           <article class="${classMap(containerClasses)}" style="--color-favorite: ${kid.color};">
             ${kidCard}${currentUserIsAdmin.get()
               ? adjustmentForm
-              : nothing}${interestPreview}${savingFor}${adjustmentsControls}${adjustmentsTable}
+              : nothing}${interestPreview}${savingFor}${adjustmentsControls}${adjustmentsTable}${chart}
           </article>
         `
       }

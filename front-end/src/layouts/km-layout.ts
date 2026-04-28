@@ -1,6 +1,6 @@
-import { css, html, LitElement, nothing } from 'lit'
+import { css, html, LitElement, nothing, PropertyValues } from 'lit'
 import { classMap } from 'lit/directives/class-map.js'
-import { state } from 'lit/decorators.js'
+import { query, state } from 'lit/decorators.js'
 import { Kid } from '@types'
 import { SignalWatcher, watch } from '@lit-labs/signals'
 import { UserLoggedInEvent } from '@/pages/km-page-login.ts'
@@ -20,6 +20,7 @@ import { Currency, currencyDetails } from '@/constants/currencies.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
 import { LocalStorageItems } from '@/constants/local-storage.ts'
 import { Route } from '@/constants/router.ts'
+import Confetti from '@/utils/confetti.ts'
 
 export class KmLayout extends SignalWatcher(LitElement) {
   /**
@@ -35,11 +36,20 @@ export class KmLayout extends SignalWatcher(LitElement) {
       padding: clamp(15px, 8vw, 80px) clamp(15px, 4vw, 80px) 80px;
       min-height: stretch;
     }
+    canvas {
+      display: block;
+      position: fixed;
+      inset: 0;
+      width: 100dvw;
+      height: 100dvh;
+    }
     main {
+      position: relative;
       height: stretch;
     }
     nav {
       --nav-button-color: var(--color-text-nav);
+      --nav-button-hover-opacity: 0.5;
       --nav-ul-gap: 1rem;
       box-sizing: content-box;
       position: absolute;
@@ -72,7 +82,7 @@ export class KmLayout extends SignalWatcher(LitElement) {
             cursor: pointer;
 
             &:hover {
-              opacity: 0.5;
+              opacity: var(--nav-button-hover-opacity);
             }
           }
           setting-chip {
@@ -90,6 +100,7 @@ export class KmLayout extends SignalWatcher(LitElement) {
       @container (width < 600px) {
         & {
           --nav-button-color: var(--color-text-nav-on-bar);
+          --nav-button-hover-opacity: 1;
           --nav-ul-gap: 0;
           position: fixed;
           padding: 7px 20px env(safe-area-inset-bottom, 20px);
@@ -106,9 +117,23 @@ export class KmLayout extends SignalWatcher(LitElement) {
 
   /**
    * =========================================================================
+   * REFS
+   * =========================================================================
+   */
+  @query('#confetti')
+  _confettiCanvas!: HTMLCanvasElement
+
+  /**
+   * =========================================================================
    * STATE
    * =========================================================================
    */
+  /**
+   * TODO
+   */
+  @state()
+  private _confetti: Confetti | undefined = undefined
+
   /**
    * The list of kids and basic information based on their settings.
    */
@@ -126,6 +151,46 @@ export class KmLayout extends SignalWatcher(LitElement) {
    * METHODS
    * =========================================================================
    */
+  /**
+   * Changes route and user settings when a user is logged out.
+   */
+  private async _fetchKidsData() {
+    log('Getting kids from API')
+    const kidsData = await Db.postRequest(ServerRoute.GetKids, {
+      includeAdjustments: true,
+      screenshotMode: screenshotMode.get(),
+    })
+    this._kids = kidsData.map((kid: Kid) => {
+      const kidFormatted: Kid = {
+        adjustments: kid.adjustments ?? [],
+        color: kid.color,
+        currentTotal: kid.adjustments?.[0]?.totalToDate ?? 0,
+        id: kid.id,
+        interest: kid.interest,
+        interestThresholds: kid.interestThresholds ? kid.interestThresholds : undefined,
+        name: kid.name,
+        photoUrl: kid.photoUrl ? kid.photoUrl : undefined,
+        savingFor: kid.savingFor ? kid.savingFor : undefined,
+        savingForValue: kid.savingForValue,
+      }
+
+      return kidFormatted
+    })
+    log('Kids:')
+    table(this._kids)
+
+    if (currentUserKidId.get()) {
+      this._loggedInKid = this._kids.filter((kid) => {
+        currentUserKidId.get() === kid.id
+      })?.[0]
+    }
+
+    // Play animation
+    this._updateCurrentTotals()
+
+    kids.set(JSON.stringify(this._kids))
+  }
+
   /**
    * Changes route and user settings when a user is logged in.
    *
@@ -166,39 +231,31 @@ export class KmLayout extends SignalWatcher(LitElement) {
   }
 
   /**
-   * Changes route and user settings when a user is logged out.
+   * TODO
    */
-  private async _fetchKidsData() {
-    log('Getting kids from API')
-    const kidsData = await Db.postRequest(ServerRoute.GetKids, {
-      includeAdjustments: true,
-      screenshotMode: screenshotMode.get(),
-    })
-    this._kids = kidsData.map((kid: Kid) => {
-      const kidFormatted: Kid = {
-        adjustments: kid.adjustments ?? [],
-        color: kid.color,
-        id: kid.id,
-        interest: kid.interest,
-        interestThresholds: kid.interestThresholds ? kid.interestThresholds : undefined,
-        name: kid.name,
-        photoUrl: kid.photoUrl ? kid.photoUrl : undefined,
-        savingFor: kid.savingFor ? kid.savingFor : undefined,
-        savingForValue: kid.savingForValue,
+  private async _updateCurrentTotals() {
+    if (this._confetti) {
+      let playAnimation = false
+      const newTotals: number[] = []
+      const currentTotalsData = localStorage.getItem(LocalStorageItems.CurrentTotals)
+      const currentTotals = JSON.parse(currentTotalsData ?? '[]')
+
+      if (this._kids?.length) {
+        this._kids.forEach((kid, index) => {
+          if (kid.currentTotal > currentTotals[index]) {
+            playAnimation = true
+          }
+          newTotals[index] = kid.currentTotal
+        })
       }
 
-      return kidFormatted
-    })
-    log('Kids:')
-    table(this._kids)
+      if (playAnimation) {
+        this._confetti.shootConfetti()
+      }
 
-    if (currentUserKidId.get()) {
-      this._loggedInKid = this._kids.filter((kid) => {
-        currentUserKidId.get() === kid.id
-      })?.[0]
+      // Store new totals
+      localStorage.setItem(LocalStorageItems.CurrentTotals, JSON.stringify(newTotals))
     }
-
-    kids.set(JSON.stringify(this._kids))
   }
 
   /**
@@ -302,10 +359,18 @@ export class KmLayout extends SignalWatcher(LitElement) {
     const hasDialogError = errorDialogMessage.get().length > 0
 
     return html`
+      <canvas id="confetti"></canvas>
       <main data-testid="layout" class="${classMap(containerClasses)}">${pageContent}</main>
       ${mainMenuContent}
       <dialog ?open="${hasDialogError}">${watch(errorDialogMessage)}</dialog>
     `
+  }
+
+  protected firstUpdated(_changedProperties: PropertyValues) {
+    super.firstUpdated(_changedProperties)
+
+    this._confetti = new Confetti(this._confettiCanvas)
+    this._updateCurrentTotals()
   }
 }
 

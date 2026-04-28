@@ -17,6 +17,9 @@ export class FormInput extends LitElement {
       align-items: center;
       font-size: var(--font-size-sm);
     }
+    ::slotted(input) {
+      font-size: var(--font-size-md);
+    }
     ::slotted(select) {
       font-size: var(--font-size-sm);
     }

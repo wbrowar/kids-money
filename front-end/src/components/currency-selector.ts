@@ -13,7 +13,7 @@ export class CurrencySelector extends SignalWatcher(LitElement) {
   /**
    * TODO
    */
-  async _onCurrencyInput(e: Event) {
+  private async _onCurrencyInput(e: Event) {
     const currency = (e.target as HTMLSelectElement)?.value as keyof typeof Currency
     selectedCurrency.set(currency)
     localStorage.setItem(LocalStorageItems.SelectedCurrency, currency)

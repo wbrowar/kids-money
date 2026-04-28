@@ -42,6 +42,7 @@ export type KidAdjustments = Record<Kid['id'], Adjustment[]>
 export interface Kid {
     adjustments?: Adjustment[]
     color: string;
+    currentTotal: number;
     id: number;
     interest: number;
     interestThresholds?: string;

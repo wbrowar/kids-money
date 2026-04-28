@@ -10,8 +10,12 @@ import { KmPageAdjustments } from '@/pages/km-page-adjustments.ts'
 import { KidEditor } from '@/components/kid-editor.ts'
 import { SettingChip } from '@/components/setting-chip.ts'
 import { Icon } from '@/components/icon.ts'
+import { ChartAdjustments } from '@/components/chart-adjustments.ts'
+import { ChartAdjustmentsMonthly } from '@/components/chart-adjustments-monthly.ts'
 
 export const customElementNames = [
+  'chart-adjustments',
+  'chart-adjustments-monthly',
   'currency-selector',
   'form-input',
   'kid-editor',
@@ -53,6 +57,12 @@ export function defineCustomElements(list: KmCustomElements[]) {
   list.forEach((element) => {
     if (!customElements.get(element)) {
       switch (element) {
+        case 'chart-adjustments':
+          customElements.define(element, ChartAdjustments)
+          break
+        case 'chart-adjustments-monthly':
+          customElements.define(element, ChartAdjustmentsMonthly)
+          break
         case 'currency-selector':
           customElements.define(element, CurrencySelector)
           break
