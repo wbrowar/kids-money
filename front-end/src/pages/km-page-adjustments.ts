@@ -1,7 +1,14 @@
 import { css, html, LitElement, nothing } from 'lit'
 import { SignalWatcher } from '@lit-labs/signals'
 import { query, state } from 'lit/decorators.js'
-import { currentUserIsAdmin, currentUserKidId, kids, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
+import {
+  currentUserIsAdmin,
+  currentUserKidId,
+  kids,
+  kidsColors,
+  selectedCurrency,
+  selectedKidIndex,
+} from '@/constants/signals.ts'
 import { AdjustmentDto, AdjustmentType, Kid } from '@types'
 import { dollarAdjustmentFromInterestPercentage, estimateInterestTotalOverTime } from '@/utils/adjustments.ts'
 import { formatTotalForCurrency } from '@/utils/currency.ts'
@@ -750,6 +757,12 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
                 )
               })
 
+        const chart = html`<chart-adjustments
+          class="chart"
+          data-adjustments="${JSON.stringify(filteredAdjustmentsByType)}"
+          data-kid-color="${JSON.parse(kidsColors.get())[selectedKidIndex.get()]}"
+        ></chart-adjustments>`
+
         const adjustmentRows = filteredAdjustmentsByType.map((adjustment) => {
           const isTypeInterest = adjustment.percentAdjustment > 0
           const reasonClasses = {
@@ -789,17 +802,11 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
           </table>
         `
 
-        const chart = html`<chart-adjustments
-          class="chart"
-          data-adjustments="${JSON.stringify(filteredAdjustmentsByType)}"
-          data-kid-index="${selectedKidIndex.get()}"
-        ></chart-adjustments>`
-
         return html`
           <article class="${classMap(containerClasses)}" style="--color-favorite: ${kid.color};">
             ${kidCard}${currentUserIsAdmin.get()
               ? adjustmentForm
-              : nothing}${interestPreview}${savingFor}${adjustmentsControls}${adjustmentsTable}${chart}
+              : nothing}${interestPreview}${savingFor}${adjustmentsControls}${chart}${adjustmentsTable}
           </article>
         `
       }

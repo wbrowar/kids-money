@@ -11,6 +11,7 @@ import {
   currentUserKidId,
   errorDialogMessage,
   kids,
+  kidsColors,
   screenshotMode,
   selectedCurrency,
 } from '@/constants/signals.ts'
@@ -21,6 +22,7 @@ import { ServerRoute } from '@server/constants/constants.ts'
 import { LocalStorageItems } from '@/constants/local-storage.ts'
 import { Route } from '@/constants/router.ts'
 import Confetti from '@/utils/confetti.ts'
+import { getLightDarkColorsFromColor, getThemeColorForColorScheme } from '@/utils/color-helper.ts'
 
 export class KmLayout extends SignalWatcher(LitElement) {
   /**
@@ -33,8 +35,6 @@ export class KmLayout extends SignalWatcher(LitElement) {
       container-name: layout;
       container-type: inline-size;
       display: block;
-      padding: clamp(15px, 8vw, 80px) clamp(15px, 4vw, 80px) 80px;
-      min-height: stretch;
     }
     canvas {
       display: block;
@@ -45,7 +45,9 @@ export class KmLayout extends SignalWatcher(LitElement) {
     }
     main {
       position: relative;
-      height: stretch;
+      padding: clamp(15px, 8vw, 80px) calc(clamp(15px, 4vw, 80px) + env(safe-area-inset-right, 0))
+        calc(80px + env(safe-area-inset-bottom, 0)) calc(clamp(15px, 4vw, 80px) + env(safe-area-inset-left, 0));
+      box-sizing: border-box;
     }
     nav {
       --nav-button-color: var(--color-text-nav);
@@ -106,6 +108,7 @@ export class KmLayout extends SignalWatcher(LitElement) {
           padding: 7px 20px env(safe-area-inset-bottom, 20px);
           inset: 0;
           inset-block-start: auto;
+          inset-block-end: 0;
           background-color: color-mix(var(--color-bg-nav) 70%, transparent);
           border-block-start: 1px solid var(--color-bg-nav);
           box-shadow: var(--box-shadow-card);
@@ -156,11 +159,11 @@ export class KmLayout extends SignalWatcher(LitElement) {
    */
   private async _fetchKidsData() {
     log('Getting kids from API')
-    const kidsData = await Db.postRequest(ServerRoute.GetKids, {
+    const kidsData: Kid[] = await Db.postRequest(ServerRoute.GetKids, {
       includeAdjustments: true,
       screenshotMode: screenshotMode.get(),
     })
-    this._kids = kidsData.map((kid: Kid) => {
+    this._kids = kidsData.map((kid) => {
       const kidFormatted: Kid = {
         adjustments: kid.adjustments ?? [],
         color: kid.color,
@@ -172,6 +175,7 @@ export class KmLayout extends SignalWatcher(LitElement) {
         photoUrl: kid.photoUrl ? kid.photoUrl : undefined,
         savingFor: kid.savingFor ? kid.savingFor : undefined,
         savingForValue: kid.savingForValue,
+        themeColors: getLightDarkColorsFromColor(kid.color),
       }
 
       return kidFormatted
@@ -179,6 +183,13 @@ export class KmLayout extends SignalWatcher(LitElement) {
     log('Kids:')
     table(this._kids)
 
+    // Add colors for each kid to state
+    const kidsColorsData = this._kids.map((kid) => {
+      return getThemeColorForColorScheme(kid.themeColors)
+    })
+    kidsColors.set(JSON.stringify(kidsColorsData))
+
+    // If user is associated with a kid, get the ID of the kid
     if (currentUserKidId.get()) {
       this._loggedInKid = this._kids.filter((kid) => {
         currentUserKidId.get() === kid.id
@@ -188,7 +199,19 @@ export class KmLayout extends SignalWatcher(LitElement) {
     // Play animation
     this._updateCurrentTotals()
 
+    // Save kids as a JSON string to share with other components
     kids.set(JSON.stringify(this._kids))
+  }
+
+  /**
+   * TODO
+   */
+  private async _onRefreshClicked() {
+    if (currentRoute.get() === Route.Home) {
+      location.reload()
+    } else {
+      this._fetchKidsData()
+    }
   }
 
   /**
@@ -282,6 +305,12 @@ export class KmLayout extends SignalWatcher(LitElement) {
       selectedCurrency.set(selectedCurrencyKey)
     }
     console.log('selectedCurrency', selectedCurrency.get())
+
+    // Add event listener to update kid data when browser changes between light and dark modes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      log('Refreshing data due to color scheme change')
+      this._fetchKidsData()
+    })
   }
   protected render() {
     const _route = currentRoute.get()
@@ -332,7 +361,7 @@ export class KmLayout extends SignalWatcher(LitElement) {
                 </button>
               </li>
               <li>
-                <button @click="${this._fetchKidsData}">
+                <button @click="${this._onRefreshClicked}">
                   <svg-icon name="refresh"></svg-icon> <span>Refresh</span>
                 </button>
               </li>
@@ -369,6 +398,7 @@ export class KmLayout extends SignalWatcher(LitElement) {
   protected firstUpdated(_changedProperties: PropertyValues) {
     super.firstUpdated(_changedProperties)
 
+    // Play confetti animation
     this._confetti = new Confetti(this._confettiCanvas)
     this._updateCurrentTotals()
   }

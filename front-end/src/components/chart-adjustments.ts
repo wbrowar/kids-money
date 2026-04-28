@@ -1,5 +1,5 @@
 import { css, html, LitElement, PropertyValues } from 'lit'
-import { property, query, state } from 'lit/decorators.js'
+import { property, query } from 'lit/decorators.js'
 import { SignalWatcher } from '@lit-labs/signals'
 import { Adjustment } from '@types'
 import { selectedCurrency } from '@/constants/signals.ts'
@@ -34,12 +34,14 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
   `
 
   /**
-   * =========================================================================
-   * REFS
-   * =========================================================================
+   * TODO
    */
-  @query('#chart')
-  _chartElement!: HTMLCanvasElement
+  private _chart: Chart<keyof ChartTypeRegistry, { x: string; y: number }[]> | undefined = undefined
+
+  /**
+   * TODO
+   */
+  private _datasets: ChartDataset<keyof ChartTypeRegistry, { x: string; y: number }[]>[] = []
 
   /**
    * =========================================================================
@@ -55,25 +57,16 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
   /**
    * TODO
    */
-  @property({ attribute: 'data-kid-index', type: Number })
-  kidIndex = -1
+  @property({ attribute: 'data-kid-color' })
+  kidColor = ''
 
   /**
    * =========================================================================
-   * STATE
+   * REFS
    * =========================================================================
    */
-  /**
-   * TODO
-   */
-  @state()
-  private _chart: Chart<keyof ChartTypeRegistry, { x: string; y: number }[]> | undefined = undefined
-
-  /**
-   * TODO
-   */
-  @state()
-  private _datasets: ChartDataset<keyof ChartTypeRegistry, { x: string; y: number }[]>[] = []
+  @query('#chart')
+  _chartElement!: HTMLCanvasElement
 
   /**
    * =========================================================================
@@ -84,7 +77,6 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
    * TODO
    */
   private _formatDatasets() {
-    log('Updating datasets')
     const data = this.adjustments.map((adjustment) => {
       return {
         x: new Date(adjustment.createdDate).toLocaleDateString('en-us', {
@@ -96,13 +88,10 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
       }
     })
 
-    const rootStyle = getComputedStyle(this)
-    const chartColor = rootStyle.getPropertyValue('color').trim()
-
     this._datasets = [
       {
-        backgroundColor: chartColor,
-        borderColor: chartColor,
+        backgroundColor: this.kidColor,
+        borderColor: this.kidColor,
         data: data.reverse(),
         label: 'Adjustments',
         tension: 0.1,
@@ -159,8 +148,6 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
           },
         },
       })
-
-      log('Chart', this._chart)
     }
   }
 
@@ -182,7 +169,9 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
   protected willUpdate(changedProperties: PropertyValues) {
     super.willUpdate(changedProperties)
 
-    if (changedProperties.has('adjustments')) {
+    log('thing chnaged', this.kidColor)
+
+    if (changedProperties.has('adjustments') || changedProperties.has('kidColor')) {
       this._formatDatasets()
     }
   }

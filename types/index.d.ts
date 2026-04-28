@@ -37,11 +37,17 @@ export type InterestThresholds = number[][]
 export type KidAdjustments = Record<Kid['id'], Adjustment[]>
 
 /**
+ * TODO
+ */
+export type KidColors = { light: string; dark: string }
+
+/**
  * Represents a person who money is being tracked for. This includes settings and other preferences configured by the admin.
  */
 export interface Kid {
     adjustments?: Adjustment[]
     color: string;
+    themeColors: KidColors;
     currentTotal: number;
     id: number;
     interest: number;

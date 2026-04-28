@@ -2,7 +2,6 @@ import { css, html, LitElement, nothing } from 'lit'
 import { SignalWatcher } from '@lit-labs/signals'
 import { property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
-import { log } from '@/utils/console.ts'
 
 export class SettingChip extends SignalWatcher(LitElement) {
   /**
@@ -84,8 +83,6 @@ export class SettingChip extends SignalWatcher(LitElement) {
       display: true,
       unstyled: this.unstyled,
     }
-
-    log('disabled', this.disabled)
 
     if (this.disabled) {
       return html`<slot name="label"></slot>`
