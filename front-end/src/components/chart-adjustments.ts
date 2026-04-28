@@ -1,8 +1,8 @@
 import { css, html, LitElement, PropertyValues } from 'lit'
 import { property, query, state } from 'lit/decorators.js'
 import { SignalWatcher } from '@lit-labs/signals'
-import { Adjustment, Kid } from '@types'
-import { kids, selectedCurrency } from '@/constants/signals.ts'
+import { Adjustment } from '@types'
+import { selectedCurrency } from '@/constants/signals.ts'
 import {
   CategoryScale,
   Chart,
@@ -28,7 +28,7 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
     :host {
       display: block;
       width: 100cqw;
-      min-height: 500px;
+      height: clamp(90px, 50cqw, 500px);
       color: var(--color-favorite);
     }
   `
@@ -74,12 +74,6 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
    */
   @state()
   private _datasets: ChartDataset<keyof ChartTypeRegistry, { x: string; y: number }[]>[] = []
-
-  /**
-   * TODO
-   */
-  @state()
-  private _kid: Kid | undefined = undefined
 
   /**
    * =========================================================================
@@ -181,20 +175,6 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
 
   protected firstUpdated(changedProperties: PropertyValues) {
     super.firstUpdated(changedProperties)
-
-    if (changedProperties.has('kidIndex')) {
-      // Set the ID of the kid based on loaded value.
-      const kidsJson = kids.get()
-
-      if (kidsJson) {
-        const kidsData: Kid[] = JSON.parse(kidsJson)
-        const kid = kidsData[this.kidIndex]
-
-        if (kid) {
-          this._kid = kid
-        }
-      }
-    }
 
     this._setupChart()
   }

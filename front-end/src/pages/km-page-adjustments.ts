@@ -35,8 +35,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
         'interestpreview'
         'savingfor'
         'adjustmentscontrols'
-        'adjustmentstable'
-        'chart';
+        'chart'
+        'adjustmentstable';
       grid-template-columns: 1fr;
       gap: 20px 40px;
 
@@ -47,8 +47,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
           'interestpreview'
           'savingfor'
           'adjustmentscontrols'
-          'adjustmentstable'
-          'chart';
+          'chart'
+          'adjustmentstable';
       }
 
       @container (width > 1000px) {
@@ -57,8 +57,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
             'kidcard savingfor'
             'interestpreview savingfor'
             '. adjustmentscontrols'
-            'adjustmentstable adjustmentstable'
-            'chart chart';
+            'chart chart'
+            'adjustmentstable adjustmentstable';
           grid-template-columns: clamp(200px, 40vw, 600px) 1fr;
 
           &.admin {
@@ -67,8 +67,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
               'adjustmentform savingfor'
               'interestpreview savingfor'
               '. adjustmentscontrols'
-              'adjustmentstable adjustmentstable'
-              'chart chart';
+              'chart chart'
+              'adjustmentstable adjustmentstable';
           }
         }
       }
@@ -78,8 +78,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
             'kidcard savingfor .'
             'interestpreview savingfor .'
             '. . adjustmentscontrols'
-            'adjustmentstable adjustmentstable adjustmentstable'
-            'chart chart chart';
+            'chart chart chart'
+            'adjustmentstable adjustmentstable adjustmentstable';
           grid-template-columns: clamp(200px, 40vw, 600px) clamp(200px, 40vw, 600px) 1fr;
 
           &.admin {
@@ -88,8 +88,8 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
               'interestpreview savingfor .'
               'interestpreview adjustmentform .'
               '. . adjustmentscontrols'
-              'adjustmentstable adjustmentstable adjustmentstable'
-              'chart chart chart';
+              'chart chart chart'
+              'adjustmentstable adjustmentstable adjustmentstable';
           }
         }
       }
