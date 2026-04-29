@@ -18,6 +18,7 @@ export class KidEditor extends SignalWatcher(LitElement) {
   static styles = css`
     :host {
       display: block;
+      flex: 1 1 400px;
     }
     :heading {
       color: var(--color-text-header);
