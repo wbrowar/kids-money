@@ -1,7 +1,6 @@
 import { css, html, LitElement, PropertyValues } from 'lit'
 import { property, query } from 'lit/decorators.js'
 import { SignalWatcher } from '@lit-labs/signals'
-import { log } from '@/utils/console.ts'
 import { convertUsdToCurrency, formatTotalForCurrency } from '@/utils/currency.ts'
 import {
   CategoryScale,
@@ -36,12 +35,12 @@ export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
   /**
    * TODO
    */
-  private _chart: Chart<keyof ChartTypeRegistry, { x: string; y: number }[]> | undefined = undefined
+  private _chart: Chart<keyof ChartTypeRegistry> | undefined = undefined
 
   /**
    * TODO
    */
-  private _datasets: ChartDataset<keyof ChartTypeRegistry, { x: string; y: number }[]>[] = []
+  private _datasets: ChartDataset<keyof ChartTypeRegistry>[] = []
 
   /**
    * TODO
@@ -94,18 +93,15 @@ export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
    * TODO
    */
   private _formatDatasets() {
-    log('Updating datasets')
     const kidsData: Kid[] = JSON.parse(kids.get())
     this._datasets = kidsData.map((kid: Kid, index) => {
       const data: number[] = []
       const monthsData: Record<string, number> = {}
 
       // Group all data by month
-      const dataByMonth = kid.adjustments
+      const dataByMonth: Partial<Record<string, Adjustment[]>> = kid.adjustments
         ? Object.groupBy(kid.adjustments, ({ createdDate }) => new Date(createdDate).getMonth())
         : []
-
-      log('datae betr montdsh', dataByMonth)
 
       // Get totals from each month and key them to match labels
       Object.keys(dataByMonth).forEach((key) => {
@@ -120,7 +116,7 @@ export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
 
       // Add data in order of labels
       this._labels.forEach((label) => {
-        data.push(monthsData[label] ?? 0)
+        data.push(monthsData[label])
       })
 
       return {
