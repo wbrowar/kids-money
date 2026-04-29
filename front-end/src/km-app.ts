@@ -262,7 +262,7 @@ export class KmApp extends SignalWatcher(LitElement) {
       let playAnimation = false
       const newTotals: number[] = []
       const currentTotalsData = localStorage.getItem(LocalStorageItems.CurrentTotals)
-      const currentTotals = JSON.parse(currentTotalsData ?? '[]')
+      const currentTotals = JSON.parse(currentTotalsData || '[]')
 
       if (this._kids?.length) {
         this._kids.forEach((kid, index) => {
@@ -274,7 +274,10 @@ export class KmApp extends SignalWatcher(LitElement) {
       }
 
       if (playAnimation) {
+        log('Playing confetti animation')
         this._confetti.shootConfetti()
+      } else {
+        log('Not going to play confetti animation')
       }
 
       // Store new totals
@@ -404,7 +407,6 @@ export class KmApp extends SignalWatcher(LitElement) {
 
     // Play confetti animation
     this._confetti = new Confetti(this._confettiCanvas)
-    this._updateCurrentTotals()
   }
 }
 

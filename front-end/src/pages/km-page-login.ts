@@ -14,19 +14,22 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
    */
   static styles = css`
     :host {
+      container-name: page;
+      container-type: inline-size;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 15px;
-      height: stretch;
     }
     svg-icon {
+      --svg-icon-size: 80px;
       color: var(--color-bg-nav);
     }
     form {
       display: grid;
-      grid-template-columns: auto auto max-content;
-      grid-template-rows: 40px;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(4, 40px);
       gap: 5px;
       color: var(--color-text-nav);
 
@@ -112,7 +115,7 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
   }
   protected render() {
     return html`<svg-icon name="logo"></svg-icon>
-      <form id="login" @submit="${this.submitForm}">
+      <form id="login" action="" @submit="${this.submitForm}">
         <input type="text" name="username" autocomplete="username" placeholder="Username" />
         <input type="password" name="password" autocomplete="current-password" placeholder="Password" />
         <button type="submit">Log in</button>

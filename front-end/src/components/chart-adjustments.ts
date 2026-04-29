@@ -169,8 +169,6 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
   protected willUpdate(changedProperties: PropertyValues) {
     super.willUpdate(changedProperties)
 
-    log('thing chnaged', this.kidColor)
-
     if (changedProperties.has('adjustments') || changedProperties.has('kidColor')) {
       this._formatDatasets()
     }

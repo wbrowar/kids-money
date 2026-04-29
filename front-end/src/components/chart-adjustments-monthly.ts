@@ -27,7 +27,7 @@ export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
     :host {
       display: block;
       width: 100cqw;
-      height: clamp(90px, 50cqw, 500px);
+      height: clamp(200px, 50cqw, 500px);
       color: var(--color-favorite);
     }
   `
