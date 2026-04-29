@@ -25,7 +25,7 @@ import Confetti from '@/utils/confetti.ts'
 import { getLightDarkColorsFromColor, getThemeColorForColorScheme } from '@/utils/color-helper.ts'
 import { updateCurrencyConversionRates } from '@/utils/currency.ts'
 
-export class KmLayout extends SignalWatcher(LitElement) {
+export class KmApp extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
    * CSS
@@ -410,6 +410,6 @@ export class KmLayout extends SignalWatcher(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'km-layout': KmLayout
+    'km-app': KmApp
   }
 }

@@ -328,14 +328,19 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
             }
             tbody {
               tr {
+                background-color: color-mix(var(--kid-color-bg-light) 10%, transparent);
                 border-block-start: 1px solid color-mix(var(--kid-color-text-on-favorite) 10%, transparent);
                 transition: background-color var(--duration-hover) ease-out;
 
-                &.direction-subtract {
-                  background-color: color-mix(var(--kid-color-favorite) 80%, var(--color-direction-subtract));
-                }
                 &:hover {
-                  background-color: color-mix(var(--kid-color-bg-light) 10%, transparent);
+                  background-color: color-mix(var(--kid-color-bg-light) 25%, transparent);
+                }
+                &.direction-subtract {
+                  background-color: color-mix(var(--kid-color-favorite) 90%, var(--color-direction-subtract));
+
+                  &:hover {
+                    background-color: color-mix(var(--kid-color-favorite) 80%, var(--color-direction-subtract));
+                  }
                 }
               }
             }

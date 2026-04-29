@@ -1,4 +1,4 @@
-import { KmLayout } from '@/layouts/km-layout.ts'
+import { KmApp } from '@/km-app.ts'
 import { KmPageLogin } from '@/pages/km-page-login.ts'
 import { KmPageHome } from '@/pages/km-page-home.ts'
 import { KmPageLogout } from '@/pages/km-page-logout.ts'
@@ -20,7 +20,7 @@ export const customElementNames = [
   'form-input',
   'kid-editor',
   'kid-total-card',
-  'km-layout',
+  'km-app',
   'km-page-adjustments',
   'km-page-home',
   'km-page-login',
@@ -75,8 +75,8 @@ export function defineCustomElements(list: KmCustomElements[]) {
         case 'kid-total-card':
           customElements.define(element, KidTotalCard)
           break
-        case 'km-layout':
-          customElements.define(element, KmLayout)
+        case 'km-app':
+          customElements.define(element, KmApp)
           break
         case 'km-page-adjustments':
           customElements.define(element, KmPageAdjustments)

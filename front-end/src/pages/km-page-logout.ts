@@ -22,7 +22,7 @@ export class KmPageLogout extends SignalWatcher(LitElement) {
     log('Removing user data stored in local storage')
     localStorage.removeItem(LocalStorageItems.CurrentUser)
 
-    customElements.whenDefined('km-layout').then(() => {
+    customElements.whenDefined('km-app').then(() => {
       this.dispatchEvent(new UserLoggedOutEvent())
     })
   }

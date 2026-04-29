@@ -102,7 +102,7 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
       table(userSettings)
 
       if (userSettings?.username) {
-        customElements.whenDefined('km-layout').then(() => {
+        customElements.whenDefined('km-app').then(() => {
           this.dispatchEvent(
             new UserLoggedInEvent(userSettings.username, userSettings?.grownUp ?? false, userSettings?.kidId)
           )

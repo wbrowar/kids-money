@@ -160,14 +160,19 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
         })}
       </div>
 
-        <h2>Misc</h2>
-        <form-input>
-          <label>
-            <input type="checkbox" switch ?checked="${screenshotMode.get()}" @input="${this._onScreenshotModeInput}" />
-            Enable Screenshot Mode</label
-          >
-        </form-input>
-      </div>
+      <h2>Misc</h2>
+      <form-input>
+        <label>
+          <input type="checkbox" switch ?checked="${screenshotMode.get()}" @input="${this._onScreenshotModeInput}" />
+          Enable Screenshot Mode</label
+        >
+      </form-input>
+
+      <h2>Info</h2>
+      <dl>
+        <dt>Currency Information</dt>
+        <dd>Synced</dd>
+      </dl>
     `
   }
 }
