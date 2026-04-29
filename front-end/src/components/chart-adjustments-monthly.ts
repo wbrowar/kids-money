@@ -3,14 +3,14 @@ import { property, query } from 'lit/decorators.js'
 import { SignalWatcher } from '@lit-labs/signals'
 import { convertUsdToCurrency, formatTotalForCurrency } from '@/utils/currency.ts'
 import {
+  BarController,
+  BarElement,
   CategoryScale,
   Chart,
   ChartDataset,
   ChartTypeRegistry,
   Legend,
   LinearScale,
-  LineController,
-  LineElement,
   PointElement,
   Tooltip,
 } from 'chart.js'
@@ -138,12 +138,12 @@ export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
    */
   private _setupChart() {
     if (!this._chart && this._chartElement) {
-      Chart.register(CategoryScale, LinearScale, LineController, LineElement, PointElement, Legend, Tooltip)
+      Chart.register(CategoryScale, LinearScale, BarController, BarElement, PointElement, Legend, Tooltip)
 
       this._formatDatasets()
 
       this._chart = new Chart(this._chartElement, {
-        type: 'line',
+        type: 'bar',
         data: {
           labels: this._labels,
           datasets: this._datasets,

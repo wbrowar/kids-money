@@ -2,7 +2,7 @@
  * Do not edit directly, this file was auto-generated.
  */
 
-& {
+.kid-variables {
   --kid-color-bg-light: color-mix(var(--color-favorite, oklch(0.7751 0.304 149.19)) 10%, light-dark(rgb(255 255 255), rgb(40 40 40)));
   --kid-color-border: color-mix(var(--color-favorite, oklch(0.7751 0.304 149.19)) 40%, transparent);
   --kid-color-favorite: var(--color-favorite, oklch(0.7751 0.304 149.19));

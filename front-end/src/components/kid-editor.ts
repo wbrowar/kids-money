@@ -15,118 +15,120 @@ export class KidEditor extends SignalWatcher(LitElement) {
    * CSS
    * =========================================================================
    */
-  static styles = css`
-    :host {
-      display: block;
-      flex: 1 1 400px;
-    }
-    :heading {
-      color: var(--color-text-header);
-    }
-    img {
-      display: block;
-      max-width: 100%;
-      border-radius: 50%;
-    }
-    form {
-      ${variableKids}
-      --component-setting-chip-color: var(--kid-color-favorite);
-      display: grid;
-      gap: 15px;
-      padding: 25px;
-      background-color: var(--kid-color-bg-light);
-      background-image: var(--kid-color-bg-gradient);
-      border-radius: var(--border-radius-lg);
-      box-shadow: var(--box-shadow-card);
-      color: var(--kid-color-text-on-bg-light);
-
-      .editor-field {
+  static styles = [
+    variableKids,
+    css`
+      :host {
+        display: block;
+        flex: 1 1 400px;
+      }
+      :heading {
+        color: var(--color-text-header);
+      }
+      img {
+        display: block;
+        max-width: 100%;
+        border-radius: 50%;
+      }
+      form {
+        --component-setting-chip-color: var(--kid-color-favorite);
         display: grid;
-        grid-template-columns: subgrid;
-        grid-column: 1 / -1;
-        align-items: center;
+        gap: 15px;
+        padding: 25px;
+        background-color: var(--kid-color-bg-light);
+        background-image: var(--kid-color-bg-gradient);
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--box-shadow-card);
+        color: var(--kid-color-text-on-bg-light);
 
-        h3 {
-          margin: 0;
+        .editor-field {
+          display: grid;
+          grid-template-columns: subgrid;
+          grid-column: 1 / -1;
+          align-items: center;
 
-          @container (width > 600px) {
-            & {
-              text-align: end;
+          h3 {
+            margin: 0;
+
+            @container (width > 600px) {
+              & {
+                text-align: end;
+              }
+            }
+          }
+          setting-chip {
+            input,
+            button {
+              box-sizing: border-box;
+              padding-inline: 10px;
+              width: 300px;
+              height: 30px;
+            }
+            p {
+              text-wrap: pretty;
             }
           }
         }
-        setting-chip {
-          input,
-          button {
-            box-sizing: border-box;
-            padding-inline: 10px;
-            width: 300px;
-            height: 30px;
-          }
-          p {
-            text-wrap: pretty;
+
+        @container (width > 600px) {
+          & {
+            grid-template-columns: repeat(2, max-content);
           }
         }
       }
-
-      @container (width > 600px) {
-        & {
-          grid-template-columns: repeat(2, max-content);
-        }
-      }
-    }
-    .color-preview {
-      aspect-ratio: 5 / 3;
-      width: 100px;
-      background-image:
-        linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%);
-      background-size: 20px 20px;
-      background-position:
-        0 0,
-        0 10px,
-        10px -10px,
-        -10px 0px;
-      border-radius: var(--border-radius-md);
-      color: contrast-color(var(--color-favorite));
-
-      [slot='label']:has(&) {
-        display: flex;
-        flex-flow: row nowrap;
-        gap: 5px;
-      }
-      &:nth-child(1) {
-        color-scheme: light;
-      }
-      &:nth-child(2) {
-        color-scheme: dark;
-      }
-      & > span {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        font-size: var(--font-size-md);
+      .color-preview {
+        aspect-ratio: 5 / 3;
+        width: 100px;
+        background-image:
+          linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%);
+        background-size: 20px 20px;
+        background-position:
+          0 0,
+          0 10px,
+          10px -10px,
+          -10px 0px;
         border-radius: var(--border-radius-md);
+        color: contrast-color(var(--color-favorite));
+
+        [slot='label']:has(&) {
+          display: flex;
+          flex-flow: row nowrap;
+          gap: 5px;
+        }
+        &:nth-child(1) {
+          color-scheme: light;
+        }
+        &:nth-child(2) {
+          color-scheme: dark;
+        }
+        & > span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          font-size: var(--font-size-md);
+          border-radius: var(--border-radius-md);
+        }
       }
-    }
-    .editor-field {
-      anchor-scope: --editor-button;
-    }
-    button[popovertarget] {
-      anchor-name: --editor-button;
-      display: inline-block;
-      cursor: pointer;
-    }
-    [popover] {
-      position-anchor: --editor-button;
-      position: fixed;
-      position-area: block-end;
-      position-try-fallbacks: block-start;
-      background-color: var(--color-fpo);
-    }
-  `
+      .editor-field {
+        anchor-scope: --editor-button;
+      }
+      button[popovertarget] {
+        anchor-name: --editor-button;
+        display: inline-block;
+        cursor: pointer;
+      }
+      [popover] {
+        position-anchor: --editor-button;
+        position: fixed;
+        position-area: block-end;
+        position-try-fallbacks: block-start;
+        background-color: var(--color-fpo);
+      }
+    `,
+  ]
 
   /**
    * =========================================================================
@@ -227,7 +229,11 @@ export class KidEditor extends SignalWatcher(LitElement) {
         const colorHasDarkMode = kid.color.includes('light-dark')
 
         return html`
-          <form style="--color-favorite: ${kid.color}" @submit="${(e: SubmitEvent) => e.preventDefault()}">
+          <form
+            class="kid-variables"
+            style="--color-favorite: ${kid.color}"
+            @submit="${(e: SubmitEvent) => e.preventDefault()}"
+          >
             <div class="editor-field">
               <h3>Name</h3>
 

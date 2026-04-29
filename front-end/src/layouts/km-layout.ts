@@ -23,6 +23,7 @@ import { LocalStorageItems } from '@/constants/local-storage.ts'
 import { Route } from '@/constants/router.ts'
 import Confetti from '@/utils/confetti.ts'
 import { getLightDarkColorsFromColor, getThemeColorForColorScheme } from '@/utils/color-helper.ts'
+import { updateCurrencyConversionRates } from '@/utils/currency.ts'
 
 export class KmLayout extends SignalWatcher(LitElement) {
   /**
@@ -305,6 +306,9 @@ export class KmLayout extends SignalWatcher(LitElement) {
       selectedCurrency.set(selectedCurrencyKey)
     }
     console.log('selectedCurrency', selectedCurrency.get())
+
+    // Update exchange rates from third-party API
+    await updateCurrencyConversionRates()
 
     // Add event listener to update kid data when browser changes between light and dark modes
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {

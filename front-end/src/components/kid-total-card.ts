@@ -14,117 +14,123 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
    * CSS
    * =========================================================================
    */
-  static styles = css`
-    :host {
-      display: contents;
-    }
-    img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-    }
-    .container {
-      ${variableKids}
-      container-name: kid-total-card;
-      container-type: inline-size;
-      display: grid;
-      grid-template-columns: max-content 1fr max-content;
-      grid-template-rows: calc(max-content - 20px) max-content max-content;
-      gap: 10px 40px;
-      padding: 11px;
-      position: relative;
-      border-radius: var(--border-radius-lg);
-      background-color: var(--kid-color-favorite);
-      box-shadow: var(--kid-box-shadow-card);
-    }
-    .bg {
-      grid-column: 1 / 4;
-      grid-row: 1 / 3;
-      background-color: var(--kid-color-bg-light);
-      background-image: var(--kid-color-bg-gradient);
-      border-radius: var(--border-radius-md);
-    }
-    .avatar {
-      display: block;
-      grid-column: 1 / 2;
-      grid-row: 1 / 2;
-      //transform: translateX(20px) translateY(-40px);
-      transform: translateX(20%) translateY(-15%) scale(1.2);
-
-      img {
-        border-radius: 50%;
-        aspect-ratio: 1;
-        border: 5px solid var(--kid-color-border);
-        width: clamp(60px, 20cqw, 150px);
+  static styles = [
+    variableKids,
+    css`
+      :host {
+        display: contents;
       }
-    }
-    .info {
-      display: grid;
-      grid-column: 2 / 4;
-      grid-row: 1 / 2;
-      grid-template-rows: 1fr;
-      justify-content: stretch;
-      align-items: center;
-      gap: 0.5rem;
-      padding-inline: 8px;
-      position: relative;
-    }
-    .total {
-      text-align: center;
-      text-box: trim-both cap alphabetic;
-      font-size: var(--font-size-2xl);
-      font-size: clamp(var(--font-size-xl), 11cqw, var(--font-size-2xl));
-      color: var(--kid-color-favorite);
-    }
-    .saving-for {
-      display: grid;
-      grid-column: 1 / 4;
-      grid-row: 2 / 3;
-      grid-template-columns: 1fr max-content;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 9px;
-      color: var(--kid-color-text-on-bg-light);
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+      .container {
+        container-name: kid-total-card;
+        container-type: inline-size;
+        display: grid;
+        grid-template-columns: max-content 1fr max-content;
+        grid-template-rows: calc(max-content - 20px) max-content max-content;
+        gap: 10px 40px;
+        padding: 11px;
+        position: relative;
+        border-radius: var(--border-radius-lg);
+        background-color: var(--kid-color-favorite);
+        box-shadow: var(--kid-box-shadow-card);
+      }
+      .bg {
+        grid-column: 1 / 4;
+        grid-row: 1 / 3;
+        background-color: var(--kid-color-bg-light);
+        background-image: var(--kid-color-bg-gradient);
+        border-radius: var(--border-radius-md);
+      }
+      .avatar {
+        display: block;
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+        //transform: translateX(20px) translateY(-40px);
+        transform: translateX(20%) translateY(-15%) scale(1.2);
 
-      meter {
-        width: 100%;
-        &::-webkit-meter-bar {
-          background-color: color-mix(var(--kid-color-favorite) 15%, transparent);
+        img {
+          border-radius: 50%;
+          aspect-ratio: 1;
+          border: 5px solid var(--kid-color-border);
+          width: clamp(60px, 20cqw, 150px);
         }
       }
-      .emoji {
-        font-size: var(--font-size-lg);
+      .info {
+        display: grid;
+        grid-column: 2 / 4;
+        grid-row: 1 / 2;
+        grid-template-rows: 1fr;
+        justify-content: stretch;
+        align-items: center;
+        gap: 0.5rem;
+        padding-inline: 8px;
+        position: relative;
       }
-    }
-    h1 {
-      grid-column: 1 / 3;
-      grid-row: 3 / 4;
-      align-self: center;
-      margin: 0;
-      padding-block: 13px;
-      font-size: var(--font-size-xl);
-      font-weight: var(--font-weight-semibold);
-      text-box: trim-both cap alphabetic;
-      color: var(--kid-color-text-on-favorite);
-    }
-    .kid-link {
-      appearance: none;
-      display: block;
-      position: absolute;
-      inset: 0;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-    }
-    .actions {
-      display: flex;
-      grid-column: 3 / 4;
-      grid-row: 3 / 4;
-      gap: 3px;
-      align-self: center;
-      position: relative;
-    }
-  `
+      .total {
+        text-align: center;
+        text-box: trim-both cap alphabetic;
+        font-size: var(--font-size-2xl);
+        font-size: clamp(var(--font-size-xl), 11cqw, var(--font-size-2xl));
+        color: var(--kid-color-favorite);
+
+        &.long {
+          font-size: clamp(var(--font-size-lg), 9cqw, var(--font-size-xl));
+        }
+      }
+      .saving-for {
+        display: grid;
+        grid-column: 1 / 4;
+        grid-row: 2 / 3;
+        grid-template-columns: 1fr max-content;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 9px;
+        color: var(--kid-color-text-on-bg-light);
+
+        meter {
+          width: 100%;
+          &::-webkit-meter-bar {
+            background-color: color-mix(var(--kid-color-favorite) 15%, transparent);
+          }
+        }
+        .emoji {
+          font-size: var(--font-size-lg);
+        }
+      }
+      h1 {
+        grid-column: 1 / 3;
+        grid-row: 3 / 4;
+        align-self: center;
+        margin: 0;
+        padding-block: 13px;
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-semibold);
+        text-box: trim-both cap alphabetic;
+        color: var(--kid-color-text-on-favorite);
+      }
+      .kid-link {
+        appearance: none;
+        display: block;
+        position: absolute;
+        inset: 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+      }
+      .actions {
+        display: flex;
+        grid-column: 3 / 4;
+        grid-row: 3 / 4;
+        gap: 3px;
+        align-self: center;
+        position: relative;
+      }
+    `,
+  ]
 
   /**
    * =========================================================================
@@ -168,10 +174,12 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
       const kidsData: Kid[] = JSON.parse(kidsJson)
       const kid = kidsData[this.kidIndex]
       const kidTotalValue = kid.adjustments?.[0]?.totalToDate ?? 0
+      const kidTotalFormatted = formatTotalForCurrency(kidTotalValue, selectedCurrency.get())
 
       const containerClasses = {
         container: true,
         'child-card': this.enableLink,
+        'kid-variables': true,
       }
 
       const saveForThesholds = {
@@ -204,7 +212,7 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
           ${savingFor}
           <h1>${kid.name}</h1>
           <div class="info">
-            <span class="total">${formatTotalForCurrency(kidTotalValue, selectedCurrency.get())}</span>
+            <span class="total ${kidTotalFormatted.length > 10 ? 'long' : ''}">${kidTotalFormatted}</span>
           </div>
           ${this.enableLink ? html`<button class="kid-link" @click="${this._onLinkClick}"></button>` : nothing}
           <div class="actions">

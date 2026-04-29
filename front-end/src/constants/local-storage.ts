@@ -6,6 +6,8 @@ export const LocalStorageItems: Record<string, string> = {
   CurrentTotals: 'current-totals',
   /* Stores the username and grownUp status of the logged-in user. */
   CurrentUser: 'current-user',
+  /* Store the exchange rates to reduce the amount of times the API is used to retrieve them. */
+  ExchangeRates: 'exchange-rates',
   /* Stores the latest value of the screenshot mode setting. */
   ScreenshotMode: 'screenshot-mode',
   /* Stores the key of the selected currency. */

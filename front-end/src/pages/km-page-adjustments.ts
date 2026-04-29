@@ -28,415 +28,425 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
    * CSS
    * =========================================================================
    */
-  static styles = css`
-    :host {
-      container-name: page;
-      container-type: inline-size;
-      display: block;
-    }
-    .container {
-      ${variableKids}
-      display: grid;
-      grid-template-areas:
-        'kidcard'
-        'interestpreview'
-        'savingfor'
-        'adjustmentscontrols'
-        'chart'
-        'adjustmentstable';
-      grid-template-columns: 1fr;
-      gap: 20px 40px;
-
-      &.admin {
+  static styles = [
+    variableKids,
+    css`
+      :host {
+        container-name: page;
+        container-type: inline-size;
+        display: block;
+      }
+      .container {
+        display: grid;
         grid-template-areas:
           'kidcard'
-          'adjustmentform'
           'interestpreview'
           'savingfor'
           'adjustmentscontrols'
           'chart'
           'adjustmentstable';
-      }
+        grid-template-columns: 1fr;
+        gap: 20px 40px;
 
-      @container (width > 1000px) {
-        & {
+        &.admin {
           grid-template-areas:
-            'kidcard savingfor'
-            'interestpreview savingfor'
-            '. adjustmentscontrols'
-            'chart chart'
-            'adjustmentstable adjustmentstable';
-          grid-template-columns: clamp(200px, 40vw, 600px) 1fr;
+            'kidcard'
+            'adjustmentform'
+            'interestpreview'
+            'savingfor'
+            'adjustmentscontrols'
+            'chart'
+            'adjustmentstable';
+        }
 
-          &.admin {
+        @container (width > 1000px) {
+          & {
             grid-template-areas:
               'kidcard savingfor'
-              'adjustmentform savingfor'
               'interestpreview savingfor'
               '. adjustmentscontrols'
               'chart chart'
               'adjustmentstable adjustmentstable';
+            grid-template-columns: clamp(200px, 40vw, 600px) 1fr;
+
+            &.admin {
+              grid-template-areas:
+                'kidcard savingfor'
+                'adjustmentform savingfor'
+                'interestpreview savingfor'
+                '. adjustmentscontrols'
+                'chart chart'
+                'adjustmentstable adjustmentstable';
+            }
           }
         }
-      }
-      @container (width > 1700px) {
-        & {
-          grid-template-areas:
-            'kidcard savingfor .'
-            'interestpreview savingfor .'
-            '. . adjustmentscontrols'
-            'chart chart chart'
-            'adjustmentstable adjustmentstable adjustmentstable';
-          grid-template-columns: clamp(200px, 40vw, 600px) clamp(200px, 40vw, 600px) 1fr;
-
-          &.admin {
+        @container (width > 1700px) {
+          & {
             grid-template-areas:
               'kidcard savingfor .'
               'interestpreview savingfor .'
-              'interestpreview adjustmentform .'
               '. . adjustmentscontrols'
               'chart chart chart'
               'adjustmentstable adjustmentstable adjustmentstable';
+            grid-template-columns: clamp(200px, 40vw, 600px) clamp(200px, 40vw, 600px) 1fr;
+
+            &.admin {
+              grid-template-areas:
+                'kidcard savingfor .'
+                'interestpreview savingfor .'
+                'interestpreview adjustmentform .'
+                '. . adjustmentscontrols'
+                'chart chart chart'
+                'adjustmentstable adjustmentstable adjustmentstable';
+            }
           }
         }
       }
-    }
-    .card {
-      background-color: var(--kid-color-bg-light);
-      background-image: var(--kid-color-bg-gradient);
-      border: 2px solid var(--kid-color-border);
-      border-radius: var(--border-radius-md);
-      box-shadow: var(--box-shadow-element);
-      color: var(--kid-color-favorite);
-    }
-    .kid-card {
-      grid-area: kidcard;
-    }
-    .adjustment-form {
-      grid-area: adjustmentform;
-      display: grid;
-      grid-template-columns: 1fr 1fr 40px 40px;
-      grid-template-rows: 40px;
-      gap: 5px;
-
-      input {
-        box-sizing: border-box;
-        padding-inline: 0.5em;
-        width: 100%;
-        border-radius: var(--border-radius-sm);
+      .card {
         background-color: var(--kid-color-bg-light);
-        border: 1px solid var(--kid-color-border);
-        border-radius: var(--border-radius-sm);
-        font-size: var(--font-size-lg);
-        text-box: trim-both cap alphabetic;
+        background-image: var(--kid-color-bg-gradient);
+        border: 2px solid var(--kid-color-border);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--box-shadow-element);
         color: var(--kid-color-favorite);
-
-        &[name='reason']::placeholder {
-          opacity: 0.6;
-        }
       }
-      button {
-        appearance: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0;
-        padding: 0;
-        border-radius: var(--border-radius-sm);
-        border: none;
-        border-radius: var(--border-radius-sm);
-        font-size: var(--font-size-xl);
-        color: white;
-        cursor: pointer;
-        transition: background-color var(--duration-hover) ease-out;
-
-        span {
-          display: block;
-          padding-block-start: 0.1em;
-          text-box: trim-both ex alphabetic;
-        }
-
-        &.add-button {
-          background-color: var(--color-direction-add);
-
-          &:hover {
-            background-color: color-mix(var(--color-direction-add) 90%, black);
-          }
-        }
-        &.subtract-button {
-          background-color: var(--color-direction-subtract);
-
-          &:hover {
-            background-color: color-mix(var(--color-direction-subtract) 90%, black);
-          }
-        }
+      .kid-card {
+        grid-area: kidcard;
       }
-    }
-    .interest-preview {
-      container-name: interest-preview;
-      container-type: inline-size;
-      grid-area: interestpreview;
-
-      ul {
+      .adjustment-form {
+        grid-area: adjustmentform;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        margin: 0;
-        padding: 0;
+        grid-template-columns: 1fr 1fr 40px 40px;
+        grid-template-rows: 40px;
+        gap: 5px;
 
-        li {
-          anchor-scope: --interst-value;
-          list-style: none;
-          padding-block: 1.5em;
-
-          &:first-child {
-            background-color: color-mix(var(--kid-color-bg-light) 90%, var(--kid-color-favorite));
-            border-radius: var(--border-radius-md) 0 var(--border-radius-md) 0;
-
-            span:first-child {
-              font-weight: var(--font-weight-semibold);
-            }
-
-            @container (width > 500px) {
-              & {
-                border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
-              }
-            }
-          }
-          span:first-child {
-            display: block;
-            text-align: center;
-            font-size: var(--font-size-lg);
-          }
-          span:nth-child(2) {
-            anchor-name: --interst-value;
-            display: block;
-            text-align: center;
-            font-size: var(--font-size-sm);
-          }
-          span:nth-child(3) {
-            position: absolute;
-            position-area: center block-end;
-            position-anchor: --interst-value;
-            font-size: var(--font-size-xs);
-            color: color-mix(currentColor 40%, transparent);
-          }
-        }
-
-        @container (width > 500px) {
-          & {
-            grid-template-columns: repeat(4, 1fr);
-          }
-        }
-      }
-    }
-    .saving-for {
-      grid-area: savingfor;
-      display: flex;
-      flex-flow: row wrap;
-      align-items: center;
-      align-self: end;
-      justify-content: space-between;
-      gap: 30px;
-      padding: 30px;
-      text-align: center;
-
-      > div {
-        display: grid;
-        flex: 1 1 auto;
-
-        :nth-child(1) {
+        input {
+          box-sizing: border-box;
+          padding-inline: 0.5em;
+          width: 100%;
+          border-radius: var(--border-radius-sm);
+          background-color: var(--kid-color-bg-light);
+          border: 1px solid var(--kid-color-border);
+          border-radius: var(--border-radius-sm);
           font-size: var(--font-size-lg);
-          text-wrap: balance;
+          text-box: trim-both cap alphabetic;
           color: var(--kid-color-favorite);
 
-          label {
-            font-size: var(--font-size-md);
-          }
-
-          &.emoji {
-            font-size: var(--font-size-2xl);
+          &[name='reason']::placeholder {
+            opacity: 0.6;
           }
         }
-        :nth-child(2) {
-          font-size: var(--font-size-sm);
-        }
-      }
-    }
-    .adjustments-controls {
-      grid-area: adjustmentscontrols;
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: end;
-      gap: 13px 20px;
-
-      .button-group {
-        display: grid;
-        grid-template-columns: max-content max-content max-content;
-        grid-template-rows: 40px;
-        border-radius: var(--border-radius-sm);
-
         button {
           appearance: none;
-          padding-inline: 14px;
-          background-color: var(--kid-color-bg-light);
-          background-image: var(--kid-color-bg-gradient);
-          border: 1px solid var(--kid-color-border);
-          text-box: trim-both cap alphabetic;
-          color: var(--kid-color-text-on-bg-light);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0;
+          padding: 0;
+          border-radius: var(--border-radius-sm);
+          border: none;
+          border-radius: var(--border-radius-sm);
+          font-size: var(--font-size-xl);
+          color: white;
           cursor: pointer;
+          transition: background-color var(--duration-hover) ease-out;
 
-          &:first-child {
-            border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+          span {
+            display: block;
+            padding-block-start: 0.1em;
+            text-box: trim-both ex alphabetic;
           }
-          &:nth-child(2) {
-            border-inline: none;
+
+          &.add-button {
+            background-color: var(--color-direction-add);
+
+            &:hover {
+              background-color: color-mix(var(--color-direction-add) 90%, black);
+            }
           }
-          &:last-child {
-            border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
-          }
-          &.active {
-            background-color: var(--kid-color-favorite);
-            background-image: none;
-            color: var(--kid-color-text-on-favorite);
+          &.subtract-button {
+            background-color: var(--color-direction-subtract);
+
+            &:hover {
+              background-color: color-mix(var(--color-direction-subtract) 90%, black);
+            }
           }
         }
       }
-    }
-    .adjustments-table {
-      grid-area: adjustmentstable;
-      background-color: var(--kid-color-favorite);
-      border-radius: var(--border-radius-md);
-      color: var(--kid-color-text-on-favorite);
+      .interest-preview {
+        container-name: interest-preview;
+        container-type: inline-size;
+        grid-area: interestpreview;
 
-      @container (width > 599px) {
-        & {
-          border-collapse: collapse;
+        ul {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          margin: 0;
+          padding: 0;
 
-          th,
-          td {
-            padding: 20px;
-            text-box: trim-both cap alphabetic;
-          }
-          th {
-            text-align: start;
-          }
-          tbody {
-            tr {
-              border-block-start: 1px solid color-mix(var(--kid-color-text-on-favorite) 10%, transparent);
-              transition: background-color var(--duration-hover) ease-out;
+          li {
+            anchor-scope: --interst-value;
+            list-style: none;
+            padding-block: 1.5em;
 
-              &:hover {
-                background-color: color-mix(var(--kid-color-bg-light) 10%, transparent);
+            &:first-child {
+              background-color: color-mix(var(--kid-color-bg-light) 90%, var(--kid-color-favorite));
+              border-radius: var(--border-radius-md) 0 var(--border-radius-md) 0;
+
+              span:first-child {
+                font-weight: var(--font-weight-semibold);
               }
-            }
-          }
-          td {
-            color: color-mix(var(--kid-color-text-on-favorite) 60%, var(--kid-color-favorite));
 
-            /* Change */
-            &:nth-child(1) {
-              font-size: var(--font-size-lg);
-              font-weight: var(--font-weight-semibold);
-              color: var(--kid-color-text-on-favorite);
-            }
-            /* Reason */
-            &:nth-child(2) {
-              justify-self: end;
-
-              &.dollar {
-                &.emoji {
-                  font-size: var(--font-size-lg);
+              @container (width > 500px) {
+                & {
+                  border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
                 }
               }
             }
-            /* Created Date */
-            &:nth-child(3) {
+            span:first-child {
+              display: block;
+              text-align: center;
+              font-size: var(--font-size-lg);
+            }
+            span:nth-child(2) {
+              anchor-name: --interst-value;
+              display: block;
+              text-align: center;
               font-size: var(--font-size-sm);
             }
-            /* Total to Date */
-            &:nth-child(4) {
-              justify-self: end;
-              font-size: var(--font-size-sm);
+            span:nth-child(3) {
+              position: absolute;
+              position-area: center block-end;
+              position-anchor: --interst-value;
+              font-size: var(--font-size-xs);
+              color: color-mix(currentColor 40%, transparent);
+            }
+          }
+
+          @container (width > 500px) {
+            & {
+              grid-template-columns: repeat(4, 1fr);
             }
           }
         }
       }
+      .saving-for {
+        grid-area: savingfor;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        align-self: end;
+        justify-content: space-between;
+        gap: 30px;
+        padding: 30px;
+        text-align: center;
 
-      @container (width < 600px) {
-        & {
+        > div {
           display: grid;
-          grid-template-columns: repeat(2, auto);
-          grid-template-rows: repeat(2, auto);
-          width: 100%;
+          flex: 1 1 auto;
 
-          thead {
-            display: none;
-          }
-          tbody {
-            display: contents;
-          }
-          tr {
-            display: grid;
-            grid-template-columns: subgrid;
-            grid-template-rows: subgrid;
-            grid-column: 1 / -1;
-            grid-row: span 2;
-            gap: 20px 10px;
-            padding: 12px;
+          .value {
+            font-size: var(--font-size-lg);
+            text-wrap: balance;
+            color: var(--kid-color-favorite);
 
-            &:not(:first-child) {
-              border-block-start: 1px solid color-mix(var(--kid-color-text-on-favorite) 20%, transparent);
+            label {
+              font-size: var(--font-size-md);
             }
+
+            &.emoji {
+              font-size: var(--font-size-2xl);
+            }
+          }
+          .label {
+            font-size: var(--font-size-sm);
+          }
+        }
+        form-input {
+          input {
+            font-size: var(--font-size-lg);
+          }
+        }
+      }
+      .adjustments-controls {
+        grid-area: adjustmentscontrols;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: end;
+        gap: 13px 20px;
+
+        .button-group {
+          display: grid;
+          grid-template-columns: max-content max-content max-content;
+          grid-template-rows: 40px;
+          border-radius: var(--border-radius-sm);
+
+          button {
+            appearance: none;
+            padding-inline: 14px;
+            background-color: var(--kid-color-bg-light);
+            background-image: var(--kid-color-bg-gradient);
+            border: 1px solid var(--kid-color-border);
+            text-box: trim-both cap alphabetic;
+            color: var(--kid-color-text-on-bg-light);
+            cursor: pointer;
+
+            &:first-child {
+              border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+            }
+            &:nth-child(2) {
+              border-inline: none;
+            }
+            &:last-child {
+              border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+            }
+            &.active {
+              background-color: var(--kid-color-favorite);
+              background-image: none;
+              color: var(--kid-color-text-on-favorite);
+            }
+          }
+        }
+      }
+      .adjustments-table {
+        grid-area: adjustmentstable;
+        background-color: var(--kid-color-favorite);
+        border-radius: var(--border-radius-md);
+        color: var(--kid-color-text-on-favorite);
+
+        @container (width > 599px) {
+          & {
+            border-collapse: collapse;
 
             th,
             td {
-              display: flex;
+              padding: 20px;
               text-box: trim-both cap alphabetic;
+            }
+            th {
+              text-align: start;
+            }
+            tbody {
+              tr {
+                border-block-start: 1px solid color-mix(var(--kid-color-text-on-favorite) 10%, transparent);
+                transition: background-color var(--duration-hover) ease-out;
+
+                &.direction-subtract {
+                  background-color: color-mix(var(--kid-color-favorite) 80%, var(--color-direction-subtract));
+                }
+                &:hover {
+                  background-color: color-mix(var(--kid-color-bg-light) 10%, transparent);
+                }
+              }
+            }
+            td {
               color: color-mix(var(--kid-color-text-on-favorite) 60%, var(--kid-color-favorite));
 
               /* Change */
               &:nth-child(1) {
-                grid-column: 1 / 2;
-                grid-row: 1 / 2;
-                font-size: var(--font-size-xl);
+                font-size: var(--font-size-lg);
                 font-weight: var(--font-weight-semibold);
                 color: var(--kid-color-text-on-favorite);
               }
               /* Reason */
               &:nth-child(2) {
-                grid-column: 2 / 3;
-                grid-row: 1 / 3;
                 justify-self: end;
-                font-size: var(--font-size-lg);
 
                 &.dollar {
                   &.emoji {
-                    font-size: var(--font-size-xl);
+                    font-size: var(--font-size-lg);
                   }
                 }
               }
               /* Created Date */
               &:nth-child(3) {
-                grid-column: 1 / 2;
-                grid-row: 2 / 3;
                 font-size: var(--font-size-sm);
               }
               /* Total to Date */
               &:nth-child(4) {
-                grid-column: 2 / 3;
-                grid-row: 2 / 3;
                 justify-self: end;
                 font-size: var(--font-size-sm);
               }
             }
           }
         }
+
+        @container (width < 600px) {
+          & {
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+            grid-template-rows: repeat(2, auto);
+            width: 100%;
+
+            thead {
+              display: none;
+            }
+            tbody {
+              display: contents;
+            }
+            tr {
+              display: grid;
+              grid-template-columns: subgrid;
+              grid-template-rows: subgrid;
+              grid-column: 1 / -1;
+              grid-row: span 2;
+              gap: 20px 10px;
+              padding: 12px;
+
+              &:not(:first-child) {
+                border-block-start: 1px solid color-mix(var(--kid-color-text-on-favorite) 20%, transparent);
+              }
+
+              th,
+              td {
+                display: flex;
+                text-box: trim-both cap alphabetic;
+                color: color-mix(var(--kid-color-text-on-favorite) 60%, var(--kid-color-favorite));
+
+                /* Change */
+                &:nth-child(1) {
+                  grid-column: 1 / 2;
+                  grid-row: 1 / 2;
+                  font-size: var(--font-size-xl);
+                  font-weight: var(--font-weight-semibold);
+                  color: var(--kid-color-text-on-favorite);
+                }
+                /* Reason */
+                &:nth-child(2) {
+                  grid-column: 2 / 3;
+                  grid-row: 1 / 3;
+                  justify-self: end;
+                  font-size: var(--font-size-lg);
+
+                  &.dollar {
+                    &.emoji {
+                      font-size: var(--font-size-xl);
+                    }
+                  }
+                }
+                /* Created Date */
+                &:nth-child(3) {
+                  grid-column: 1 / 2;
+                  grid-row: 2 / 3;
+                  font-size: var(--font-size-sm);
+                }
+                /* Total to Date */
+                &:nth-child(4) {
+                  grid-column: 2 / 3;
+                  grid-row: 2 / 3;
+                  justify-self: end;
+                  font-size: var(--font-size-sm);
+                }
+              }
+            }
+          }
+        }
       }
-    }
-    .chart {
-      grid-area: chart;
-    }
-  `
+      .chart {
+        grid-area: chart;
+      }
+    `,
+  ]
 
   /**
    * =========================================================================
@@ -589,8 +599,9 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
         const kidTotalValue = kid.adjustments?.[0]?.totalToDate ?? 0
 
         const containerClasses = {
-          container: true,
           admin: currentUserIsAdmin.get(),
+          container: true,
+          'kid-variables': true,
         }
 
         const kidCard = html`<div class="kid-card">
@@ -605,7 +616,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
                 name="dollar-adjustment"
                 type="text"
                 inputmode="decimal"
-                placeholder="${formatTotalForCurrency(0, selectedCurrency.get())}"
+                placeholder="$0.00"
                 @input="${this._forceNumberInput}"
               />
               <input
@@ -661,14 +672,16 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
               ?data-disabled="${!userCanEdit}"
               @closed="${() => this._onPopoverToggle(kid.id, 'savingFor', kid?.savingFor)}"
             >
-              <span slot="label"><div class="${savingForTextAsEmoji ? 'emoji' : nothing}">${savingForText}</div></span>
+              <span slot="label"
+                ><div class="value ${savingForTextAsEmoji ? 'emoji' : nothing}">${savingForText}</div></span
+              >
               <form-input>
                 <label for="savingFor">What are you saving for?</label>
                 <input id="savingFor" name="savingFor" maxlength="25" type="text" value="${kid.savingFor}" />
               </form-input>
             </setting-chip>
 
-            ${savingForTextAsEmoji ? nothing : html`<div>Saving Goal</div>`}
+            ${savingForTextAsEmoji ? nothing : html`<div class="label">Saving Goal</div>`}
           </div>
           <div>
             <setting-chip
@@ -676,17 +689,19 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
               ?data-disabled="${!userCanEdit}"
               @closed="${() => this._onPopoverToggle(kid.id, 'savingForValue', kid?.savingForValue)}"
             >
-              <span slot="label">${formatTotalForCurrency(kid.savingForValue ?? 100, selectedCurrency.get())}</span>
+              <span class="value" slot="label"
+                >${formatTotalForCurrency(kid.savingForValue ?? 100, selectedCurrency.get())}</span
+              >
               <form-input>
                 <label for="savingForValue">How much will it cost?</label>
                 <input id="savingForValue" name="savingForValue" type="text" value="${kid.savingForValue}" />
               </form-input>
             </setting-chip>
-            <div>Cost</div>
+            <div class="label">Cost</div>
           </div>
           <div>
-            <div>${savingForEstimate === 500 ? '500+' : savingForEstimate}</div>
-            <div>Days</div>
+            <div class="value">${savingForEstimate === 500 ? '500+' : savingForEstimate}</div>
+            <div class="label">Days</div>
           </div>
         </div>`
 
@@ -723,7 +738,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
                 class="${this._adjustmentsType === 'dollar' ? 'active' : ''}"
                 @click="${() => (this._adjustmentsType = 'dollar')}"
               >
-                ${currencyDetails[selectedCurrency.get()].symbol}
+                ${currencyDetails[selectedCurrency.get()].symbol || '$'}
               </button>
               <button
                 class="${this._adjustmentsType === 'interest' ? 'active' : ''}"
@@ -771,7 +786,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
             emoji: adjustment.reason?.length <= 3,
           }
 
-          return html`<tr>
+          return html`<tr class="direction-${adjustment.dollarAdjustment >= 0 ? 'add' : 'subtract'}">
             <td>${formatTotalForCurrency(adjustment.dollarAdjustment, selectedCurrency.get())}</td>
             <td class="${classMap(reasonClasses)}">
               ${adjustment.percentAdjustment > 0 ? `${adjustment.percentAdjustment}%` : (adjustment.reason ?? '')}

@@ -75,7 +75,7 @@ const themeConfig = Object.assign(structuredClone(config), {
             outputReferences: true,
             outputReferenceFallbacks: true,
             // This option wraps the CSS variables in the specified selector
-            selector: `&`,
+            selector: `.kid-variables`,
           },
         },
       ],
