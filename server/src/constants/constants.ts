@@ -3,19 +3,19 @@
  */
 export const ServerRoute: Record<string, string> = {
   /* Create a new adjustment. */
-  CreateAdjustment: '/create-adjustment',
+  CreateAdjustment: '/api/create-adjustment',
   /* Create a new kid or update an existing one. */
-  CreateUpdateKid: '/create-update-kid',
+  CreateUpdateKid: '/api/create-update-kid',
   /* Gets kid settings and all adjustments made in the past calendar year. */
-  GetKids: '/get-kids',
+  GetKids: '/api/get-kids',
   /* Gets all usernames and grownUp status of all users. */
-  GetUsers: '/get-users',
+  GetUsers: '/api/get-users',
   /* Uses a username and password to log the user in. */
-  Login: '/login',
+  Login: '/api/login',
   /* TODO */
-  Ping: '/ping',
+  Ping: '/api/ping',
   /* TODO */
-  RemoveKid: '/remove-kid',
+  RemoveKid: '/api/remove-kid',
   /* TODO */
-  UpdateUser: '/update-user',
+  UpdateUser: '/api/update-user',
 }
