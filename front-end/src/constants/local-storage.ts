@@ -12,4 +12,4 @@ export const LocalStorageItems: Record<string, string> = {
   ScreenshotMode: 'screenshot-mode',
   /* Stores the key of the selected currency. */
   SelectedCurrency: 'selected-currency',
-}
+} as const

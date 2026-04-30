@@ -25,6 +25,15 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
     h2 {
       margin-top: 3rem;
     }
+    dl {
+      display: inline-grid;
+      grid-template-columns: auto auto;
+      gap: 0.2rem .5rem;
+
+      dt {
+        font-weight: var(--font-weight-semibold);
+      }
+    }
     .kids {
       display: flex;
       flex-flow: row wrap;
@@ -129,6 +138,15 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
       })
     }
 
+    const currencyData = localStorage.getItem(LocalStorageItems.ExchangeRates)
+      ? JSON.parse(localStorage.getItem(LocalStorageItems.ExchangeRates)!)
+      : undefined
+    const currencyInfo = currencyData ? [['Last Synced', currencyData.lastUpdated]] : []
+    Object.keys(currencyData.rates).forEach((currency) => {
+      currencyInfo.push([`${currency} to USD`, currencyData.rates[currency].toUsd])
+      currencyInfo.push([`${currency} from USD`, currencyData.rates[currency].fromUsd])
+    })
+
     return html`
       <h1>Settings</h1>
       <h2>Kids</h2>
@@ -168,11 +186,16 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
         >
       </form-input>
 
-      <h2>Info</h2>
-      <dl>
-        <dt>Currency Information</dt>
-        <dd>Synced</dd>
-      </dl>
+      ${currencyInfo.length
+        ? html`<h2>Currency Info</h2>
+            <dl>
+              ${currencyInfo.map(
+                ([title, definition]) =>
+                  html`<dt>${title}</dt>
+                    <dd>${definition}</dd>`
+              )}
+            </dl>`
+        : nothing}
     `
   }
 }

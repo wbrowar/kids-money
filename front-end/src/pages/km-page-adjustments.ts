@@ -677,9 +677,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
               ?data-disabled="${!userCanEdit}"
               @closed="${() => this._onPopoverToggle(kid.id, 'savingFor', kid?.savingFor)}"
             >
-              <span slot="label"
-                ><div class="value ${savingForTextAsEmoji ? 'emoji' : nothing}">${savingForText}</div></span
-              >
+              <span slot="label"><div class="value ${savingForTextAsEmoji ? 'emoji' : ''}">${savingForText}</div></span>
               <form-input>
                 <label for="savingFor">What are you saving for?</label>
                 <input id="savingFor" name="savingFor" maxlength="25" type="text" value="${kid.savingFor}" />
