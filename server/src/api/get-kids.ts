@@ -9,8 +9,8 @@ import { KidDto } from '@types'
  *
  * When `screenshotMode` is true, it will return a list of kids with fake names and photo URLs.
  *
- * @param req The request object containing parameters to be passed in.
- * @param res The response object sent back to the client.
+ * @param {Request} req The request object containing parameters to be passed in.
+ * @param {Response} res The response object sent back to the client.
  */
 export async function getKids(req: Request, res: Response) {
   console.log('getKids', 'includeAdjustments', req.body.includeAdjustments, 'screenshotMode', req.body.screenshotMode)

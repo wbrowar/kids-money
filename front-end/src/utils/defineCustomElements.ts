@@ -41,7 +41,7 @@ export type KmCustomElements = (typeof customElementNames)[number]
 /**
  * Defines the custom elements specified in the list.
  *
- * @param prefix Prepended text before the last `-` and the name of the custom element.
+ * @return {string[]} A list of custom elements that were defined.
  */
 export function defineAllCustomElements() {
   return defineCustomElements([...customElementNames])
@@ -50,8 +50,8 @@ export function defineAllCustomElements() {
 /**
  * Defines the custom elements specified in the list.
  *
- * @param list A list of custom elements.
- * @param prefix Prepended text before the last `-` and the name of the custom element.
+ * @param {KmCustomElements[]} list A list of custom elements.
+ * @return {string[]} A list of custom elements that were defined.
  */
 export function defineCustomElements(list: KmCustomElements[]) {
   const definedElements: string[] = []

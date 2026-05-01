@@ -6,8 +6,8 @@ import { DbMessage } from '@/utils/db-response.ts'
 /**
  * Creates a new adjustment for the specified kid.
  *
- * @param req The request object containing parameters to be passed in.
- * @param res The response object sent back to the client.
+ * @param {Request} req The request object containing parameters to be passed in.
+ * @param {Response} res The response object sent back to the client.
  */
 export async function createAdjustment(req: Request, res: Response) {
   console.log('createAdjustment', req.body)

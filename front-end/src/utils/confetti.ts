@@ -4,7 +4,7 @@ import { log } from '@/utils/console.ts'
 /**
  * Sets up the confetti anamation used to celebrate when a kid has increased their total.
  *
- * @param canvas A canvas element that the confetti will be rendered on.
+ * @param {HTMLCanvasElement} canvas A canvas element that the confetti will be rendered on.
  */
 export default class Confetti {
   #confettiInstance

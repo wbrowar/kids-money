@@ -8,8 +8,9 @@ import type { InterestThresholds } from '@types'
  * // 105
  * ```
  *
- * @param adjustment The dollar amount.
- * @param total The current total that the `adjustment` will be added to or subtracted from.
+ * @param {number} adjustment The dollar amount.
+ * @param {number} total The current total that the `adjustment` will be added to or subtracted from.
+ * @return {number} The new total after the adjustment.
  */
 export function addDollarAdjustmentToTotal(adjustment: number, total: number) {
   return adjustment + total
@@ -18,16 +19,14 @@ export function addDollarAdjustmentToTotal(adjustment: number, total: number) {
 /**
  * Calculates the dollar adjustment from a total and an interest percentage.
  *
- * @param percentAdjustment A percentage as a decimal.
- * @param startingTotal The current total that the `adjustment` will be added to.
- *
  * ```
  * dollarAdjustmentFromInterestPercentage(0.5, 100)
  * // 0.5
  * ```
  *
- * @param percentAdjustment The percentage of interest that will be used in the calculation.
- * @param startingTotal The current total that the calculation will be applied to.
+ * @param {number} percentAdjustment The percentage of interest that will be used in the calculation.
+ * @param {number} startingTotal The current total that the calculation will be applied to.
+ * @return {number} The dollar adjustment amount.
  */
 export function dollarAdjustmentFromInterestPercentage(percentAdjustment: number, startingTotal: number) {
   return percentAdjustment * 0.01 * startingTotal
@@ -41,9 +40,11 @@ export function dollarAdjustmentFromInterestPercentage(percentAdjustment: number
  * // 116.1400082895346
  * ```
  *
- * @param days Number of days to calculate the total of interest for.
- * @param percentAdjustment A percentage as a decimal.
- * @param startingTotal The current total that the `adjustment` will be added to.
+ * @param {number} days Number of days to calculate the total of interest for.
+ * @param {number} percentAdjustment A percentage as a decimal.
+ * @param {number} startingTotal The current total that the `adjustment` will be added to.
+ * @param {InterestThresholds} [interestThresholds=[]] The interest thresholds that determine how the interest rate changes.
+ * @return {number} The estimated total after interest.
  */
 export function estimateInterestTotalOverTime(
   days: number,
@@ -65,9 +66,10 @@ export function estimateInterestTotalOverTime(
 /**
  * Parses the interest thresholds and returns the interest for a given total.
  *
- * @param total The total to calculate the interest for.
- * @param defaultInterest The base interest to use before a threshold is reached.
- * @param interestThresholds An array of arrays where each sub-array contains a threshold and an interest value.
+ * @param {number} total The total to calculate the interest for.
+ * @param {number} defaultInterest The base interest to use before a threshold is reached.
+ * @param {InterestThresholds} interestThresholds An array of arrays where each sub-array contains a threshold and an interest value.
+ * @return {number} The interest rate for the given total.
  */
 export function interestFromInterestThresholds(
   total: number,

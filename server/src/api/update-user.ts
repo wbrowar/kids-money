@@ -6,8 +6,8 @@ import { User } from '@types'
 /**
  * Updates a user when a username is passed in.
  *
- * @param req The request object containing parameters to be passed in.
- * @param res The response object sent back to the client.
+ * @param {Request} req The request object containing parameters to be passed in.
+ * @param {Response} res The response object sent back to the client.
  */
 export async function updateUser(req: Request, res: Response) {
   console.log('updateUser', req.body)

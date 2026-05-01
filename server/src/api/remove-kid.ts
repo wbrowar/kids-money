@@ -5,8 +5,8 @@ import { DbError, DbMessage } from '@/utils/db-response.ts'
 /**
  * Removes a row from the Kid table in the database.
  *
- * @param req The request object containing parameters to be passed in.
- * @param res The response object sent back to the client.
+ * @param {Request} req The request object containing parameters to be passed in.
+ * @param {Response} res The response object sent back to the client.
  */
 export async function removeKid(req: Request, res: Response) {
   console.log('removeKid', req.body)

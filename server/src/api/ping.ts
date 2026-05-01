@@ -4,8 +4,8 @@ import { DbMessage } from '@/utils/db-response.ts'
 /**
  * Checks to see if the server is running.
  *
- * @param req The request object containing parameters to be passed in.
- * @param res The response object sent back to the client.
+ * @param {Request} req The request object containing parameters to be passed in.
+ * @param {Response} res The response object sent back to the client.
  */
 export async function ping(req: Request, res: Response) {
   const message = `pong ${req.get('origin') ?? 'referrer not set'}`

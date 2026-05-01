@@ -8,8 +8,8 @@ import { Kid } from '@types'
  *
  * When an ID is passed in, it will update the existing kid, updating only the fields passed in.
  *
- * @param req The request object containing parameters to be passed in.
- * @param res The response object sent back to the client.
+ * @param {Request} req The request object containing parameters to be passed in.
+ * @param {Response} res The response object sent back to the client.
  */
 export async function createUpdateKid(req: Request, res: Response) {
   console.log('createUpdateKid', req.body)

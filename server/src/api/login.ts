@@ -5,8 +5,8 @@ import { DbError } from '@/utils/db-response.ts'
 /**
  * Checks if the provided username and password match a user in the database.
  *
- * @param req The request object containing parameters to be passed in.
- * @param res The response object sent back to the client.
+ * @param {Request} req The request object containing parameters to be passed in.
+ * @param {Response} res The response object sent back to the client.
  */
 export async function login(req: Request, res: Response) {
   if (!(req.body.username && req.body.password)) {

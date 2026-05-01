@@ -6,7 +6,8 @@ import { LocalStorageItems } from '@/constants/local-storage.ts'
 /**
  * Converts an amount of money from the selected currency to USD.
  *
- * @param amount The amount of money to convert.
+ * @param {number} amount The amount of money to convert.
+ * @return {number} The converted amount in USD.
  */
 export function convertCurrencyToUsd(amount: number) {
   if (amount === 0) {

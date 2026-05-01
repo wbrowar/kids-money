@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 loadEnvFile(fileURLToPath(new URL('../../.env', import.meta.url)))
 
-/*
+/**
  * Shared PrismaClient to be used in /server/api endpoints and /scripts node files.
  *
  * ```
