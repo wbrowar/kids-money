@@ -4,6 +4,12 @@ import { User } from '@types'
 
 type UserWithoutId = Pick<User, 'grownUp' | 'kidId' | 'username'>
 
+/**
+ * Gets all users stored in the database.
+ *
+ * @param req The request object containing parameters to be passed in.
+ * @param res The response object sent back to the client.
+ */
 export async function getUsers(_req: Request, res: Response) {
   let response: UserWithoutId[] = []
 

@@ -3,12 +3,15 @@ import { property, query, state } from 'lit/decorators.js'
 import { SignalWatcher } from '@lit-labs/signals'
 import { Kid } from '@types'
 import { log } from '@/utils/console.ts'
-import { kids } from '@/constants/signals.ts'
+import { kids } from '@/signals.ts'
 import { Db } from '@/utils/db.ts'
 import { prepareKidForSave } from '@/utils/api-helper.ts'
 import { variableKids } from '@/assets/css/css.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
 
+/**
+ * Used on the Settings page, this component updates settings for the selected kid.
+ */
 export class KidEditor extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
@@ -135,6 +138,9 @@ export class KidEditor extends SignalWatcher(LitElement) {
    * REFS
    * =========================================================================
    */
+  /**
+   * The input field used to verify that the user wants to remove a kid and delete the associated data.
+   */
   @query('#removeKidInput')
   _removeKidInput!: HTMLInputElement
 
@@ -144,7 +150,7 @@ export class KidEditor extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * The index for the kid in the `kids` signal array.
    */
   @property({ attribute: 'data-kid-index', type: Number })
   kidIndex = -1
@@ -155,13 +161,13 @@ export class KidEditor extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * Tracks if the app is currently using the API and prevents saving during that time.
    */
   @state()
   private _isSaving = false
 
   /**
-   * TODO
+   * The ID for the database row that stores kid settings.
    */
   @state()
   private _kidId = -1
@@ -172,7 +178,7 @@ export class KidEditor extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * Updates the specified property for the selected kid upon closing the settings popover.
    */
   private async _onPopoverToggle(property: keyof Kid, existingValue: unknown) {
     const propertyInput = this.shadowRoot?.querySelector(`#${property}`) as HTMLInputElement
@@ -199,6 +205,13 @@ export class KidEditor extends SignalWatcher(LitElement) {
     }
   }
 
+  /**
+   * Verifies the user wants to remove the kid data, then makes the request to remove the row in the database.
+   *
+   * **NOTE: There is no UNDO, so please make sure you perform regular database backups in case this gets triggered by mistake.**
+   *
+   * @private
+   */
   private async _removeKid() {
     if (!this._isSaving && parseInt(this._removeKidInput.value) === this._kidId) {
       try {

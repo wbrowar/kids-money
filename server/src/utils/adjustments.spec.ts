@@ -3,7 +3,7 @@ import {
   addDollarAdjustmentToTotal,
   dollarAdjustmentFromInterestPercentage,
   estimateInterestTotalOverTime,
-} from './adjustments.ts'
+} from './adjustments'
 
 describe('Adjustments', () => {
   test('dollar adjustment adds dollar amount to total', () => {

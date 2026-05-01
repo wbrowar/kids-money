@@ -1,16 +1,12 @@
-import { css, html, LitElement } from 'lit'
+import { html, LitElement } from 'lit'
 import { log } from '@/utils/console.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 import { LocalStorageItems } from '@/constants/local-storage.ts'
 
+/**
+ * This page is used to log the current user out of the system. This page should not be visible to users unless a problem occurs during logout.
+ */
 export class KmPageLogout extends SignalWatcher(LitElement) {
-  /**
-   * =========================================================================
-   * CSS
-   * =========================================================================
-   */
-  static styles = css``
-
   /**
    * =========================================================================
    * LIFECYCLE
@@ -21,6 +17,7 @@ export class KmPageLogout extends SignalWatcher(LitElement) {
 
     log('Removing user data stored in local storage')
     localStorage.removeItem(LocalStorageItems.CurrentUser)
+    localStorage.removeItem(LocalStorageItems.SelectedCurrency)
 
     customElements.whenDefined('km-app').then(() => {
       this.dispatchEvent(new UserLoggedOutEvent())

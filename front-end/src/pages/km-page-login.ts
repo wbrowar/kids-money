@@ -2,10 +2,17 @@ import { css, html, LitElement } from 'lit'
 import { Db } from '@/utils/db.ts'
 import { log, table } from '@/utils/console.ts'
 import { SignalWatcher } from '@lit-labs/signals'
-import { errorDialogMessage } from '@/constants/signals.ts'
+import { errorDialogMessage } from '@/signals.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
 import { LocalStorageItems } from '@/constants/local-storage.ts'
 
+/**
+ * This page includes a login form. Once the user successfully logs in, their username and settings are stored in local storage.
+ *
+ * If the user information is found in local storage, the last user to login is redirected to the home page.
+ *
+ * _NOTE: Users are created via the CLI in the `server` directory. No emails or other personal information are stored and an email should not be used as the user name. The username and password are stored as plain text in the database, so they should not contain any sensitive information._
+ */
 export class KmPageLogin extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
@@ -116,8 +123,8 @@ export class KmPageLogin extends SignalWatcher(LitElement) {
   protected render() {
     return html`<svg-icon name="logo"></svg-icon>
       <form id="login" action="" @submit="${this.submitForm}">
-        <input type="text" name="username" autocomplete="username" placeholder="Username" />
-        <input type="password" name="password" autocomplete="current-password" placeholder="Password" />
+        <input required type="text" name="username" autocomplete="username" placeholder="Username" />
+        <input required type="password" name="password" autocomplete="current-password" placeholder="Password" />
         <button type="submit">Log in</button>
       </form>`
   }

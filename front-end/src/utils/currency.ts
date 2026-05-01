@@ -1,8 +1,13 @@
-import { selectedCurrency } from '@/constants/signals.ts'
+import { selectedCurrency } from '@/signals.ts'
 import { Currency, currencyDetails } from '@/constants/currencies.ts'
 import { log } from '@/utils/console.ts'
 import { LocalStorageItems } from '@/constants/local-storage.ts'
 
+/**
+ * Converts an amount of money from the selected currency to USD.
+ *
+ * @param amount The amount of money to convert.
+ */
 export function convertCurrencyToUsd(amount: number) {
   if (amount === 0) {
     return 0
@@ -11,6 +16,12 @@ export function convertCurrencyToUsd(amount: number) {
   return amount * getCurrencyConversionRates(selectedCurrency.get()).toUsd
 }
 
+/**
+ * Converts an amount in USD to the selected currency using the current conversion rate.
+ *
+ * @param {number} amount - The amount in USD to be converted. Should be a non-negative value.
+ * @return {number} The equivalent amount in the specified currency. Returns 0 if the input amount is 0.
+ */
 export function convertUsdToCurrency(amount: number) {
   if (amount === 0) {
     return 0
@@ -19,11 +30,24 @@ export function convertUsdToCurrency(amount: number) {
   return amount * getCurrencyConversionRates(selectedCurrency.get()).fromUsd
 }
 
+/**
+ * Formats a given total amount into the specified currency.
+ *
+ * @param {number} total - The total amount in USD to be formatted.
+ * @param {keyof typeof Currency} currency - The currency key for the desired format.
+ * @return {string} The formatted total as a string with the appropriate currency symbol.
+ */
 export function formatTotalForCurrency(total: number, currency: keyof typeof Currency) {
   const formattedTotal = convertUsdToCurrency(total).toFixed(2)
   return currencyDetails[currency].symbol + formattedTotal
 }
 
+/**
+ * Retrieves the conversion rates for the specified currency.
+ *
+ * @param {keyof typeof Currency} currency - The currency for which conversion rates should be retrieved.
+ * @return {number} The conversion rate of the specified currency.
+ */
 export function getCurrencyConversionRates(currency: keyof typeof Currency) {
   if (localStorage.getItem(LocalStorageItems.ExchangeRates)) {
     const storedData = JSON.parse(localStorage.getItem(LocalStorageItems.ExchangeRates)!)
@@ -33,6 +57,15 @@ export function getCurrencyConversionRates(currency: keyof typeof Currency) {
   return currencyDetails[currency].conversionRate
 }
 
+/**
+ * Updates the currency conversion rates by fetching the latest data from the Frankfurter API
+ * or utilizing locally stored data if available and valid. The method synchronizes conversion
+ * rates from USD to other currencies and vice versa, storing the updated rates in local storage.
+ *
+ * @param {boolean} [skipLocalStorageCheck=false] - If true, bypasses the check for local storage
+ *                                                  and fetches data directly from the API.
+ * @return {Promise<void>} A promise that resolves when the currency conversion rates have been updated.
+ */
 export async function updateCurrencyConversionRates(skipLocalStorageCheck = false) {
   // If data is found in local storage, use that if it is within a week old
   if (localStorage.getItem(LocalStorageItems.ExchangeRates) && !skipLocalStorageCheck) {

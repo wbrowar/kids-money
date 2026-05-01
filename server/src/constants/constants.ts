@@ -12,10 +12,10 @@ export const ServerRoute: Record<string, string> = {
   GetUsers: '/api/get-users',
   /* Uses a username and password to log the user in. */
   Login: '/api/login',
-  /* TODO */
+  /* Checks to see if the server is running. */
   Ping: '/api/ping',
-  /* TODO */
+  /* Removes a kid from the database. */
   RemoveKid: '/api/remove-kid',
-  /* TODO */
+  /* Updates a user when a username is passed in. */
   UpdateUser: '/api/update-user',
 }

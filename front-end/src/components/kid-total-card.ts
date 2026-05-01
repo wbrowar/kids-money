@@ -1,13 +1,16 @@
 import { css, html, LitElement, nothing } from 'lit'
 import { property } from 'lit/decorators.js'
 import { formatTotalForCurrency } from '@/utils/currency.ts'
-import { currentRoute, kids, selectedCurrency, selectedKidIndex } from '@/constants/signals.ts'
+import { currentRoute, kids, selectedCurrency, selectedKidIndex } from '@/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 import { Kid } from '@types'
 import { classMap } from 'lit/directives/class-map.js'
 import { variableKids } from '@/assets/css/css.ts'
 import { Route } from '@/constants/router.ts'
 
+/**
+ * Cards that show the image of a kid, their name, their current total, and a progress meter, showing how close they are to their savings goal.
+ */
 export class KidTotalCard extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
@@ -138,13 +141,13 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * When set to `true`, a button will appear that takes you to the adjustments page for the selected kid.
    */
   @property({ attribute: 'data-enable-link', type: Boolean })
   enableLink = false
 
   /**
-   * TODO
+   * The indxe of the kid as stored in the `kids` signal array.
    */
   @property({ attribute: 'data-kid-index' })
   kidIndex = 0
@@ -155,7 +158,7 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * When the link is clicked, route the app to the adjustments page and populate the page with the information for the selected kid.
    */
   private async _onLinkClick() {
     selectedKidIndex.set(this.kidIndex)

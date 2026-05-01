@@ -1,11 +1,14 @@
 import { Request, Response } from 'express'
 import { prisma } from '@/utils/prisma.ts'
-import {
-  dollarAdjustmentFromInterestPercentage,
-  interestFromInterestThresholds,
-} from '@front-end/src/utils/adjustments.ts'
+import { dollarAdjustmentFromInterestPercentage, interestFromInterestThresholds } from '@/utils/adjustments.ts'
 import { DbMessage } from '@/utils/db-response.ts'
 
+/**
+ * Creates a new adjustment for the specified kid.
+ *
+ * @param req The request object containing parameters to be passed in.
+ * @param res The response object sent back to the client.
+ */
 export async function createAdjustment(req: Request, res: Response) {
   console.log('createAdjustment', req.body)
 
@@ -30,7 +33,12 @@ export async function createAdjustment(req: Request, res: Response) {
     const previousAdjustment = adjustmentKid.adjustments?.[0]?.totalToDate ?? 0
 
     // Create new adjustment
-    let createParams = {}
+    let createParams: {
+      dollarAdjustment?: number
+      percentAdjustment?: number
+      reason?: string
+      totalToDate?: number
+    } = {}
     if (req.body.adjustmentType === 'dollar') {
       createParams = {
         dollarAdjustment: req.body.dollarAdjustment,
@@ -38,33 +46,37 @@ export async function createAdjustment(req: Request, res: Response) {
         totalToDate: req.body.dollarAdjustment + previousAdjustment,
       }
     } else if (req.body.adjustmentType === 'interest') {
-      const interestPecentage = interestFromInterestThresholds(
+      const interestPercentage = interestFromInterestThresholds(
         previousAdjustment,
         adjustmentKid.interest,
         JSON.parse(adjustmentKid.interestThresholds ?? '[]')
       )
-      const calculatedDollarAdjustment = dollarAdjustmentFromInterestPercentage(interestPecentage, previousAdjustment)
+      const calculatedDollarAdjustment = dollarAdjustmentFromInterestPercentage(interestPercentage, previousAdjustment)
       createParams = {
         dollarAdjustment: calculatedDollarAdjustment,
-        percentAdjustment: interestPecentage,
+        percentAdjustment: interestPercentage,
         totalToDate: calculatedDollarAdjustment + previousAdjustment,
       }
     }
 
-    const saved = await prisma.kid.update({
-      data: {
-        adjustments: {
-          // @ts-ignore
-          create: createParams,
+    if (createParams.dollarAdjustment ?? 0 !== 0) {
+      const saved = await prisma.kid.update({
+        data: {
+          adjustments: {
+            // @ts-ignore
+            create: createParams,
+          },
         },
-      },
-      where: {
-        id: req.body.kidId,
-      },
-    })
+        where: {
+          id: req.body.kidId,
+        },
+      })
 
-    if (saved) {
-      response = new DbMessage(`Adjustment created for kid: ${adjustmentKid.name}`)
+      if (saved) {
+        response = new DbMessage(`Adjustment created for kid: ${adjustmentKid.name}`)
+      }
+    } else {
+      response = new DbMessage(`Dollar total equaled 0, so adjustment will be skipped for kid: ${adjustmentKid.name}`)
     }
   }
 

@@ -3,6 +3,14 @@ import { prisma } from '@/utils/prisma.ts'
 import { DbError, DbMessage } from '@/utils/db-response.ts'
 import { Kid } from '@types'
 
+/**
+ * Creates a new kid when no ID is passed in.
+ *
+ * When an ID is passed in, it will update the existing kid, updating only the fields passed in.
+ *
+ * @param req The request object containing parameters to be passed in.
+ * @param res The response object sent back to the client.
+ */
 export async function createUpdateKid(req: Request, res: Response) {
   console.log('createUpdateKid', req.body)
 

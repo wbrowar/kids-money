@@ -1,6 +1,11 @@
 import confetti, { Shape } from 'canvas-confetti'
 import { log } from '@/utils/console.ts'
 
+/**
+ * Sets up the confetti anamation used to celebrate when a kid has increased their total.
+ *
+ * @param canvas A canvas element that the confetti will be rendered on.
+ */
 export default class Confetti {
   #confettiInstance
   #scalar = 0
@@ -23,27 +28,28 @@ export default class Confetti {
     this.#shapes = [bagOfMoney, cash, creditCard, diamond, hongbao, flyingCash]
   }
 
+  /**
+   * Fires an animation that shows confetti shooting out from the bottom left and right corners of the screen.
+   */
   shootConfetti() {
     log('Playing confetti animation')
     // Launch confetti from the left edge
     this.#confettiInstance({
-      angle: 40,
-      drift: 0.5,
-      gravity: 0.25,
+      angle: 45,
+      drift: 1,
       origin: { x: 0, y: 0.8 },
       particleCount: 150,
-      spread: 110,
+      spread: 100,
       scalar: this.#scalar,
       shapes: this.#shapes,
     })
     // Launch confetti from the right edge
     this.#confettiInstance({
-      angle: 140,
-      drift: -0.5,
-      gravity: 0.25,
+      angle: 135,
+      drift: -1,
       origin: { x: 1, y: 0.8 },
       particleCount: 150,
-      spread: 110,
+      spread: 100,
       scalar: this.#scalar,
       shapes: this.#shapes,
     })

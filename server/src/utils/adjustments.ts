@@ -1,21 +1,21 @@
 import type { InterestThresholds } from '@types'
 
-/*
+/**
  * Adds a dollar amount number to a total number.
- *
- * @param adjustment The dollar amount.
- * @param total The current total that the `adjustment` will be added to.
  *
  * ```
  * addDollarAdjustmentToTotal(5, 100)
  * // 105
  * ```
+ *
+ * @param adjustment The dollar amount.
+ * @param total The current total that the `adjustment` will be added to or subtracted from.
  */
 export function addDollarAdjustmentToTotal(adjustment: number, total: number) {
   return adjustment + total
 }
 
-/*
+/**
  * Calculates the dollar adjustment from a total and an interest percentage.
  *
  * @param percentAdjustment A percentage as a decimal.
@@ -25,22 +25,25 @@ export function addDollarAdjustmentToTotal(adjustment: number, total: number) {
  * dollarAdjustmentFromInterestPercentage(0.5, 100)
  * // 0.5
  * ```
+ *
+ * @param percentAdjustment The percentage of interest that will be used in the calculation.
+ * @param startingTotal The current total that the calculation will be applied to.
  */
 export function dollarAdjustmentFromInterestPercentage(percentAdjustment: number, startingTotal: number) {
   return percentAdjustment * 0.01 * startingTotal
 }
 
-/*
- * Calculates the total interest earned over a specific amount of days.
- *
- * @param days Amount of days to calculate the total of interest for.
- * @param percentAdjustment A percentage as a decimal.
- * @param startingTotal The current total that the `adjustment` will be added to.
+/**
+ * Calculates the total interest earned over a specific number of days.
  *
  * ```
  * estimateInterestTotalOverTime(30, 0.5, 100))
  * // 116.1400082895346
  * ```
+ *
+ * @param days Number of days to calculate the total of interest for.
+ * @param percentAdjustment A percentage as a decimal.
+ * @param startingTotal The current total that the `adjustment` will be added to.
  */
 export function estimateInterestTotalOverTime(
   days: number,
@@ -60,11 +63,11 @@ export function estimateInterestTotalOverTime(
 }
 
 /**
- * TODO
+ * Parses the interest thresholds and returns the interest for a given total.
  *
- * @param total
- * @param defaultInterest
- * @param interestThresholds
+ * @param total The total to calculate the interest for.
+ * @param defaultInterest The base interest to use before a threshold is reached.
+ * @param interestThresholds An array of arrays where each sub-array contains a threshold and an interest value.
  */
 export function interestFromInterestThresholds(
   total: number,

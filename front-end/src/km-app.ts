@@ -14,7 +14,7 @@ import {
   kidsColors,
   screenshotMode,
   selectedCurrency,
-} from '@/constants/signals.ts'
+} from '@/signals.ts'
 import { log, table } from '@/utils/console.ts'
 import { Db } from '@/utils/db.ts'
 import { Currency, currencyDetails } from '@/constants/currencies.ts'
@@ -25,6 +25,11 @@ import Confetti from '@/utils/confetti.ts'
 import { getLightDarkColorsFromColor, getThemeColorForColorScheme } from '@/utils/color-helper.ts'
 import { updateCurrencyConversionRates } from '@/utils/currency.ts'
 
+/**
+ * This file serves as the main entry for the Kids Money app. It handles routing between pages using signals.
+ * It provides the global layout that includes the main container, the main navigation, and error dialogs.
+ * Events from child components bubble up to this file to refresh the list of kids and adjustments used throughout the app.
+ */
 export class KmApp extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
@@ -124,6 +129,9 @@ export class KmApp extends SignalWatcher(LitElement) {
    * REFS
    * =========================================================================
    */
+  /**
+   * The canvas element that the confetti effect is installed on.
+   */
   @query('#confetti')
   _confettiCanvas!: HTMLCanvasElement
 
@@ -133,19 +141,19 @@ export class KmApp extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * The instance of the Confetti class. The animation can be triggered using a method on this class.
    */
   @state()
   private _confetti: Confetti | undefined = undefined
 
   /**
-   * The list of kids and basic information based on their settings.
+   * The list of kids, settings, and adjustments.
    */
   @state()
   private _kids: Kid[] = []
 
   /**
-   * TODO
+   * The kid that matches the logged-in user.
    */
   @state()
   private _loggedInKid: Kid | undefined = undefined
@@ -156,7 +164,7 @@ export class KmApp extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * Changes route and user settings when a user is logged out.
+   * Fetches kids data from the API and updates the state.
    */
   private async _fetchKidsData() {
     log('Getting kids from API')
@@ -205,7 +213,7 @@ export class KmApp extends SignalWatcher(LitElement) {
   }
 
   /**
-   * TODO
+   * When on the homepage, this method loads the app. On other pages, this method updates the kid and adjustments data.
    */
   private async _onRefreshClicked() {
     if (currentRoute.get() === Route.Home) {
@@ -247,7 +255,7 @@ export class KmApp extends SignalWatcher(LitElement) {
   }
 
   /**
-   * Changes route and user settings when a user is logged out.
+   * Changes route to the login page when a user is logged out.
    */
   private async _onUserLoggedOut() {
     log('Redirecting to login page.')
@@ -255,7 +263,7 @@ export class KmApp extends SignalWatcher(LitElement) {
   }
 
   /**
-   * TODO
+   * Stores the current totals for each kid in local storage. It compares the new totals to previous values and if one value is higher than the previous value, it triggers the confetti animation.
    */
   private async _updateCurrentTotals() {
     if (this._confetti) {
@@ -293,27 +301,25 @@ export class KmApp extends SignalWatcher(LitElement) {
   async connectedCallback() {
     super.connectedCallback()
 
+    // Check to see if the server can be connected to. If not, an error will appear in the console.
     const ping = await Db.getJson(ServerRoute.Ping)
     log('ping', ping)
 
-    /**
-     * Retrieve information saved in local storage and update global state.
-     */
+    // Retrieve information saved in local storage and update global state.
     if (localStorage.getItem(LocalStorageItems.ScreenshotMode) === 'true') {
       screenshotMode.set(true)
     }
-    console.log('screenshotMode', screenshotMode.get())
 
+    // Get the previously selected currency from the browser.
     const selectedCurrencyKey = localStorage.getItem(LocalStorageItems.SelectedCurrency) as keyof typeof Currency
     if (selectedCurrencyKey && Object.keys(currencyDetails).includes(selectedCurrencyKey)) {
       selectedCurrency.set(selectedCurrencyKey)
     }
-    console.log('selectedCurrency', selectedCurrency.get())
 
-    // Update exchange rates from third-party API
+    // Update exchange rates from third-party API.
     await updateCurrencyConversionRates()
 
-    // Add event listener to update kid data when browser changes between light and dark modes
+    // Add event listener to update kid data when browser changes between light and dark modes.
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
       log('Refreshing data due to color scheme change')
       this._fetchKidsData()
@@ -405,7 +411,7 @@ export class KmApp extends SignalWatcher(LitElement) {
   protected firstUpdated(_changedProperties: PropertyValues) {
     super.firstUpdated(_changedProperties)
 
-    // Play confetti animation
+    // Set up confetti animation before the first time it is meant to be called.
     this._confetti = new Confetti(this._confettiCanvas)
   }
 }

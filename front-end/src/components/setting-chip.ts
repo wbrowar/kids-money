@@ -3,6 +3,9 @@ import { SignalWatcher } from '@lit-labs/signals'
 import { property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
+/**
+ * Provides a popover that appears when the slotted label is clicked. An event is fired when the popover closes, so an action can take place.
+ */
 export class SettingChip extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
@@ -62,13 +65,13 @@ export class SettingChip extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * Disabled the popover. The label is still displayed on the page.
    */
   @property({ attribute: 'data-disabled', type: Boolean })
   disabled = false
 
   /**
-   * TODO
+   * Disables the default styles around the label.
    */
   @property({ attribute: 'data-unstyled', type: Boolean })
   unstyled = false
@@ -95,7 +98,7 @@ export class SettingChip extends SignalWatcher(LitElement) {
         popover
         part="popover"
         @toggle="${(e: ToggleEvent) =>
-          e.newState === 'closed' ? this.dispatchEvent(new SettingChipClosedEvent()) : nothing}"
+          e.newState === 'closed' && !this.disabled ? this.dispatchEvent(new SettingChipClosedEvent()) : nothing}"
       >
         <slot></slot>
       </div>

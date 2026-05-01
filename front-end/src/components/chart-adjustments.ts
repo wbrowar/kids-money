@@ -2,7 +2,7 @@ import { css, html, LitElement, PropertyValues } from 'lit'
 import { property, query } from 'lit/decorators.js'
 import { SignalWatcher } from '@lit-labs/signals'
 import { Adjustment } from '@types'
-import { selectedCurrency } from '@/constants/signals.ts'
+import { selectedCurrency } from '@/signals.ts'
 import {
   CategoryScale,
   Chart,
@@ -18,6 +18,9 @@ import {
 import { convertUsdToCurrency, formatTotalForCurrency } from '@/utils/currency.ts'
 import { log } from '@/utils/console.ts'
 
+/**
+ * Displays a set of adjustments in a line chart.
+ */
 export class ChartAdjustments extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
@@ -34,12 +37,12 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
   `
 
   /**
-   * TODO
+   * The instance of the chart. This can be used to update the chart’s settings and pass in new data.
    */
   private _chart: Chart<keyof ChartTypeRegistry, { x: string; y: number }[]> | undefined = undefined
 
   /**
-   * TODO
+   * An array of datasets to be displayed in the chart. Each object in the array can include settings, like the color of the line.
    */
   private _datasets: ChartDataset<keyof ChartTypeRegistry, { x: string; y: number }[]>[] = []
 
@@ -49,13 +52,13 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * The adjustments data to be passed into the dataset.
    */
   @property({ attribute: 'data-adjustments', type: Array })
   adjustments: Adjustment[] = []
 
   /**
-   * TODO
+   * The JavaScript-computed color extracted from the kid’s color setting.
    */
   @property({ attribute: 'data-kid-color' })
   kidColor = ''
@@ -64,6 +67,9 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
    * =========================================================================
    * REFS
    * =========================================================================
+   */
+  /**
+   * The canvas element that the chart is installed onto.
    */
   @query('#chart')
   _chartElement!: HTMLCanvasElement
@@ -74,7 +80,9 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * Takes the adjustments data and prepares it in the format required by the chart.
+   *
+   * Updates the chart with the new datasets.
    */
   private _formatDatasets() {
     const data = this.adjustments.map((adjustment) => {
@@ -105,7 +113,7 @@ export class ChartAdjustments extends SignalWatcher(LitElement) {
   }
 
   /**
-   * TODO
+   * Sets up the chart, provides it with data, and then mounts it to the chart element.
    */
   private _setupChart() {
     log('Setting up chart', this._datasets)

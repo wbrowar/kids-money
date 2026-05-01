@@ -13,6 +13,9 @@ import { Icon } from '@/components/icon.ts'
 import { ChartAdjustments } from '@/components/chart-adjustments.ts'
 import { ChartAdjustmentsMonthly } from '@/components/chart-adjustments-monthly.ts'
 
+/**
+ * A list of all custom elements to be registered.
+ */
 export const customElementNames = [
   'chart-adjustments',
   'chart-adjustments-monthly',
@@ -37,6 +40,7 @@ export type KmCustomElements = (typeof customElementNames)[number]
 
 /**
  * Defines the custom elements specified in the list.
+ *
  * @param prefix Prepended text before the last `-` and the name of the custom element.
  */
 export function defineAllCustomElements() {
@@ -45,6 +49,7 @@ export function defineAllCustomElements() {
 
 /**
  * Defines the custom elements specified in the list.
+ *
  * @param list A list of custom elements.
  * @param prefix Prepended text before the last `-` and the name of the custom element.
  */

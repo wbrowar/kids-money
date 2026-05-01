@@ -8,9 +8,13 @@ export const Currency: Record<string, string> = {
   MalaysianRinggit: 'MYR',
   SingaporeDollar: 'SGD',
   UnitedStatesDollar: 'USD',
-}
+} as const
 
-// Last updated: 2026-04-29
+/**
+ * Default properties for each of the currencies listed above.
+ *
+ * _Last updated: 2026-04-29_
+ */
 export const currencyDetails = {
   [Currency.CanadianDollar]: {
     conversionRate: {
@@ -60,4 +64,4 @@ export const currencyDetails = {
     symbol: '$',
     title: 'United States Dollar',
   },
-}
+} as const

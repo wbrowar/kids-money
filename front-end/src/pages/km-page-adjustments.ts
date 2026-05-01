@@ -8,10 +8,10 @@ import {
   kidsColors,
   selectedCurrency,
   selectedKidIndex,
-} from '@/constants/signals.ts'
+} from '@/signals.ts'
 import { AdjustmentDto, AdjustmentType, Kid } from '@types'
-import { dollarAdjustmentFromInterestPercentage, estimateInterestTotalOverTime } from '@/utils/adjustments.ts'
-import { formatTotalForCurrency } from '@/utils/currency.ts'
+import { dollarAdjustmentFromInterestPercentage, estimateInterestTotalOverTime } from '@server/utils/adjustments.ts'
+import { convertCurrencyToUsd, formatTotalForCurrency } from '@/utils/currency.ts'
 import { log } from '@/utils/console.ts'
 import { Db } from '@/utils/db.ts'
 import { classMap } from 'lit/directives/class-map.js'
@@ -22,6 +22,13 @@ import { variableKids } from '@/assets/css/css.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
 import { Currency, currencyDetails } from '@/constants/currencies.ts'
 
+/**
+ * This page shows all adjustments (transaction) made in the past year for the selected kid.
+ *
+ * It shows estimates for how much interest will be earned over time—based on the default `interest` and `interestThesholds` settings.
+ *
+ * It lets users who are admins or are linked with a kid make changes to the `savingFor` and `savingForValue` settings.
+ */
 export class KmPageAdjustments extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
@@ -458,9 +465,15 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
    * REFS
    * =========================================================================
    */
+  /**
+   * The dollar input field for creating a new adjustment.
+   */
   @query('#dollar-adjustment')
   _dollarAdjustmentInput!: HTMLInputElement
 
+  /**
+   * The reason input field for creating a new adjustment.
+   */
   @query('#reason')
   _reasonInput!: HTMLInputElement
 
@@ -470,19 +483,19 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * Limits the data of adjustments shown on the graph and table to the number specified as days.
    */
   @state()
   private _adjustmentsDaysLimit = 30
 
   /**
-   * TODO
+   * Filters the adjustments shown on the graph and table by dollar or interest types.
    */
   @state()
   private _adjustmentsType: AdjustmentType | 'all' = 'all'
 
   /**
-   * TODO
+   * Tracks if the app is currently using the API and prevents saving during that time.
    */
   @state()
   private _isSaving = false
@@ -493,12 +506,12 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * Uses the adjustment form input values to create a new adjustment.
    */
   private async _createAdjustment(direction: 'add' | 'subtract', kidId: number) {
     log('Creating adjustment', direction, this._dollarAdjustmentInput.value, this._reasonInput.value)
     if (this._dollarAdjustmentInput.value && this._reasonInput.value) {
-      const dollarAdjustmentValue = parseFloat(this._dollarAdjustmentInput.value)
+      const dollarAdjustmentValue = convertCurrencyToUsd(parseFloat(this._dollarAdjustmentInput.value))
       this._isSaving = true
 
       const saved = await Db.postRequest(ServerRoute.CreateAdjustment, {
@@ -517,7 +530,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
   }
 
   /**
-   * TODO
+   * Checks to see if the input value is a number with a decimal. Removes all other characters.
    */
   private _forceNumberInput(e: Event) {
     const input = e.target as HTMLInputElement
@@ -526,7 +539,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
   }
 
   /**
-   * TODO
+   * Calculates interest over the course of different time spans and prepares this info to be displayed.
    */
   private _getInterestPreviews(days: number[], kid: Kid, currency: keyof typeof Currency) {
     return days.map((day) => {
@@ -555,7 +568,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
   }
 
   /**
-   * TODO
+   * Updates the specified property for the selected kid upon closing the settings popover.
    */
   private async _onPopoverToggle(kidId: number, property: keyof Kid, existingValue: unknown) {
     const propertyInput = this.shadowRoot?.querySelector(`#${property}`) as HTMLInputElement
@@ -621,7 +634,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
                 name="dollar-adjustment"
                 type="text"
                 inputmode="decimal"
-                placeholder="$0.00"
+                placeholder="${formatTotalForCurrency(0, selectedCurrency.get())}"
                 @input="${this._forceNumberInput}"
               />
               <input

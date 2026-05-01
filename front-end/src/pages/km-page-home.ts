@@ -1,8 +1,13 @@
 import { css, html, LitElement, nothing } from 'lit'
-import { kids, kidsColors } from '@/constants/signals.ts'
+import { kids, kidsColors } from '@/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
 import { Kid } from '@types'
 
+/**
+ * This page shows the current totals for the list of kids. Clicking on a kid card takes you to that kid’s adjustments page.
+ *
+ * A graph at the bottom of the page shows that value of the kids’ totals at the last day of each month.
+ */
 export class KmPageHome extends SignalWatcher(LitElement) {
   /**
    * =========================================================================

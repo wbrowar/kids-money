@@ -1,6 +1,6 @@
 import { css, html, HTMLTemplateResult, LitElement, nothing } from 'lit'
 import { SignalWatcher } from '@lit-labs/signals'
-import { currentRoute, currentUserIsAdmin, kids, screenshotMode } from '@/constants/signals.ts'
+import { currentRoute, currentUserIsAdmin, kids, screenshotMode } from '@/signals.ts'
 import { Kid, User, UserDto } from '@types'
 import { log, table } from '@/utils/console.ts'
 import { state } from 'lit/decorators.js'
@@ -9,6 +9,15 @@ import { ServerRoute } from '@server/constants/constants.ts'
 import { LocalStorageItems } from '@/constants/local-storage.ts'
 import { Route } from '@/constants/router.ts'
 
+/**
+ * This page is used by users with admin privalages (i.e. users with the grownUp flag set to true) to manage the kids and users.
+ *
+ * A kid can be added or removed.
+ *
+ * Settings for each kid can be changed by clicking on the value, changing it, then letting the popover close.
+ *
+ * Other app-wide settings can be set here. Also, information about external API use is displayed on this page.
+ */
 export class KmPageSettings extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
@@ -28,7 +37,7 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
     dl {
       display: inline-grid;
       grid-template-columns: auto auto;
-      gap: 0.2rem .5rem;
+      gap: 0.2rem 0.5rem;
 
       dt {
         font-weight: var(--font-weight-semibold);
@@ -54,7 +63,7 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * Tracks if the app is currently using the API and prevents saving during that time.
    */
   @state()
   private _isSaving = false
@@ -71,7 +80,7 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * Fetches the users from the database.
    */
   private async _getUsers() {
     log('Getting users from API')
@@ -81,7 +90,7 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
   }
 
   /**
-   * TODO
+   * Updates the specified property for the selected kid upon closing the settings popover.
    */
   private async _onUserKidIdInput(e: InputEvent, username: string) {
     const inputValue = (e.target as HTMLSelectElement)?.value
@@ -100,8 +109,9 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
       this._isSaving = false
     }
   }
+
   /**
-   * TODO
+   * Updates the `screenshotMode` signal and stores the value of the `screenshotMode` checkbox into local storage.
    */
   private async _onScreenshotModeInput(e: Event) {
     const checked = (e.target as HTMLInputElement)?.checked

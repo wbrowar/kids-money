@@ -12,4 +12,4 @@ export const Route: Record<string, string> = {
   Logout: 'logout',
   /* Allows admins to create and remove kids and adjust settings for the application. */
   Settings: 'settings',
-}
+} as const

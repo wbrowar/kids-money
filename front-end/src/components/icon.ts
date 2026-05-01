@@ -2,6 +2,9 @@ import { css, html, LitElement, nothing } from 'lit'
 import { property } from 'lit/decorators.js'
 import type { IconName } from '@types'
 
+/**
+ * Displays an SVG icon based on the selected name.
+ */
 export const iconNames = [
   'add',
   'admin',

@@ -1,5 +1,8 @@
 import { css, html, LitElement } from 'lit'
 
+/**
+ * This wrapper component styles slotted labels and input elements.
+ */
 export class FormInput extends LitElement {
   /**
    * =========================================================================

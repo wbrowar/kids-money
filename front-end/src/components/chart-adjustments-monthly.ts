@@ -15,8 +15,13 @@ import {
   Tooltip,
 } from 'chart.js'
 import { Adjustment, Kid } from '@types'
-import { kids, selectedCurrency } from '@/constants/signals.ts'
+import { kids, selectedCurrency } from '@/signals.ts'
 
+/**
+ * Displays a bar chart with a year’s worth of adjustments for each kid.
+ *
+ * The colors on the chart are pulled from each kid’s `color` setting.
+ */
 export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
   /**
    * =========================================================================
@@ -33,22 +38,22 @@ export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
   `
 
   /**
-   * TODO
+   * The instance of the chart. This can be used to update the chart’s settings and pass in new data.
    */
   private _chart: Chart<keyof ChartTypeRegistry> | undefined = undefined
 
   /**
-   * TODO
+   * An array of datasets to be displayed in the chart. Each object in the array can include settings, like the color of the line.
    */
   private _datasets: ChartDataset<keyof ChartTypeRegistry>[] = []
 
   /**
-   * TODO
+   * Formatted labels for the chart. They appear at the bottom of the chart and in the tooltip.
    */
   private _labels: string[] = []
 
   /**
-   * TODO
+   * A list of all months in a 12-month year.
    */
   private _months = [
     'January',
@@ -71,7 +76,7 @@ export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * An array of JavaScript-computed colors for each kid. Each index of the array should match the index for each kid store in the `kids` signal.
    */
   @property({ attribute: 'data-kids-colors', type: Array })
   kidsColors: string[] = []
@@ -80,6 +85,9 @@ export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
    * =========================================================================
    * REFS
    * =========================================================================
+   */
+  /**
+   * The canvas element that the chart is installed onto.
    */
   @query('#chart')
   _chartElement!: HTMLCanvasElement
@@ -90,7 +98,9 @@ export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
    * =========================================================================
    */
   /**
-   * TODO
+   * Takes the adjustments data and prepares it in the format required by the chart.
+   *
+   * Updates the chart with the new datasets.
    */
   private _formatDatasets() {
     const kidsData: Kid[] = JSON.parse(kids.get())
@@ -134,7 +144,7 @@ export class ChartAdjustmentsMonthly extends SignalWatcher(LitElement) {
   }
 
   /**
-   * TODO
+   * Sets up the chart, provides it with data, and then mounts it to the chart element.
    */
   private _setupChart() {
     if (!this._chart && this._chartElement) {

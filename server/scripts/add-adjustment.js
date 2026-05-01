@@ -1,7 +1,4 @@
-import {
-  dollarAdjustmentFromInterestPercentage,
-  interestFromInterestThresholds,
-} from '../../front-end/src/utils/adjustments.ts'
+import { dollarAdjustmentFromInterestPercentage, interestFromInterestThresholds } from '../src/utils/adjustments.ts'
 import { prisma } from '../src/utils/prisma.ts'
 import { argv, exit } from 'process'
 
