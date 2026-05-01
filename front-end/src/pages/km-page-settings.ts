@@ -37,7 +37,7 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
     dl {
       display: inline-grid;
       grid-template-columns: auto auto;
-      gap: 0.2rem 0.5rem;
+      gap: 0.3rem;
 
       dt {
         font-weight: var(--font-weight-semibold);
@@ -154,7 +154,7 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
     const currencyInfo = currencyData ? [['Last Synced', currencyData.lastUpdated]] : []
     Object.keys(currencyData.rates).forEach((currency) => {
       currencyInfo.push([`${currency} to USD`, currencyData.rates[currency].toUsd])
-      currencyInfo.push([`${currency} from USD`, currencyData.rates[currency].fromUsd])
+      currencyInfo.push([`USD to ${currency}`, currencyData.rates[currency].fromUsd])
     })
 
     return html`
