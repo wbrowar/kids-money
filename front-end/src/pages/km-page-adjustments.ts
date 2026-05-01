@@ -21,6 +21,7 @@ import { savingForGoalEstimate } from '@/utils/save-for.ts'
 import { variableKids } from '@/assets/css/css.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
 import { Currency, currencyDetails } from '@/constants/currencies.ts'
+import { emojiRegex } from '@/constants/string-helper.ts'
 
 /**
  * This page shows all adjustments (transaction) made in the past year for the selected kid.
@@ -676,7 +677,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
         </div>`
 
         const savingForText = kid.savingFor ?? '💰'
-        const savingForTextAsEmoji = savingForText.length <= 3
+        const savingForTextAsEmoji = emojiRegex.test(savingForText)
         const savingForEstimate = savingForGoalEstimate(
           kid.savingForValue,
           kidTotalValue,
@@ -799,7 +800,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
           const reasonClasses = {
             dollar: !isTypeInterest,
             interest: isTypeInterest,
-            emoji: adjustment.reason?.length <= 3,
+            emoji: emojiRegex.test(adjustment.reason),
           }
 
           return html`<tr class="direction-${adjustment.dollarAdjustment >= 0 ? 'add' : 'subtract'}">

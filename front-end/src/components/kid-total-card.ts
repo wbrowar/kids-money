@@ -7,6 +7,7 @@ import { Kid } from '@types'
 import { classMap } from 'lit/directives/class-map.js'
 import { variableKids } from '@/assets/css/css.ts'
 import { Route } from '@/constants/router.ts'
+import { emojiRegex } from '@/constants/string-helper.ts'
 
 /**
  * Cards that show the image of a kid, their name, their current total, and a progress meter, showing how close they are to their savings goal.
@@ -201,7 +202,7 @@ export class KidTotalCard extends SignalWatcher(LitElement) {
             max="${kid.savingForValue}"
           ></meter>
           ${kid.savingFor
-            ? html`<span class="${kid.savingFor.length <= 3 ? 'emoji' : ''}">${kid.savingFor}</span>`
+            ? html`<span class="${emojiRegex.test(kid.savingFor) ? 'emoji' : ''}">${kid.savingFor}</span>`
             : nothing}
         </div>
       `
