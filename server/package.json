@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "build": "tsc",
     "dev": "tsx watch src/server.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate:up": "prisma migrate deploy",

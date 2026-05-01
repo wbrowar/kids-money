@@ -53,7 +53,7 @@ export class Icon extends LitElement {
    * Determines if this alert is displayed inline or as a dialog.
    */
   @property({ attribute: 'name' })
-  iconName: IconName = 'close'
+  iconName: IconName = 'logo'
 
   /**
    * =========================================================================

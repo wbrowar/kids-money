@@ -3,7 +3,7 @@
     "target": "ES2022",
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
-    "module": "ESNext",
+    "module": "NodeNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
 
@@ -27,7 +27,6 @@
     "rootDir": "./src/",
     "paths": {
       "@/*": ["./src/*"],
-      "@front-end/*": ["../front-end/*"],
       "@types": ["../types/index.d.ts"]
     }
   },
