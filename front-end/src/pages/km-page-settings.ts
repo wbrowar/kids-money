@@ -3,11 +3,13 @@ import { SignalWatcher } from '@lit-labs/signals'
 import { currentRoute, currentUserIsAdmin, kids, screenshotMode } from '@/signals.ts'
 import { Kid, User, UserDto } from '@types'
 import { log, table } from '@/utils/console.ts'
-import { state } from 'lit/decorators.js'
+import { query, state } from 'lit/decorators.js'
 import { Db } from '@/utils/db.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
 import { LocalStorageItems } from '@/constants/local-storage.ts'
 import { Route } from '@/constants/router.ts'
+import { prepareKidForSave } from '@/utils/api-helper.ts'
+import { KidUpdated } from '@/components/kid-editor.ts'
 
 /**
  * This page is used by users with admin privalages (i.e. users with the grownUp flag set to true) to manage the kids and users.
@@ -27,6 +29,14 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
   static styles = css`
     :host {
       color: var(--color-text-copy);
+    }
+    .heading-with-action {
+      display: flex;
+      justify-content: space-between;
+
+      setting-chip {
+        margin-top: 3rem;
+      }
     }
     :heading {
       color: var(--color-text-header);
@@ -59,6 +69,17 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
 
   /**
    * =========================================================================
+   * REFS
+   * =========================================================================
+   */
+  /**
+   * The input field used to verify that the user wants to remove a kid and delete the associated data.
+   */
+  @query('#new-kid-name')
+  _newKidName!: HTMLInputElement
+
+  /**
+   * =========================================================================
    * STATE
    * =========================================================================
    */
@@ -79,6 +100,28 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
    * METHODS
    * =========================================================================
    */
+  /**
+   * Adds a new kid by passing in `-1` for the ID
+   */
+  private async _addNewKid() {
+    log('Adding new kid with name', this._newKidName.value)
+    if (!this._isSaving && this._newKidName.value) {
+      try {
+        this._isSaving = true
+        const saved = await Db.postRequest(
+          ServerRoute.CreateUpdateKid,
+          prepareKidForSave(-1, { name: this._newKidName.value })
+        )
+        if (saved.success) {
+          this.dispatchEvent(new KidUpdated())
+          this._newKidName.value = ''
+        }
+      } finally {
+        this._isSaving = false
+      }
+    }
+  }
+
   /**
    * Fetches the users from the database.
    */
@@ -159,7 +202,19 @@ export class KmPageSettings extends SignalWatcher(LitElement) {
 
     return html`
       <h1>Settings</h1>
-      <h2>Kids</h2>
+
+      <div class="heading-with-action">
+        <h2>Kids</h2>
+
+        <setting-chip @closed="${() => log('dunno')}">
+          <span slot="label">+ Add Kid</span>
+          <form-input>
+            <label for="new-kid-name">Name</label>
+            <input id="new-kid-name" name="new-kid-name" type="text" />
+            <button type="button" @click="${this._addNewKid}">Add Kid</button>
+          </form-input>
+        </setting-chip>
+      </div>
       ${kidsEditors ? html`<div class="kids">${kidsEditors}</div>` : nothing}
 
       <h2>Users</h2>

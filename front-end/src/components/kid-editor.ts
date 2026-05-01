@@ -23,7 +23,7 @@ export class KidEditor extends SignalWatcher(LitElement) {
     css`
       :host {
         display: block;
-        flex: 1 1 400px;
+        flex: 1 1 300px;
       }
       :heading {
         color: var(--color-text-header);
