@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest'
-import { dir, error, log, table, warn } from './console.ts'
+import { dir, error, log, table, warn } from './console'
 
 describe('Console', () => {
   test('console.dir is fired', () => {

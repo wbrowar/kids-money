@@ -1,7 +1,7 @@
 /**
  * Currency codes used to convert from USD to selected currency.
  */
-export const Currency: Record<string, string> = {
+export const Currency = {
   CanadianDollar: 'CAD',
   Euro: 'EUR',
   JapaneseYen: 'JPY',

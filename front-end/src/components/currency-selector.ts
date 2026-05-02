@@ -1,8 +1,9 @@
 import { html, LitElement } from 'lit'
 import { selectedCurrency } from '@/signals.ts'
 import { SignalWatcher } from '@lit-labs/signals'
-import { Currency, currencyDetails } from '@/constants/currencies.ts'
+import { currencyDetails } from '@/constants/currencies.ts'
 import { LocalStorageItems } from '@/constants/local-storage.ts'
+import { CurrencyValue } from '@types'
 
 /**
  * Pops up a select field that changes the currency used to display money values around the app.
@@ -17,7 +18,7 @@ export class CurrencySelector extends SignalWatcher(LitElement) {
    * Updates the global state and stores the selected value into local storage.
    */
   private async _onCurrencyInput(e: Event) {
-    const currency = (e.target as HTMLSelectElement)?.value as keyof typeof Currency
+    const currency = (e.target as HTMLSelectElement)?.value as CurrencyValue
     selectedCurrency.set(currency)
     localStorage.setItem(LocalStorageItems.SelectedCurrency, currency)
   }

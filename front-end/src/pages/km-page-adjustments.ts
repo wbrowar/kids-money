@@ -9,7 +9,7 @@ import {
   selectedCurrency,
   selectedKidIndex,
 } from '@/signals.ts'
-import { AdjustmentDto, AdjustmentType, Kid } from '@types'
+import { AdjustmentDto, AdjustmentType, CurrencyValue, Kid } from '@types'
 import { dollarAdjustmentFromInterestPercentage, estimateInterestTotalOverTime } from '@server/utils/adjustments.ts'
 import { convertCurrencyToUsd, formatTotalForCurrency } from '@/utils/currency.ts'
 import { log } from '@/utils/console.ts'
@@ -20,7 +20,7 @@ import { KidUpdated } from '@/components/kid-editor.ts'
 import { savingForGoalEstimate } from '@/utils/save-for.ts'
 import { variableKids } from '@/assets/css/css.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
-import { Currency, currencyDetails } from '@/constants/currencies.ts'
+import { currencyDetails } from '@/constants/currencies.ts'
 import { emojiRegex } from '@/constants/string-helper.ts'
 
 /**
@@ -526,6 +526,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
         this._dollarAdjustmentInput.value = ''
         this._reasonInput.value = ''
       }
+
       this._isSaving = false
     }
   }
@@ -542,7 +543,7 @@ export class KmPageAdjustments extends SignalWatcher(LitElement) {
   /**
    * Calculates interest over the course of different time spans and prepares this info to be displayed.
    */
-  private _getInterestPreviews(days: number[], kid: Kid, currency: keyof typeof Currency) {
+  private _getInterestPreviews(days: number[], kid: Kid, currency: CurrencyValue) {
     return days.map((day) => {
       const labels: Record<number, string> = {
         7: '1 week',

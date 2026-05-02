@@ -1,7 +1,7 @@
 /**
  * A list of server endpoints used through the application.
  */
-export const ServerRoute: Record<string, string> = {
+export const ServerRoute = {
   /* Create a new adjustment. */
   CreateAdjustment: '/api/create-adjustment',
   /* Create a new kid or update an existing one. */
@@ -18,4 +18,4 @@ export const ServerRoute: Record<string, string> = {
   RemoveKid: '/api/remove-kid',
   /* Updates a user when a username is passed in. */
   UpdateUser: '/api/update-user',
-}
+} as const

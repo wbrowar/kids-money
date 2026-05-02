@@ -1,9 +1,11 @@
-import { signal } from '@lit-labs/signals'
+import { signal, Signal } from '@lit-labs/signals'
 import { Currency } from '@/constants/currencies.ts'
 import { Route } from '@/constants/router.ts'
+import { CurrencyValue, RouteValue } from '@types'
+import { LocalStorageItems } from '@/constants/local-storage.ts'
 
 /* The current page the user is on. */
-export const currentRoute = signal(Route.Login)
+export const currentRoute: Signal.State<RouteValue> = signal(Route.Login)
 /* The username of the currently logged-in user. */
 export const currentUser = signal('')
 /* Set to `true` when the user has admin privileges. */
@@ -17,8 +19,8 @@ export const kids = signal('')
 /* An array of JavaScript-computed colors. The index of the array matches the index of each kid in the `kids` signal. */
 export const kidsColors = signal('[]')
 /* When set to `true`, the app will remove the names and photos of kids, and the names of users, and replace them with dummy data. */
-export const screenshotMode = signal(false)
+export const screenshotMode = signal(localStorage.getItem(LocalStorageItems.ScreenshotMode) || false)
 /* The currency selected by the user. This converts money values and displays them in the selected currency. */
-export const selectedCurrency = signal(Currency.UnitedStatesDollar)
+export const selectedCurrency: Signal.State<CurrencyValue> = signal(Currency.UnitedStatesDollar)
 /* Stores the index for the selected kid when routing to the adjustments page. */
 export const selectedKidIndex = signal(-1)

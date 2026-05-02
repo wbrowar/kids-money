@@ -80,6 +80,12 @@ To add a new kid, use the `+ Add Kid` button at the top of the page. To remove a
 > [!NOTE]
 > This ID is also the ID to use in CLI commands. The ID is automatically generated for the kid and will not change.
 
+### Kid Users
+
+If you have created a non-admin user for a kid, you can link the user with a kid on the Settings page. To do this, find the user under the `Users` section, click on the `Non-admin` button, and select the kid from the dropdown field.
+
+The next time the kid logs into the app, they will be able to set their own savings goal on their own page.
+
 ## CLI Commands
 
 If you want to set up a cron job, or if you prefer the command line for things, you can use the `add-adjustments` script to add (or remove) money for a specific kid.

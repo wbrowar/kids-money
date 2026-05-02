@@ -2,6 +2,7 @@ import { selectedCurrency } from '@/signals.ts'
 import { Currency, currencyDetails } from '@/constants/currencies.ts'
 import { log } from '@/utils/console.ts'
 import { LocalStorageItems } from '@/constants/local-storage.ts'
+import { CurrencyValue } from '@types'
 
 /**
  * Converts an amount of money from the selected currency to USD.
@@ -35,10 +36,10 @@ export function convertUsdToCurrency(amount: number) {
  * Formats a given total amount into the specified currency.
  *
  * @param {number} total - The total amount in USD to be formatted.
- * @param {keyof typeof Currency} currency - The currency key for the desired format.
+ * @param {CurrencyType} currency - The currency key for the desired format.
  * @return {string} The formatted total as a string with the appropriate currency symbol.
  */
-export function formatTotalForCurrency(total: number, currency: keyof typeof Currency) {
+export function formatTotalForCurrency(total: number, currency: CurrencyValue): string {
   const formattedTotal = convertUsdToCurrency(total).toFixed(2)
   return currencyDetails[currency].symbol + formattedTotal
 }
@@ -46,10 +47,10 @@ export function formatTotalForCurrency(total: number, currency: keyof typeof Cur
 /**
  * Retrieves the conversion rates for the specified currency.
  *
- * @param {keyof typeof Currency} currency - The currency for which conversion rates should be retrieved.
+ * @param {CurrencyType} currency - The currency for which conversion rates should be retrieved.
  * @return {number} The conversion rate of the specified currency.
  */
-export function getCurrencyConversionRates(currency: keyof typeof Currency) {
+export function getCurrencyConversionRates(currency: CurrencyValue) {
   if (localStorage.getItem(LocalStorageItems.ExchangeRates)) {
     const storedData = JSON.parse(localStorage.getItem(LocalStorageItems.ExchangeRates)!)
     return storedData.rates[currency]

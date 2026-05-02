@@ -1,4 +1,4 @@
-import { ServerRoute } from '@server/constants/constants.ts'
+import { ServerRouteValue } from '@types'
 
 /**
  * A class that handles database interactions.
@@ -14,10 +14,10 @@ class DbHandler {
   /**
    * Constructs a URI used to make API requests.
    *
-   * @param {keyof typeof ServerRoute} uri - The route key to be appended to the base API URL.
+   * @param {ServerRouteValue} uri - The route key to be appended to the base API URL.
    * @return {string} The fully formatted URI.
    */
-  private formatUri(uri: keyof typeof ServerRoute) {
+  private formatUri(uri: ServerRouteValue) {
     return this.#apiUrl + uri
   }
 
@@ -44,10 +44,10 @@ class DbHandler {
   /**
    * Sends a GET request to the specified URI and retrieves a JSON response.
    *
-   * @param {keyof typeof ServerRoute} uri - The URI of the server route to fetch data from.
+   * @param {ServerRouteValue} uri - The URI of the server route to fetch data from.
    * @return {Promise<any>} A promise that resolves to the parsed JSON response.
    */
-  async getJson(uri: keyof typeof ServerRoute) {
+  async getJson(uri: ServerRouteValue) {
     const response = await window.fetch(this.formatUri(uri), {
       headers: {
         'Content-Type': 'application/json',
@@ -60,11 +60,11 @@ class DbHandler {
   /**
    * Sends a POST request to the specified server route with the provided data.
    *
-   * @param {keyof typeof ServerRoute} uri - The server route to which the POST request is sent.
+   * @param {ServerRouteValue} uri - The server route to which the POST request is sent.
    * @param {object} data - The payload to be sent in the body of the POST request.
    * @return {Promise<any>} A promise that resolves with the JSON-parsed response from the server.
    */
-  async postRequest(uri: keyof typeof ServerRoute, data: object) {
+  async postRequest(uri: ServerRouteValue, data: object) {
     const response = await window.fetch(this.formatUri(uri), {
       body: JSON.stringify(data),
       headers: {

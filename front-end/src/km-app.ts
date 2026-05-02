@@ -1,7 +1,7 @@
 import { css, html, LitElement, nothing, PropertyValues } from 'lit'
 import { classMap } from 'lit/directives/class-map.js'
 import { query, state } from 'lit/decorators.js'
-import { Kid } from '@types'
+import { CurrencyValue, Kid, RouteValue } from '@types'
 import { SignalWatcher, watch } from '@lit-labs/signals'
 import { UserLoggedInEvent } from '@/pages/km-page-login.ts'
 import {
@@ -17,7 +17,7 @@ import {
 } from '@/signals.ts'
 import { log, table } from '@/utils/console.ts'
 import { Db } from '@/utils/db.ts'
-import { Currency, currencyDetails } from '@/constants/currencies.ts'
+import { currencyDetails } from '@/constants/currencies.ts'
 import { ServerRoute } from '@server/constants/constants.ts'
 import { LocalStorageItems } from '@/constants/local-storage.ts'
 import { Route } from '@/constants/router.ts'
@@ -245,7 +245,7 @@ export class KmApp extends SignalWatcher(LitElement) {
 
     const searchParams = new URLSearchParams(window.location.search)
     if (import.meta.env.DEV && searchParams.has('redirect')) {
-      const redirect = searchParams.get('redirect') as keyof typeof Route
+      const redirect = searchParams.get('redirect') as RouteValue
       log('Redirecting logged in user to page', redirect)
       currentRoute.set(redirect)
     } else {
@@ -311,7 +311,7 @@ export class KmApp extends SignalWatcher(LitElement) {
     }
 
     // Get the previously selected currency from the browser.
-    const selectedCurrencyKey = localStorage.getItem(LocalStorageItems.SelectedCurrency) as keyof typeof Currency
+    const selectedCurrencyKey = localStorage.getItem(LocalStorageItems.SelectedCurrency) as CurrencyValue
     if (selectedCurrencyKey && Object.keys(currencyDetails).includes(selectedCurrencyKey)) {
       selectedCurrency.set(selectedCurrencyKey)
     }
@@ -353,7 +353,7 @@ export class KmApp extends SignalWatcher(LitElement) {
       ></km-page-settings>`
     }
 
-    const showMainMenu = [Route.Adjustments, Route.Home, Route.Settings].includes(currentRoute.get())
+    const showMainMenu = ([Route.Adjustments, Route.Home, Route.Settings] as RouteValue[]).includes(currentRoute.get())
     const mainMenuContent = showMainMenu
       ? html`
           <nav>

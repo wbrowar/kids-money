@@ -1,4 +1,7 @@
 import {iconNames} from "../front-end/src/components/icon";
+import {ServerRoute} from "../server/src/constants/constants";
+import {Currency} from "../front-end/src/constants/currencies";
+import {Route} from "../front-end/src/constants/router";
 
 /**
  * Tracked changes in a kid’s value of their savings. This includes the dollar amount that changed and the current total after the change was added in.
@@ -38,6 +41,11 @@ export interface AdjustmentDto extends Pick<Adjustment, 'dollarAdjustment' | 're
     /* The ID of the kid, as stored in the database. */
     kidId: number;
 }
+
+/**
+ * TODO
+ */
+export type CurrencyValue = typeof Currency[keyof typeof Currency];
 
 /**
  * The list of names that can be used as the `data-name` prop when using the `svg-icon` component.
@@ -89,7 +97,20 @@ export interface Kid {
     themeColors: KidColors;
 }
 
+/**
+ * TODO
+ */
 export type KidDto = Omit<Kid, 'themeColors' | 'currentTotal'>
+
+/**
+ * TODO
+ */
+export type RouteValue = typeof Route[keyof typeof Route];
+
+/**
+ * TODO
+ */
+export type ServerRouteValue = typeof ServerRoute[keyof typeof ServerRoute];
 
 /**
  * Represents a user of the application.

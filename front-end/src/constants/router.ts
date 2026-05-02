@@ -1,7 +1,7 @@
 /**
  * A list of all routes available in the application.
  */
-export const Route: Record<string, string> = {
+export const Route = {
   /* Displays all adjustments and related data for selected kid. */
   Adjustments: 'adjustments',
   /* Displays a list of all kids and a dashboard of combined data. */
