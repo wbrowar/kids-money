@@ -38,7 +38,7 @@ export class SettingChip extends SignalWatcher(LitElement) {
         opacity: 0.5;
       }
     }
-    #settings {
+    [popover] {
       position-anchor: --display;
       position: fixed;
       position-area: block-end;
@@ -52,9 +52,25 @@ export class SettingChip extends SignalWatcher(LitElement) {
       box-shadow: var(--kid-box-shadow-element, var(--box-shadow-element));
       backdrop-filter: blur(13px);
       color: var(--kid-color-text-on-bg-light, contrast-color(var(--component-setting-chip-popover-bg)));
+      transition:
+        display var(--duration-overlay) ease-out allow-discrete,
+        overlay var(--duration-overlay) ease-out allow-discrete,
+        opacity var(--duration-overlay) ease-out;
 
       &::backdrop {
         backdrop-filter: saturate(90%) brightness(70%);
+        opacity: 0;
+        transition:
+          display var(--duration-overlay) ease-out allow-discrete,
+          overlay var(--duration-overlay) ease-out allow-discrete,
+          opacity var(--duration-overlay) ease-out;
+      }
+      &:popover-open::backdrop {
+        opacity: 1;
+
+        @starting-style {
+          opacity: 0;
+        }
       }
     }
   `

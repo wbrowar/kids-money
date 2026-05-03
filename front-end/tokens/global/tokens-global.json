@@ -102,6 +102,9 @@
     "$type": "duration",
     "hover": {
       "$value": "0.3s"
+    },
+    "overlay": {
+      "$value": "0.15s"
     }
   },
   "font": {
