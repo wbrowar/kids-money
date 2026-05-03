@@ -19,7 +19,7 @@ export const kids = signal('')
 /* An array of JavaScript-computed colors. The index of the array matches the index of each kid in the `kids` signal. */
 export const kidsColors = signal('[]')
 /* When set to `true`, the app will remove the names and photos of kids, and the names of users, and replace them with dummy data. */
-export const screenshotMode = signal(localStorage.getItem(LocalStorageItems.ScreenshotMode) || false)
+export const screenshotMode = signal(localStorage.getItem(LocalStorageItems.ScreenshotMode) === 'true')
 /* The currency selected by the user. This converts money values and displays them in the selected currency. */
 export const selectedCurrency: Signal.State<CurrencyValue> = signal(Currency.UnitedStatesDollar)
 /* Stores the index for the selected kid when routing to the adjustments page. */
