@@ -6,6 +6,8 @@ export const ServerRoute = {
   CreateAdjustment: '/api/create-adjustment',
   /* Create a new kid or update an existing one. */
   CreateUpdateKid: '/api/create-update-kid',
+  /* Allow non-identifiable data be accessed by external system. */
+  ExternalGetKids: '/api-external/get-kids',
   /* Gets kid settings and all adjustments made in the past calendar year. */
   GetKids: '/api/get-kids',
   /* Gets all usernames and grownUp status of all users. */
