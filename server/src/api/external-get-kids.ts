@@ -11,7 +11,7 @@ import { prisma } from '@/utils/prisma.ts'
  * @param {Request} req The request object containing parameters to be passed in.
  * @param {Response} res The response object sent back to the client.
  */
-export async function externalGetKids(req: Request, res: Response) {
+export async function externalGetKids(_req: Request, res: Response) {
   console.log('externalGetKids')
 
   let response = []

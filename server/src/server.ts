@@ -35,7 +35,7 @@ app.post(ServerRoute.Login, login)
 app.post(ServerRoute.RemoveKid, removeKid)
 app.post(ServerRoute.UpdateUser, updateUser)
 
-if (externalOrigins) {
+if (externalOrigins?.length) {
   app.get(ServerRoute.ExternalGetKids, cors({ origin: externalOrigins }), externalGetKids)
 }
 
