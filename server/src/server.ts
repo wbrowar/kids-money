@@ -17,6 +17,7 @@ loadEnvFile()
 const app = express()
 const port = process.env.SERVER_PORT
 const corsOrigin = process.env.CORS_ORIGIN ?? ''
+const enableExternalApi = process.env.ENABLE_EXTERNAL_API === 'true'
 const externalOrigins = JSON.parse(process.env.EXTERNAL_ORIGINS ?? '[]')
 
 app.use(express.json())
@@ -35,7 +36,7 @@ app.post(ServerRoute.Login, login)
 app.post(ServerRoute.RemoveKid, removeKid)
 app.post(ServerRoute.UpdateUser, updateUser)
 
-if (externalOrigins?.length) {
+if (enableExternalApi) {
   app.get(ServerRoute.ExternalGetKids, cors({ origin: externalOrigins }), externalGetKids)
 }
 

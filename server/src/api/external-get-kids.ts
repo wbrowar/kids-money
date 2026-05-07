@@ -28,13 +28,33 @@ export async function externalGetKids(_req: Request, res: Response) {
   })
 
   response = kidsData.map((kid) => {
+    const currentTotal = kid.adjustments?.[0]?.totalToDate ?? 0
+    let savingForPercentage = 0
+    let savingForLevel = 1
+
+    if (kid.savingFor && kid.savingForValue) {
+      savingForPercentage = Math.round((currentTotal / (kid.savingForValue || 0)) * 100)
+      if (savingForPercentage < 0) {
+        savingForPercentage = 0
+      }
+
+      if (savingForPercentage > 70) {
+        savingForLevel = 3
+      } else if (savingForPercentage > 40) {
+        savingForLevel = 2
+      }
+    }
+
     return {
       color: kid.color,
-      currentTotal: kid.adjustments?.[0]?.totalToDate ?? 0,
+      currentTotal: `$` + currentTotal.toFixed(2),
       interest: kid.interest,
       interestThresholds: kid.interestThresholds ? kid.interestThresholds : undefined,
       savingFor: kid.savingFor ? kid.savingFor : undefined,
+      savingForLevel,
+      savingForPercentage,
       savingForValue: kid.savingForValue,
+      savingForValueUsd: `$` + kid.savingForValue.toFixed(2),
     }
   })
 

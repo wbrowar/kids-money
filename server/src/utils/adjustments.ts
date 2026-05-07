@@ -41,7 +41,7 @@ export function dollarAdjustmentFromInterestPercentage(percentAdjustment: number
  * ```
  *
  * @param {number} days Number of days to calculate the total of interest for.
- * @param {number} percentAdjustment A percentage as a decimal.
+ * @param {number} percentAdjustment A percentage as a decimal. Usually the kid’s default interest rate.
  * @param {number} startingTotal The current total that the `adjustment` will be added to.
  * @param {InterestThresholds} [interestThresholds=[]] The interest thresholds that determine how the interest rate changes.
  * @return {number} The estimated total after interest.
