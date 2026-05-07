@@ -47,7 +47,8 @@ export async function externalGetKids(_req: Request, res: Response) {
 
     return {
       color: kid.color,
-      currentTotal: `$` + currentTotal.toFixed(2),
+      currentTotal: currentTotal,
+      currentTotalUsd: `$` + currentTotal.toFixed(2),
       interest: kid.interest,
       interestThresholds: kid.interestThresholds ? kid.interestThresholds : undefined,
       savingFor: kid.savingFor ? kid.savingFor : undefined,
