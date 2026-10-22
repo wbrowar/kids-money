@@ -22,8 +22,8 @@ async function main() {
   const args = parseArgv()
 
   const limit = args.limit ?? 14
-  const dbFilePath = '../prisma/db/kids-money.db'
-  const backupPath = '../prisma/backups'
+  const dbFilePath = '../../db/kids-money.db'
+  const backupPath = '../../db/backups'
 
   try {
     console.log('Create backup directory if it doesn’t exist.')
