@@ -8,7 +8,11 @@ function parseArgv() {
   const args = {}
 
   argv.forEach((arg) => {
-    if (arg.startsWith('--limit=')) {
+    if (arg.startsWith('--db-file=')) {
+      args.dbFile = parseInt(arg.split('=')[1])
+    } else if (arg.startsWith('--backup-path=')) {
+      args.backupPath = parseInt(arg.split('=')[1])
+    } else if (arg.startsWith('--limit=')) {
       args.limit = parseInt(arg.split('=')[1])
     }
   })
@@ -22,8 +26,8 @@ async function main() {
   const args = parseArgv()
 
   const limit = args.limit ?? 14
-  const dbFilePath = '../../db/kids-money.db'
-  const backupPath = '../../db/backups'
+  const dbFilePath = args.dbFile ?? '../prisma/db/kids-money.db'
+  const backupPath = args.backupPath ?? '../prisma/backups'
 
   try {
     console.log('Create backup directory if it doesn’t exist.')
