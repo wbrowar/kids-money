@@ -9,9 +9,9 @@ function parseArgv() {
 
   argv.forEach((arg) => {
     if (arg.startsWith('--db-file=')) {
-      args.dbFile = parseInt(arg.split('=')[1])
+      args.dbFile = arg.split('=')[1]
     } else if (arg.startsWith('--backup-path=')) {
-      args.backupPath = parseInt(arg.split('=')[1])
+      args.backupPath = arg.split('=')[1]
     } else if (arg.startsWith('--limit=')) {
       args.limit = parseInt(arg.split('=')[1])
     }
