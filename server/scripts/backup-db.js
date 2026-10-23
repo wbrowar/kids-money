@@ -29,6 +29,9 @@ async function main() {
   const dbFilePath = args.dbFile ?? '../prisma/db/kids-money.db'
   const backupPath = args.backupPath ?? '../prisma/backups'
 
+  console.log('DB file:', dbFilePath)
+  console.log('Backup path:', backupPath)
+
   try {
     console.log('Create backup directory if it doesn’t exist.')
     const backupDirectory = await stat(backupPath)
